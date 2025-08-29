@@ -1,0 +1,77 @@
+{
+    "banner": [
+        {
+            "id": 1,
+            "img": "img/banner.png"
+        },
+        {
+            "id": 2,
+            "img": "img/banner2.jpg"
+        }
+    ],
+    "barbearias": [
+        {
+            "id": 1,
+            "nome": "Kaio Barbeshop",
+            "img": "img/barbearias/barbearia1.png",
+            "curtidas": "30k",
+            "localizacao": "São Paulo, São Paulo"
+        },
+        {
+            "id": 2,
+            "nome": "Barbearia e etc",
+            "img": "img/barbearias/barbearia2.png",
+            "curtidas": "25k",
+            "localizacao": "Rio de Janeiro, Rio de Janeiro"
+        },
+        {
+            "id": 3,
+            "nome": "BARBER SHOP",
+            "img": "img/barbearias/barbearia3.png",
+            "curtidas": "36k",
+            "localizacao": "São Paulo, Mogi das Cruzes"
+        },
+        {
+            "id": 4,
+            "nome": "Kaio Barbeshop",
+            "img": "img/barbearias/barbearia1.png",
+            "curtidas": "30k",
+            "localizacao": "São Paulo, São Paulo"
+        },
+        {
+            "id": 5,
+            "nome": "Barbearia e etc",
+            "img": "img/barbearias/barbearia2.png",
+            "curtidas": "25k",
+            "localizacao": "Rio de Janeiro, Rio de Janeiro"
+        },
+        {
+            "id": 6,
+            "nome": "BARBER SHOP",
+            "img": "img/barbearias/barbearia3.png",
+            "curtidas": "36k",
+            "localizacao": "São Paulo, Mogi das Cruzes"
+        },
+        {
+            "id": 7,
+            "nome": "Kaio Barbeshop",
+            "img": "img/barbearias/barbearia1.png",
+            "curtidas": "30k",
+            "localizacao": "São Paulo, São Paulo"
+        },
+        {
+            "id": 8,
+            "nome": "Barbearia e etc",
+            "img": "img/barbearias/barbearia2.png",
+            "curtidas": "25k",
+            "localizacao": "Rio de Janeiro, Rio de Janeiro"
+        },
+        {
+            "id": 9,
+            "nome": "BARBER SHOP",
+            "img": "img/barbearias/barbearia3.png",
+            "curtidas": "36k",
+            "localizacao": "São Paulo, Mogi das Cruzes"
+        }
+    ]
+}

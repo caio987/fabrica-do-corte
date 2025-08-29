@@ -1,0 +1,524 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #151615;
+    color: #C4974F;
+}
+
+header,
+footer {
+    background-color: black;
+    border: solid #C4974F;
+    padding: 5px;
+    text-align: center;
+}
+
+header nav {
+    width: 90%;
+    margin: auto;
+}
+
+header nav ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+}
+
+header nav a,
+footer a {
+    text-decoration: none;
+    color: #C4974F;
+    transition: .4s;
+}
+
+header nav a:hover,
+footer a:hover {
+    font-size: 1.2em;
+    color: #daa248;
+}
+
+.footerFixo {
+    width: 99%;
+    position: fixed;
+    bottom: 0;
+}
+
+footer {
+    border: 1px solid #C4974F;
+}
+
+footer img {
+    width: 23px;
+    margin-bottom: 5px;
+}
+
+footer a {
+    width: fit-content;
+    margin: auto;
+    /* border: solid #C4974F; */
+    display: flex;
+    align-items: center;
+}
+
+footer p {
+    margin-top: 10px;
+    color: #C4974F;
+}
+/* CSS geral ↑↑↑↑↑↑*/
+
+/* CSS index/home ↓↓↓↓↓↓*/
+.slider {
+    max-width: 100%;
+    margin: 0 auto;
+    /* position: relative; */
+    overflow: hidden;
+    /* background-color: #443b61; */
+}
+
+.banner {
+    width: 400%;
+    /* height: 400px; */
+    display: flex;
+}
+
+.slider input {
+    display: none;
+}
+
+.imagensBanner {
+    width: 25%;
+    /* position: relative; */
+    transition: 1.5s;
+}
+
+.imagensBanner img {
+    width: 100%;
+    /* margin-left: 5%; */
+    object-fit: contain;
+}
+
+.navegacaoManual {
+    position: absolute;
+    margin-left: 5%;
+    width: 90%;
+    margin-top: -8%;
+    display: flex;
+    justify-content: center;
+}
+
+.botaoManual {
+    border: 2px solid #fff;
+    padding: 7px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.botaoManual:not(:last-child) {
+    margin-right: 40px;
+}
+
+.botaoManual {
+    background-color: #231061;
+}
+
+.botaoManual:hover {
+    background-color: #ff9900;
+}
+
+#radio1:checked~.first {
+    margin-left: 0;
+}
+
+#radio2:checked~.first {
+    margin-left: -25%;
+}
+
+main .titulos {
+    margin: 20px;
+    font-size: 2.5em;
+    text-align: center;
+    font-family: "Inter";
+    font-style: italic;
+    font-weight: 100;
+}
+
+main img {
+    width: 100%;
+}
+
+main .seta {
+    transition: .5s;
+    cursor: pointer;
+    width: 30px;
+    height: 40px;
+    margin: 15px;
+}
+
+main .alinhamento,
+main #cardsQuemSomos {
+    width: 70%;
+    margin: 15px auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+main #barbearias .alinhamento {
+    flex-wrap: nowrap;
+    width: 90%;
+}
+
+main #carrossel {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    overflow-x: scroll;
+}
+
+main #carrossel::-webkit-scrollbar {
+    display: none;
+}
+
+main #carrossel img {
+    width: 200px;
+}
+
+main .caixaBarbearia {
+    position: relative;
+    transition: .5s;
+    width: fit-content;
+    padding: 10px;
+    text-align: center;
+    background-color: #201F1F;
+    border: solid #C4974F;
+    border-radius: 20px;
+    margin: 20px;
+    transition: .5s;
+    cursor: pointer;
+}
+main .caixaBarbearia:hover {
+    scale: 1.1;
+}
+
+main .caixaBarbearia .fotoBarbearia {
+    max-width: 203px;
+}
+
+main .nomeEstabelecimento {
+    margin-top: 10px;
+}
+
+main .caixaBarbearia .localizacao,
+main #quemSomos p {
+    color: white;
+}
+
+main .caixaBarbearia p span {
+    color: red;
+}
+
+main .caixaBarbearia .avaliacao {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 200px;
+    /* margin: auto; */
+    padding: 20px 0;
+}
+
+main .caixaBarbearia .localizacao{
+    text-align: left;
+    margin-left: 25px;
+}
+main .caixaBarbearia .avaliacao img {
+    max-width: 80px;
+}
+
+main .caixaBarbearia button {
+    background-color: #C4974F;
+    color: white;
+    width: 60%;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+main .caixaBarbearia button:hover {
+    width: 70%;
+    padding: 10px;
+}
+
+main #cardsQuemSomos {
+    position: relative;
+    height: 450px;
+    width: 600px;
+    /* border: solid #C4974F; */
+}
+
+main .cards {
+    position: absolute;
+    width: 200px;
+    top: 40px;
+    border: solid #C4974F;
+}
+
+main #cardDaEsquerda2 {
+    z-index: 1;
+    top: 80px;
+    left: -20px;
+    transform: rotate(157deg);
+}
+
+main #cardDaEsquerda1 {
+    z-index: 2;
+    top: 30px;
+    left: 40px;
+    transform: rotate(167deg);
+}
+
+main #cardDoMeio {
+    z-index: 3;
+    top: -10px;
+    left: 200px;
+}
+
+main #cardDaDireita1 {
+    z-index: 2;
+    top: 20px;
+    left: 350px;
+    transform: rotate(8deg);
+}
+
+main #cardDaDireita2 {
+    z-index: 1;
+    top: 80px;
+    left: 410px;
+    transform: rotate(23.6deg);
+}
+
+main #quemSomos p {
+    width: 60%;
+    margin: auto;
+}
+
+main #quemSomos #imagens {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+}
+
+main #quemSomos #imagens img {
+    max-width: 380px;
+    height: 200px;
+    margin: 5px 0;
+}
+
+main #quemSomos .alinhamento p {
+    width: 40%;
+}
+
+/* CSS escolherCadastro */
+main .alinhamento .caixas {
+    height: 180px;
+    padding: 20px;
+    border: solid #C4974F;
+    border-radius: 20px;
+    text-align: center;
+    align-content: center;
+    text-decoration: none;
+    color: #b88738;
+    width: 200px;
+    transition: .5s;
+}
+main .alinhamento .caixas:hover {
+    scale: 1.1;
+}
+
+main .alinhamento .caixas img {
+    height: 100px;
+    width: 100px;
+}
+
+/* CSS cadastros (cliente e barbearia) */
+main form {
+    text-align: center;
+    min-width: 300px;
+    max-width: 500px;
+    margin: 70px auto 0;
+    border: solid #C4974F;
+    border-radius: 10px;
+}
+
+main form h2 {
+    font-size: 2em;
+    text-align: center;
+    padding: 10px;
+}
+
+main form #cliente {
+    text-align: center;
+    border: none;
+}
+
+main form #barbearia {
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 50% auto;
+    gap: 10px;
+}
+
+main form input,
+main form input[type="file"] {
+    width: 80%;
+    outline: none;
+    color: white;
+    padding: 4px;
+    margin: 15px;
+    font-size: 1.1em;
+    border: 2px solid #C4974F;
+}
+
+main form #cliente input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1.7px solid #C4974F;
+}
+main form #cliente input::placeholder {
+    color: #b88738;
+    font-size: 1.1em;
+}
+
+main form #barbearia input,
+main form input[type="file"]{
+    border-radius: 6px;
+    background: #2D2D2D;
+}
+
+main form #cliente select{
+    width: 80%;
+}
+main form select{
+    background-color: transparent;
+    color: #C4974F;
+    border: solid 1px #C4974F;
+    border-radius: 8px;
+    padding: 5px;
+    
+}
+main form  option{
+    color: black;
+}
+
+.botaoArquivo {
+    display: inline-block;
+    width: 80%;
+    padding: 6px;
+    margin: 15px;
+    font-size: 1.1em;
+    color: white;
+    background: #2D2D2D;
+    border: 2px solid #C4974F;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+.botaoArquivo:hover {
+    background-color: #3a3a3a;
+}
+
+main form fieldset button {
+    cursor: pointer;
+    font-weight: bold;
+    margin: 30px 0 10px;
+    background-color: #F5A623;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    transition: .5s;
+    padding: 8px 40px;
+    opacity: .8;
+}
+
+main form fieldset button:hover {
+    font-size: 1.2em;
+    padding: 12px 50px;
+    opacity: 1;
+}
+main form fieldset p{
+    margin-bottom: 15px;
+}
+main form fieldset p a{
+    color: #ad700e;
+}
+
+/* CSS busca de barbearias */
+main #caixapesquisa{
+    box-shadow: 0px 6px 15px  #ad700e;
+    border-radius: 20px;
+    margin: 25px auto;
+    width: 50%;
+    /* max-width: 500px; */
+    /* height: 50px; */
+    display: flex;
+    padding: 6px;
+}
+
+main #caixapesquisa img{
+    width: 40px;
+    rotate: 270deg;
+}
+
+main #caixapesquisa #barraDePesquisa{
+    background: transparent;
+    border: none;
+    outline: none;
+    width:100%;
+}
+
+main #caixaEstabelecimento {
+    /* border: solid; */
+    width: 85%;
+    margin: auto;
+}
+
+main #caixaEstabelecimento .caixaBarbearia{
+    display: flex;
+    align-items: center;
+    margin: 20px auto;
+    min-width: 700px;
+    max-width: 900px;
+}
+main #caixaEstabelecimento .caixaBarbearia .fotoBarbearia{
+    width: 150px;
+}
+main #caixaEstabelecimento .caixaBarbearia .caixaInformacoes{
+    width: 70%;
+    /* height: 150px; */
+    /* border: solid; */
+}
+
+main #caixaEstabelecimento .caixaBarbearia .caixaInformacoes .nomeEstabelecimento{
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #C4974F;
+}
+main #caixaEstabelecimento .active .seta{
+    rotate: 90deg;
+}
