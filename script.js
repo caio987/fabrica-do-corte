@@ -33,7 +33,12 @@ function lojas(variavel) {
                         loja.classList.remove("active");
                     });
                     caixa.classList.add("active")
+                    caixa.appendChild(sinopse)
                 }
+
+                let sinopse = document.createElement("p")
+                sinopse.innerHTML = loja.sinopse
+
 
                 let foto = document.createElement("img");
                 foto.src = loja.img;
@@ -67,6 +72,7 @@ function lojas(variavel) {
                 localizacao.innerHTML = loja.localizacao
 
                 avaliacao.appendChild(nota);
+                curtidas.appendChild(coracao);
                 avaliacao.appendChild(curtidas);
                 caixa.appendChild(foto);
                 caixaInformacoes.appendChild(nome);
@@ -74,7 +80,6 @@ function lojas(variavel) {
                 caixa.appendChild(caixaInformacoes);
 
                 if (variavel == 1) {
-                    curtidas.appendChild(coracao);
                     carrossel.appendChild(caixa);
                 } else {
                     caixaInformacoes.appendChild(localizacao);

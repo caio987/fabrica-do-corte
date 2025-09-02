@@ -15,63 +15,72 @@
             "nome": "Kaio Barbeshop",
             "img": "img/barbearias/barbearia1.png",
             "curtidas": "30k",
-            "localizacao": "São Paulo, São Paulo"
+            "localizacao": "São Paulo, São Paulo",
+            "sinopse": "Uma barbearia que une tradição e modernidade, oferecendo cortes de cabelo clássicos e barbeados perfeitos em um ambiente aconchegante. Aqui, cada detalhe é pensado para realçar sua personalidade com estilo e elegância."
         },
         {
             "id": 2,
             "nome": "Barbearia e etc",
             "img": "img/barbearias/barbearia2.png",
             "curtidas": "25k",
-            "localizacao": "Rio de Janeiro, Rio de Janeiro"
+            "localizacao": "Rio de Janeiro, Rio de Janeiro",
+            "sinopse": "Mais que uma barbearia: um ponto de encontro para quem curte se cuidar e relaxar. Cortes modernos, fade impecável, barba bem feita e aquele papo descontraído que transforma a visita em experiência."
         },
         {
             "id": 3,
             "nome": "BARBER SHOP",
             "img": "img/barbearias/barbearia3.png",
             "curtidas": "36k",
-            "localizacao": "São Paulo, Mogi das Cruzes"
+            "localizacao": "São Paulo, Mogi das Cruzes",
+            "sinopse": "Um espaço exclusivo para homens que valorizam sofisticação. Com atendimento personalizado, bebidas especiais e profissionais de alto nível, oferecemos muito mais que um corte — oferecemos momentos únicos de cuidado e confiança."
         },
         {
             "id": 4,
             "nome": "Kaio Barbeshop",
             "img": "img/barbearias/barbearia1.png",
             "curtidas": "30k",
-            "localizacao": "São Paulo, São Paulo"
+            "localizacao": "São Paulo, São Paulo",
+            "sinopse": "Uma barbearia que une tradição e modernidade, oferecendo cortes de cabelo clássicos e barbeados perfeitos em um ambiente aconchegante. Aqui, cada detalhe é pensado para realçar sua personalidade com estilo e elegância."
         },
         {
             "id": 5,
             "nome": "Barbearia e etc",
             "img": "img/barbearias/barbearia2.png",
             "curtidas": "25k",
-            "localizacao": "Rio de Janeiro, Rio de Janeiro"
+            "localizacao": "Rio de Janeiro, Rio de Janeiro",
+            "sinopse": "Mais que uma barbearia: um ponto de encontro para quem curte se cuidar e relaxar. Cortes modernos, fade impecável, barba bem feita e aquele papo descontraído que transforma a visita em experiência."
         },
         {
             "id": 6,
             "nome": "BARBER SHOP",
             "img": "img/barbearias/barbearia3.png",
             "curtidas": "36k",
-            "localizacao": "São Paulo, Mogi das Cruzes"
+            "localizacao": "São Paulo, Mogi das Cruzes",
+            "sinopse": "Um espaço exclusivo para homens que valorizam sofisticação. Com atendimento personalizado, bebidas especiais e profissionais de alto nível, oferecemos muito mais que um corte — oferecemos momentos únicos de cuidado e confiança."
         },
         {
             "id": 7,
             "nome": "Kaio Barbeshop",
             "img": "img/barbearias/barbearia1.png",
             "curtidas": "30k",
-            "localizacao": "São Paulo, São Paulo"
+            "localizacao": "São Paulo, São Paulo",
+            "sinopse": "Uma barbearia que une tradição e modernidade, oferecendo cortes de cabelo clássicos e barbeados perfeitos em um ambiente aconchegante. Aqui, cada detalhe é pensado para realçar sua personalidade com estilo e elegância."
         },
         {
             "id": 8,
             "nome": "Barbearia e etc",
             "img": "img/barbearias/barbearia2.png",
             "curtidas": "25k",
-            "localizacao": "Rio de Janeiro, Rio de Janeiro"
+            "localizacao": "Rio de Janeiro, Rio de Janeiro",
+            "sinopse": "Mais que uma barbearia: um ponto de encontro para quem curte se cuidar e relaxar. Cortes modernos, fade impecável, barba bem feita e aquele papo descontraído que transforma a visita em experiência."
         },
         {
             "id": 9,
             "nome": "BARBER SHOP",
             "img": "img/barbearias/barbearia3.png",
             "curtidas": "36k",
-            "localizacao": "São Paulo, Mogi das Cruzes"
+            "localizacao": "São Paulo, Mogi das Cruzes",
+            "sinopse": "Um espaço exclusivo para homens que valorizam sofisticação. Com atendimento personalizado, bebidas especiais e profissionais de alto nível, oferecemos muito mais que um corte — oferecemos momentos únicos de cuidado e confiança."
         }
     ]
 }

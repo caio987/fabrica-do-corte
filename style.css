@@ -519,6 +519,9 @@ main #caixaEstabelecimento .caixaBarbearia .caixaInformacoes .nomeEstabeleciment
     font-weight: bold;
     color: #C4974F;
 }
+main #caixaEstabelecimento .active {
+    flex-wrap: wrap;
+}
 main #caixaEstabelecimento .active .seta{
     rotate: 90deg;
 }
