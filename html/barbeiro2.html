@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Cadastro</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><img src="/img/logo.png" alt=""></a></li>
+                <li><a href="busca.html" class="links">Barbearias</a></li>
+                <li><a href="#" class="links">Agendamentos</a></li>
+                <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
+                <li><a href="index.html#quemSomos" class="links">Qubem somos</a></li>
+                <!-- <li><a href="#" class="links">Conta</a></li> -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form action="">
+            <p style="margin: 10px;">Etapa <strong>2</strong> de <strong>2</strong></p>
+            <h2>Cadastro</h2>
+            <fieldset style="border: none;">
+                <!-- <div id="barbearia">        -->
+                <input placeholder="Nome do Estabelecimento:" class="caixaInput" type="text" name="nome_estabelecimento" id="nome_estabelecimento">
+
+                <input placeholder="Estado:" type="text" class="caixaInput" name="localizacao" id="localizacao" required><br>
+                <!-- </div> -->
+
+                <label for="imagem" class="botaoArquivo">Selecionar foto do estabelecimento</label>
+                <input type="file" id="imagem" name="imagem" accept="image/*" required style="display: none;">
+
+                <button type="submit">Enviar</button>
+                <p>Já possuí um cadastro? <a href="login.html">Clique aqui</a> para logar</p>
+            </fieldset>
+        </form>
+    </main>
+
+    <footer class="footerFixo">
+        <a href="#"><img src="img/icons/github.png" alt=""><span>GitHub</span></a>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

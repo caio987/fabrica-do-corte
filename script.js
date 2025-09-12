@@ -19,7 +19,7 @@ let carrossel = document.getElementById("carrossel");
 let caixaEstabelecimento = document.getElementById("caixaEstabelecimento");
 
 function lojas(variavel) {
-    fetch("db.json")
+    fetch("/db.json")
         .then(response => response.json())
         .then(data => {
             const barbearias = data.barbearias;
@@ -29,48 +29,51 @@ function lojas(variavel) {
                 caixa.classList.add("caixaBarbearia");
                 caixa.id = loja.id
                 caixa.onclick = function () {
-                    document.querySelectorAll(".caixaBarbearia").forEach(loja => {
-                        loja.classList.remove("active");
-                    });
-                    caixa.classList.add("active")
-                    caixa.appendChild(sinopse)
+                    // document.querySelectorAll(".caixaBarbearia").forEach(loja => {
+                    //     loja.classList.remove("active");
+                    // });
+                    // document.querySelectorAll(".sinopse").forEach(loja => {
+                    //     loja.classList.remove("active");
+                    // });
+                    caixa.classList.toggle("active")
+                    sinopse.classList.toggle("active")
                 }
-
+                
                 let sinopse = document.createElement("p")
                 sinopse.innerHTML = loja.sinopse
-
-
+                sinopse.classList.add("sinopse")
+                
                 let foto = document.createElement("img");
-                foto.src = loja.img;
-                foto.classList.add("fotoBarbearia")
-
+                foto.src = "../" + loja.img; // Ajuste do caminho
+                foto.classList.add("fotoBarbearia");
+                
                 let nome = document.createElement("p");
                 nome.classList.add("nomeEstabelecimento");
                 nome.innerHTML = loja.nome;
-
+                
                 let avaliacao = document.createElement("div");
                 avaliacao.classList.add("avaliacao");
-
+                
                 let nota = document.createElement("img");
-                nota.src = "img/icons/avaliacao.png";
-
+                nota.src = "/img/icons/avaliacao.png";
+                
                 let curtidas = document.createElement("p");
                 curtidas.innerHTML = loja.curtidas;
-
+                
                 let coracao = document.createElement("span");
                 coracao.innerHTML = "❤";
-
+                
                 let caixaInformacoes = document.createElement("div")
                 caixaInformacoes.classList.add("caixaInformacoes")
-
+                
                 let seta = document.createElement("img")
-                seta.src = "img/icons/seta.png"
+                seta.src = "/img/icons/seta.png"
                 seta.classList.add("seta")
-
+                
                 let localizacao = document.createElement("p")
                 localizacao.classList.add("localizacao")
                 localizacao.innerHTML = loja.localizacao
-
+                
                 avaliacao.appendChild(nota);
                 curtidas.appendChild(coracao);
                 avaliacao.appendChild(curtidas);
@@ -78,13 +81,14 @@ function lojas(variavel) {
                 caixaInformacoes.appendChild(nome);
                 caixaInformacoes.appendChild(avaliacao);
                 caixa.appendChild(caixaInformacoes);
-
+                
                 if (variavel == 1) {
                     carrossel.appendChild(caixa);
                 } else {
                     caixaInformacoes.appendChild(localizacao);
                     caixa.appendChild(seta);
                     caixaEstabelecimento.appendChild(caixa);
+                    caixa.appendChild(sinopse)
                 }
             });
         });

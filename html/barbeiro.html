@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Cadastro</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><img src="/img/logo.png" alt=""></a></li>
+                <li><a href="busca.html" class="links">Barbearias</a></li>
+                <li><a href="#" class="links">Agendamentos</a></li>
+                <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
+                <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
+                <!-- <li><a href="#" class="links">Conta</a></li> -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form action="">
+            <p style="margin: 10px;">Etapa <strong>1</strong> de <strong>2</strong></p>
+            <h2>Cadastro</h2>
+            <fieldset style="border: none;">
+                <!-- <div id="barbearia"> -->
+                <input type="text" placeholder="Nome Completo:" class="caixaInput" name="nome">
+
+                <input type="email" placeholder="E-mail profissional:" class="caixaInput" name="email" id="email">
+
+                <input type="number" placeholder="Telefone:" class="caixaInput" name="telefone" id="telefone">
+
+                <input type="password" placeholder="Senha:" class="caixaInput" name="senha" id="senha">
+
+                <input type="password" placeholder="Confirmar senha:" class="caixaInput" name="confirmarSenha" id="confirmarSenha">
+                <!-- </div> -->
+
+                <button type="submit" onclick="avancar()">Avançar</button>
+                <p>Já possuí um cadastro? <a href="login.html">Clique aqui</a> para logar</p>
+            </fieldset>
+        </form>
+    </main>
+
+    <footer class="footerFixo">
+        <a href="#"><img src="/img/icons/github.png" alt=""><span>GitHub</span></a>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>

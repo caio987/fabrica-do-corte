@@ -361,7 +361,6 @@ main form {
     border: solid #C4974F;
     border-radius: 10px;
 }
-
 main form h2 {
     font-size: 2em;
     text-align: center;
@@ -372,6 +371,9 @@ main form #cliente {
     text-align: center;
     border: none;
 }
+main form fieldset{
+    border: none;
+}
 
 main form #barbearia {
     padding: 15px;
@@ -379,65 +381,33 @@ main form #barbearia {
     grid-template-columns: 50% auto;
     gap: 10px;
 }
-
 main form input,
 main form input[type="file"] {
     width: 80%;
     outline: none;
-    color: white;
+    color: #b88738;
     padding: 4px;
     margin: 15px;
-    font-size: 1.1em;
-    border: 2px solid #C4974F;
-}
-
-main form #cliente input {
     background-color: transparent;
     border: none;
     border-bottom: 1.7px solid #C4974F;
 }
-main form #cliente input::placeholder {
+main form input::placeholder {
     color: #b88738;
     font-size: 1.1em;
 }
-
-main form #barbearia input,
-main form input[type="file"]{
-    border-radius: 6px;
-    background: #2D2D2D;
-}
-
-main form #cliente select{
-    width: 80%;
-}
-main form select{
-    background-color: transparent;
-    color: #C4974F;
-    border: solid 1px #C4974F;
-    border-radius: 8px;
-    padding: 5px;
-    
-}
-main form  option{
-    color: black;
-}
-
-.botaoArquivo {
+main form .botaoArquivo {
     display: inline-block;
     width: 80%;
     padding: 6px;
+    border-bottom: 1.7px solid #C4974F;
     margin: 15px;
     font-size: 1.1em;
-    color: white;
-    background: #2D2D2D;
-    border: 2px solid #C4974F;
-    border-radius: 6px;
     cursor: pointer;
     text-align: center;
-    transition: background 0.3s;
 }
 
-.botaoArquivo:hover {
+main form .botaoArquivo:hover {
     background-color: #3a3a3a;
 }
 
@@ -524,4 +494,10 @@ main #caixaEstabelecimento .active {
 }
 main #caixaEstabelecimento .active .seta{
     rotate: 90deg;
+}
+main #caixaEstabelecimento .sinopse{
+    display: none;
+}
+main #caixaEstabelecimento .active .sinopse{
+    display: block;
 }
