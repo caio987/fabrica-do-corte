@@ -19,7 +19,7 @@ let carrossel = document.getElementById("carrossel");
 let caixaEstabelecimento = document.getElementById("caixaEstabelecimento");
 
 function lojas(variavel) {
-    fetch("/db.json")
+    fetch("../db.json")
         .then(response => response.json())
         .then(data => {
             const barbearias = data.barbearias;
@@ -55,7 +55,7 @@ function lojas(variavel) {
                 avaliacao.classList.add("avaliacao");
                 
                 let nota = document.createElement("img");
-                nota.src = "/img/icons/avaliacao.png";
+                nota.src = "../img/icons/avaliacao.png";
                 
                 let curtidas = document.createElement("p");
                 curtidas.innerHTML = loja.curtidas;
@@ -67,7 +67,7 @@ function lojas(variavel) {
                 caixaInformacoes.classList.add("caixaInformacoes")
                 
                 let seta = document.createElement("img")
-                seta.src = "/img/icons/seta.png"
+                seta.src = "../img/icons/seta.png"
                 seta.classList.add("seta")
                 
                 let localizacao = document.createElement("p")
