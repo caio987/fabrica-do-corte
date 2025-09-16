@@ -38,42 +38,42 @@ function lojas(variavel) {
                     caixa.classList.toggle("active")
                     sinopse.classList.toggle("active")
                 }
-                
+
                 let sinopse = document.createElement("p")
                 sinopse.innerHTML = loja.sinopse
                 sinopse.classList.add("sinopse")
-                
+
                 let foto = document.createElement("img");
                 foto.src = "../" + loja.img; // Ajuste do caminho
                 foto.classList.add("fotoBarbearia");
-                
+
                 let nome = document.createElement("p");
                 nome.classList.add("nomeEstabelecimento");
                 nome.innerHTML = loja.nome;
-                
+
                 let avaliacao = document.createElement("div");
                 avaliacao.classList.add("avaliacao");
-                
+
                 let nota = document.createElement("img");
                 nota.src = "/img/icons/avaliacao.png";
-                
+
                 let curtidas = document.createElement("p");
                 curtidas.innerHTML = loja.curtidas;
-                
+
                 let coracao = document.createElement("span");
                 coracao.innerHTML = "❤";
-                
+
                 let caixaInformacoes = document.createElement("div")
                 caixaInformacoes.classList.add("caixaInformacoes")
-                
+
                 let seta = document.createElement("img")
                 seta.src = "/img/icons/seta.png"
                 seta.classList.add("seta")
-                
+
                 let localizacao = document.createElement("p")
                 localizacao.classList.add("localizacao")
                 localizacao.innerHTML = loja.localizacao
-                
+
                 avaliacao.appendChild(nota);
                 curtidas.appendChild(coracao);
                 avaliacao.appendChild(curtidas);
@@ -81,7 +81,7 @@ function lojas(variavel) {
                 caixaInformacoes.appendChild(nome);
                 caixaInformacoes.appendChild(avaliacao);
                 caixa.appendChild(caixaInformacoes);
-                
+
                 if (variavel == 1) {
                     carrossel.appendChild(caixa);
                 } else {
@@ -94,8 +94,32 @@ function lojas(variavel) {
         });
 }
 
-// Carrosel
+// cadastro barbeiro
+function avancar() {
+    caixaInput = document.querySelectorAll(".caixaInput").forEach(loja => {
+        loja.type = "hidden";
+    });
+    document.getElementById("etapa").innerText = "2";
+    document.getElementById("nome_estabelecimento").type = "text"
+    document.getElementById("localizacao").type = "text"
+    document.getElementById("botaoArquivo").style.display = "block"
+    document.getElementById("botao2").style.display = "block"
+    document.getElementById("botao3").style.display = "block"
+    document.getElementById("botao1").style.display = "none"
+}
+function avancar() {
+    document.getElementById("etapa").innerText = "1";
+    document.getElementById("nome_estabelecimento").type = "hidden"
+    document.getElementById("localizacao").type = "hidden"
+    
+    document.getElementById("botaoArquivo").style.display = "none"
+    document.getElementById("botao2").style.display = "none"
+    document.getElementById("botao3").style.display = "none"
+    document.getElementById("botao1").style.display = "block"
+}
 
+
+// Carrosel
 let span = document.getElementsByTagName('span');
 let product = document.getElementsByClassName('caixaBarbearia');
 let product_page = Math.ceil(product.length / 4);
