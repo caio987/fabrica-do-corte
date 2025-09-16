@@ -387,7 +387,8 @@ main form input[type="file"] {
     outline: none;
     color: #b88738;
     padding: 4px;
-    margin: 15px;
+    display: block;
+    margin: 25px auto;
     background-color: transparent;
     border: none;
     border-bottom: 1.7px solid #C4974F;

@@ -97,21 +97,23 @@ function lojas(variavel) {
 // cadastro barbeiro
 function avancar() {
     caixaInput = document.querySelectorAll(".caixaInput").forEach(loja => {
-        loja.type = "hidden";
+        loja.style.display = "none";
     });
     document.getElementById("etapa").innerText = "2";
-    document.getElementById("nome_estabelecimento").type = "text"
-    document.getElementById("localizacao").type = "text"
+    document.getElementById("nome_estabelecimento").style.display = "block"
+    document.getElementById("localizacao").style.display = "block"
     document.getElementById("botaoArquivo").style.display = "block"
     document.getElementById("botao2").style.display = "block"
     document.getElementById("botao3").style.display = "block"
     document.getElementById("botao1").style.display = "none"
 }
-function avancar() {
+function voltar() {
+    caixaInput = document.querySelectorAll(".caixaInput").forEach(loja => {
+        loja.style.display = "block";
+    });
     document.getElementById("etapa").innerText = "1";
-    document.getElementById("nome_estabelecimento").type = "hidden"
-    document.getElementById("localizacao").type = "hidden"
-    
+    document.getElementById("nome_estabelecimento").style.display = "none"
+    document.getElementById("localizacao").style.display = "none"
     document.getElementById("botaoArquivo").style.display = "none"
     document.getElementById("botao2").style.display = "none"
     document.getElementById("botao3").style.display = "none"
