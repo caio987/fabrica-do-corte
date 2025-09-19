@@ -374,7 +374,9 @@ main form #cliente {
 main form fieldset{
     border: none;
 }
-
+main .invisivel{
+    display: none;
+}
 main form #barbearia {
     padding: 15px;
     display: grid;

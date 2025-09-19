@@ -30,42 +30,51 @@
             <h2>Cadastro</h2>
             <fieldset style="border: none;">
                 <!-- <div id="barbearia"> -->
-                <input type="text" placeholder="Nome Completo:" class="caixaInput" name="nome">
+                <div id="etapa1">
+                    <input type="text" placeholder="Nome Completo:" class="caixaInput" name="nome">
 
-                <input type="email" placeholder="E-mail profissional:" class="caixaInput" name="email" id="email">
+                    <input type="email" placeholder="E-mail profissional:" class="caixaInput" name="email" id="email">
 
-                <input type="number" placeholder="Telefone:" class="caixaInput" name="telefone" id="telefone">
+                    <input type="number" placeholder="Telefone:" class="caixaInput" name="telefone" id="telefone">
 
-                <input type="password" placeholder="Senha:" class="caixaInput" name="senha" id="senha">
+                    <input type="password" placeholder="Senha:" class="caixaInput" name="senha" id="senha">
 
-                <input type="password" placeholder="Confirmar senha:" class="caixaInput" name="confirmarSenha"
-                    id="confirmarSenha">
+                    <input type="password" placeholder="Confirmar senha:" class="caixaInput" name="confirmarSenha"
+                        id="confirmarSenha">
+                </div>
 
-                <input style="display: none;" placeholder="Nome do Estabelecimento:" class="caixaInput" type="text"
-                    name="nome_estabelecimento" id="nome_estabelecimento">
+                <div class="invisivel" id="etapa2">
+                    <input style="" placeholder="Nome do Estabelecimento:" class="caixaInput" type="text"
+                        name="nome_estabelecimento" id="nome_estabelecimento">
 
-                <input style="display: none;" placeholder="Localização:" type="text" class="caixaInput"
-                    name="localizacao" id="localizacao"><br>
-                <!-- </div> -->
+                    <input style="" placeholder="Localização:" type="text" class="caixaInput" name="localizacao"
+                        id="localizacao"><br>
+                    <!-- </div> -->
 
-                <label style="display: none;" for="imagem" id="botaoArquivo">Selecionar foto do estabelecimento</label>
-                <input type="file" id="imagem" name="imagem" accept="image/*" required style="display: none;">
-                
-                <label style="display: none;" for="imagem" id="botaoArquivo2">Selecionar a logo do estabelecimento</label>
-                <input type="file" id="imagem" name="imagem" accept="image/*" required style="display: none;">
+                    <div>
+                        <label style="" for="imagem" id="botaoArquivo">Selecionar foto do estabelecimento</label>
+                        <input type="file" id="imagem" name="imagem" accept="image/*" required style="opacity: 0;">
+                    </div>
+
+                    <div>
+                        <label for="imagem" id="botaoArquivo2">Selecionar a logo do
+                            estabelecimento</label>
+                        <input type="file" id="imagem" name="imagem" accept="image/*" required style="opacity: 0;">
+                    </div>
+                </div>
 
                 <div style="display: flex;">
-                    <button id="botao1" type="submit" onclick="avancar()">Avançar</button>
-                    <button id="botao3" style="display: none;" type="submit" onclick="voltar()">Voltar</button>
-                    <button id="botao2" style="display: none;" type="submit">Enviar</button>
+                    <button id="botao1" type="button" onclick="avancar()">Avançar</button>
+                    <button id="botao3" style="display: none;" type="button" onclick="voltar()">Voltar</button>
                 </div>
+                <button id="botao2" style="display: none;" type="submit">Enviar</button>
                 <p>Já possuí um cadastro? <a href="login.html">Clique aqui</a> para logar</p>
             </fieldset>
         </form>
     </main>
 
     <footer class="footerFixo">
-        <a href="#"><img src="/img/icons/github.png" alt=""><span>GitHub</span></a>
+        <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
     </footer>
 
