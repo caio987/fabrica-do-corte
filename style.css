@@ -397,7 +397,7 @@ main form input::placeholder {
     color: #b88738;
     font-size: 1.1em;
 }
-main form #botaoArquivo {
+main form #botaoArquivo, main form #botaoArquivo2 {
     display: inline-block;
     width: 80%;
     padding: 6px;
