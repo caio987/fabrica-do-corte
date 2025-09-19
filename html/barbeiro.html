@@ -25,7 +25,7 @@
     </header>
 
     <main>
-        <form action="../php/barbeiro.php" method="post" style="text-align: center;">
+        <form action="../php/barbeiro.php" method="post" style="text-align: center;" enctype="multipart/form-data">
             <p style="margin: 10px;">Etapa <strong id="etapa">1</strong> de <strong>2</strong></p>
             <h2>Cadastro</h2>
             <fieldset style="border: none;">
@@ -39,7 +39,7 @@
 
                     <input type="password" placeholder="Senha:" class="caixaInput" name="senha" id="senha">
 
-                    <input type="password" placeholder="Confirmar senha:" class="caixaInput" name="confirmarSenha"
+                    <input type="password" placeholder="Confirmar senha:" class="caixaInput" name="confirmar"
                         id="confirmarSenha">
                 </div>
 
@@ -51,16 +51,15 @@
                         id="localizacao"><br>
                     <!-- </div> -->
 
-                    <div>
-                        <label style="" for="imagem" id="botaoArquivo">Selecionar foto do estabelecimento</label>
-                        <input type="file" id="imagem" name="imagem" accept="image/*" required style="opacity: 0;">
-                    </div>
+                    <!-- <div> -->
+                        <!-- <label style="" for="imagem" id="botaoArquivo">Selecionar foto do estabelecimento</label> -->
+                        <input type="file" id="imagem" name="logo" accept="image/*" required style="opacity: 1;">
+                    <!-- </div> -->
 
-                    <div>
-                        <label for="imagem" id="botaoArquivo2">Selecionar a logo do
-                            estabelecimento</label>
-                        <input type="file" id="imagem" name="imagem" accept="image/*" required style="opacity: 0;">
-                    </div>
+                    <!-- <div> -->
+                        <!-- <label for="imagem" id="botaoArquivo2">Selecionar a logo do estabelecimento</label> -->
+                        <input type="file" id="imagem" name="foto" accept="image/*" required style="opacity: 1;">
+                    <!-- </div> -->
                 </div>
 
                 <div style="display: flex;">
