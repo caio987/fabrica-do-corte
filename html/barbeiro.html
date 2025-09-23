@@ -14,11 +14,6 @@
     <header>
         <nav>
             <ul>
-                <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
-                <li><a href="busca.html" class="links">Barbearias</a></li>
-                <li><a href="#" class="links">Agendamentos</a></li>
-                <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
-                <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
                 <!-- <li><a href="#" class="links">Conta</a></li> -->
             </ul>
         </nav>
@@ -51,22 +46,22 @@
                         id="localizacao"><br>
                     <!-- </div> -->
 
-                    <!-- <div> -->
-                        <!-- <label style="" for="imagem" id="botaoArquivo">Selecionar foto do estabelecimento</label> -->
+                    <label style="" for="imagem" id="botaoArquivo">Selecionar foto do estabelecimento</label>
+                    <div style="display: none;">
                         <input type="file" id="imagem" name="logo" accept="image/*" required style="opacity: 1;">
-                    <!-- </div> -->
+                    </div>
 
-                    <!-- <div> -->
-                        <!-- <label for="imagem" id="botaoArquivo2">Selecionar a logo do estabelecimento</label> -->
+                    <label for="imagem" id="botaoArquivo2">Selecionar a logo do estabelecimento</label>
+                    <div style="display: none;">
                         <input type="file" id="imagem" name="foto" accept="image/*" required style="opacity: 1;">
-                    <!-- </div> -->
+                    </div>
                 </div>
 
                 <div style="display: flex;">
                     <button id="botao1" type="button" onclick="avancar()">Avançar</button>
                     <button id="botao3" style="display: none;" type="button" onclick="voltar()">Voltar</button>
+                    <button id="botao2" style="display: none;" type="submit">Enviar</button>
                 </div>
-                <button id="botao2" style="display: none;" type="submit">Enviar</button>
                 <p>Já possuí um cadastro? <a href="login.html">Clique aqui</a> para logar</p>
             </fieldset>
         </form>

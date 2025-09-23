@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Cadastro</title>
+    <style>
+        .ativo{
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <!-- <li><a href="../#" class="links">Conta</a></li> -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div style="margin-top: 15px; display: flex; justify-content: space-evenly;">
+            <a href="#" class="link ativo">Informações da conta</a>
+            <a href="#" class="link">Agendamento</a>
+        </div>
+
+        <div style="max-width: 500px;" id="caixa">
+            <div class="margem">
+                <label for="">Nome:</label>
+                <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="nomeUser"><br>
+            </div>
+            <div class="margem">
+                <label for="">Sobrenome:</label>
+                <input style="width: 63%; margin: 0 0px 0 0; display: inline;" type="text" disabled value="sobrenomeUser"><br>
+            </div>
+            <div class="margem">
+                <label for="">E-mail:</label>
+                <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="emailUser"><br>
+            </div>
+            <button id="button">Sair da conta</button>
+        </div>
+    </main>
+
+    <footer class="footerFixo">
+        <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>

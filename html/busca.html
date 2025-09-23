@@ -8,25 +8,25 @@
     <link rel="stylesheet" href="../style.css">
     <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
     <title>Busca</title>
+    <style>
+        main form {
+            max-width: 80%;
+        }
+    </style>
 </head>
 
 <body onload="lojas(2)">
     <header>
         <nav>
             <ul>
-                <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
-                <li><a href="busca.html" class="links">Barbearias</a></li>
-                <li><a href="#" class="links">Agendamentos</a></li>
-                <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
-                <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
                 <!-- <li><a href="#" class="links">Conta</a></li> -->
             </ul>
         </nav>
     </header>
 
     <main>
-        <form action="../php/busca.php" method="post">
-            <div id="caixapesquisa">
+        <form action="../php/busca.php" method="post" style="border: none; width: 80%;">
+            <div id="caixapesquisa" style="width: 80%;">
                 <input type="text" id="barraDePesquisa" name="busca"> 
             <button type="submit" style="background-color: transparent; border: none; cursor: pointer;"><img src="../img/icons/lupa.png" alt="botao pra pesquisar" style="z-index: 1;"></button>
         </div>
@@ -35,7 +35,7 @@
         <div id="caixaEstabelecimento"></div>
     </main>
 
-    <footer class="footerFixo">
+    <footer class="">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
     </footer>
