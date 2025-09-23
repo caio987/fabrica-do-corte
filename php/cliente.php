@@ -12,28 +12,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sobrenome = filter_var($_POST['sobrenome'],FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $senha = password_hash($_POST['senha'],PASSWORD_DEFAULT);
-            $confirmar = password_hash($_POST['confirmar'],PASSWORD_DEFAULT);
             $inserir = $pdo->prepare("INSERT INTO cliente (nome,sobrenome,email,senha) VALUES (:nome,:sobrenome,:email,:senha)");
             $inserir->bindParam(':nome',$nome);
             $inserir->bindParam(':sobrenome',$sobrenome);
             $inserir->bindParam(':email',$email);
             $inserir->bindParam(':senha',$senha);
             $inserir->execute();
-            $realizado = 'Cadastro realizado com sucesso';
-            header("location: ../html/cliente.html?realizado=".urlencode($realizado));
+            $mensagem = 'Cadastro realizado com sucesso';
+            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
         }else{
-            $erro = 'Senha e confirmar senha estão diferentes';
-            header("location: ..html/cliente.html?erro=".urlencode($erro));
+            $mensagem = 'Senha e confirmar senha estão diferentes';
+            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
+            exit;
         }
     } catch (PDOException $e) {
-        if($e->getMessage() == 23000){
-            $erro = "E-mail desse usuário já esta cadastrado";
-            header("location: ..html/cliente.html?erro=".urlencode($erro));            
+        //Mandar mensagem de erro que o usuário já esta cadastrado
+        if($e->getCode() == 23000){
+            $mensagem = "Este E-mail já está cadastrado";
+            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
+                     
         }else{
-            $erro = 'ERRO '. $e->getMessage();
-            header("location: ..cliente.html?erro=".urlencode($erro));
+            //Mensagem de erro genérica
+            $mensagem = 'ERRO '. $e->getMessage();
+            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
             
         }
+        exit;
     }
 }
 ?>

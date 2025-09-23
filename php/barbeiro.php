@@ -49,7 +49,15 @@
             $inserir->bindParam(':logo', $logo);
             $inserir->execute();
             } catch (PDOException $e) {
-                'ERRO '. $e->getMessage();
+                //Mandar mensagem de erro que o usuário ta cadastrado
+                if ($e->getCode() === 23000) {
+                    $mensagem = 'ERRO: Este E-mail já está cadastrado';
+                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                }else{
+                //Mandar mensagem de erro genérica
+                $mensagem = 'ERRO '. $e->getMessage();
+                header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));  
+                }
             }
             
 
