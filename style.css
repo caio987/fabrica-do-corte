@@ -32,14 +32,16 @@ header nav ul {
 }
 
 header nav a,
-footer a {
+footer a,
+main .link {
     text-decoration: none;
     color: #C4974F;
     transition: .4s;
 }
 
 header nav a:hover,
-footer a:hover {
+footer a:hover,
+main .link:hover {
     font-size: 1.2em;
     color: #daa248;
 }
@@ -353,7 +355,8 @@ main .alinhamento .caixas img {
 }
 
 /* CSS cadastros (cliente e barbearia) */
-main form {
+main form,
+main #caixa {
     text-align: center;
     min-width: 300px;
     max-width: 500px;
@@ -383,7 +386,7 @@ main form #barbearia {
     grid-template-columns: 50% auto;
     gap: 10px;
 }
-main form input,
+main input,
 main form input[type="file"] {
     width: 80%;
     outline: none;
@@ -414,7 +417,8 @@ main form #botaoArquivo:hover {
     background-color: #3a3a3a;
 }
 
-main form fieldset button {
+main form fieldset button,
+main div #button {
     cursor: pointer;
     font-weight: bold;
     margin: 30px auto 10px;
@@ -428,7 +432,8 @@ main form fieldset button {
     opacity: .8;
 }
 
-main form fieldset button:hover {
+main form fieldset button:hover,
+main div #button:hover {
     font-size: 1.2em;
     padding: 12px 50px;
     opacity: 1;
@@ -503,4 +508,9 @@ main #caixaEstabelecimento .sinopse{
 }
 main #caixaEstabelecimento .active .sinopse{
     display: block;
+}
+
+/* CSS Info Conta Cliente */
+main #caixa .margem{
+    margin: 30px 1px;
 }
