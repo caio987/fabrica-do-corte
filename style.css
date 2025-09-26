@@ -28,11 +28,12 @@ header nav .navNormal {
 
 header nav .navMobile,
 header nav .logoMobile,
-header nav .mobileMenu {
+header nav .mobileMenu,
+header .navMobile {
     display: none;
 }
 
-header nav a,
+header a,
 footer a,
 main .link {
     text-decoration: none;
@@ -574,12 +575,20 @@ main #caixa .margem {
         transition: 0.3s;
     }
 
-    header nav .show {
+    header .navMobile.show {
         display: block;
     }
-
+    /* header .navMobile {
+        background-color: #151615;
+        position: absolute;
+    } */
+    header hr{
+        margin: 40px;
+    } 
     .linha1.active {
-        transform: rotate(-45deg) translate(-8px, 8px);
+        transform: rotate(50deg);
+        position: relative;
+        top: 15px;
     }
 
     .linha2.active {
@@ -587,6 +596,8 @@ main #caixa .margem {
     }
 
     .linha3.active {
-        transform: rotate(45deg) translate(-5px, -7px);
+        transform: rotate(-50deg);
+        position: relative;
+        top: -21px;
     }
 }

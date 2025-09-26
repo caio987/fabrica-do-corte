@@ -15,16 +15,16 @@ function proximaImagem() {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const nav = document.querySelector("header nav");
+  const header = document.querySelector("header");
 
   // const response = await fetch("user_session.php");
   // const data = await response.json();
 
-  nav.innerHTML = ""; // Limpa os links padrão
+  header.innerHTML = ""; // Limpa os links padrão
 
   // if (data.loggedIn) {
   //   // Usuário logado
-  //   nav.innerHTML = `
+  //   header.innerHTML = `
   //       <li><a href="index.html">Home</a></li>
   //       <li><a href="buscarPaciente.php">Buscar Pacientes</a></li>
   //       <li><a href="cadastroPaciente.html">Cadastrar Paciente</a></li>
@@ -32,22 +32,23 @@ window.addEventListener("DOMContentLoaded", async () => {
   //       `;
   // } else {
   //   // Não logado
-  nav.innerHTML = `
-    <ul class="navNormal">
-      <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
-      <li><a href="busca.html" class="links">Barbearias</a></li>
-      <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
-      <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
-      <li><a href="login.html" class="links">Login</a></li>
-    </ul>
-
-    <li class="logoMobile"><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
-    <div class="mobileMenu" onclick="tresLinhas()">
-      <div class="linha1"></div>
-      <div class="linha2"></div>
-      <div class="linha3"></div>
-    </div>
-    <ul class="navMobile">
+  header.innerHTML = `
+    <nav>
+      <ul class="navNormal">
+        <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
+        <li><a href="busca.html" class="links">Barbearias</a></li>
+        <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
+        <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
+        <li><a href="login.html" class="links">Login</a></li>
+      </ul>
+      <li class="logoMobile"><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
+        <div class="mobileMenu" onclick="tresLinhas()">
+          <div class="linha1"></div>
+          <div class="linha2"></div>
+          <div class="linha3"></div>
+        </div>
+    </nav>
+      <ul class="navMobile">
       <hr>
       <li><a href="busca.html" class="links">Barbearias</a></li>
       <hr>
@@ -57,7 +58,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       <hr>
       <li><a href="login.html" class="links">Login</a></li>
       <hr>
-    </ul>`;
+      </ul>`;
   // }
 });
 // Menu
