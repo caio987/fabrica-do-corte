@@ -155,9 +155,9 @@ main .titulos {
     font-weight: 100;
 }
 
-main img {
+/* main img {
     width: 100%;
-}
+} */
 
 main .seta {
     transition: .5s;
@@ -194,9 +194,9 @@ main #carrossel::-webkit-scrollbar {
     display: none;
 }
 
-main #carrossel img {
+/* main #carrossel img {
     width: 200px;
-}
+} */
 
 main .caixaBarbearia {
     position: relative;
@@ -538,6 +538,8 @@ main #caixa .margem {
 }
 
 @media (max-width: 767px) {
+
+    /* CSS MOBILE INDEX */
     header {
         max-width: 767px;
     }
@@ -559,6 +561,7 @@ main #caixa .margem {
 
     header nav .mobileMenu {
         width: 30px;
+        margin: 15px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -568,36 +571,112 @@ main #caixa .margem {
     }
 
     header nav .mobileMenu div {
-        width: 32px;
+        width: 26px;
         height: 2px;
         background: white;
-        margin: 8px;
+        margin: 4px;
         transition: 0.3s;
     }
 
     header .navMobile.show {
         display: block;
     }
-    /* header .navMobile {
+
+    header .navMobile {
+        width: 50%;
+        left: 0;
+        top: 0px;
         background-color: #151615;
         position: absolute;
-    } */
-    header hr{
-        margin: 40px;
-    } 
-    .linha1.active {
-        transform: rotate(50deg);
-        position: relative;
-        top: 15px;
+        z-index: 3;
     }
 
-    .linha2.active {
+    header hr {
+        margin: 40px;
+    }
+
+    header .linha1.active {
+        transform: rotate(50deg);
+        position: relative;
+        top: 1px;
+    }
+
+    header .linha2.active {
         opacity: 0;
     }
 
-    .linha3.active {
+    header .linha3.active {
         transform: rotate(-50deg);
         position: relative;
-        top: -21px;
+        top: -19px;
     }
+
+    main .titulos {
+        margin: 2px;
+        font-size: 1.2em;
+        font-weight: 100;
+    }
+
+    main .caixaBarbearia {
+        padding: 5px 0;
+    }
+
+    main .caixaBarbearia .fotoBarbearia {
+        max-width: 100px;
+    }
+
+    main .nomeEstabelecimento,
+    main .caixaBarbearia p span,
+    main .caixaBarbearia p {
+        font-size: .8em;
+        margin: 2px;
+    }
+
+    main .caixaBarbearia .avaliacao {
+        width: 100px;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 8px;
+    }
+
+    main .caixaBarbearia .avaliacao img {
+        max-width: 50px;
+    }
+
+    main #cardsQuemSomos {
+        height: 240px;
+    }
+    main .cards {
+        width: 80px;
+        top: 40px;
+    }
+
+    main #cardDaEsquerda2 {
+        top: 80px;
+        left: 40px;
+    }
+
+    main #cardDaEsquerda1 {
+        top: 30px;
+        left: 80px;
+    }
+
+    main #cardDoMeio {
+        top: -10px;
+        left: 140px;
+    }
+
+    main #cardDaDireita1 {
+        top: 25px;
+        left: 200px;
+    }
+
+    main #cardDaDireita2 {
+        top: 80px;
+        left: 240px;
+    }
+
+     /* {
+        font-size: 1em;
+    } */
 }

@@ -14,6 +14,7 @@ function proximaImagem() {
   document.getElementById("radio" + contador).checked = true;
 }
 
+// Gerador de header
 window.addEventListener("DOMContentLoaded", async () => {
   const header = document.querySelector("header");
 
@@ -32,6 +33,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   //       `;
   // } else {
   //   // Não logado
+  //um comentario
   header.innerHTML = `
     <nav>
       <ul class="navNormal">
