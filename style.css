@@ -19,16 +19,17 @@ footer {
     text-align: center;
 }
 
-header nav {
-    width: 90%;
-    margin: auto;
-}
-
-header nav ul {
+header nav .navNormal {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     list-style: none;
+}
+
+header nav .navMobile,
+header nav .logoMobile,
+header nav .mobileMenu {
+    display: none;
 }
 
 header nav a,
@@ -513,4 +514,54 @@ main #caixaEstabelecimento .active .sinopse{
 /* CSS Info Conta Cliente */
 main #caixa .margem{
     margin: 30px 1px;
+}
+@media (max-width: 767px) {
+    header {
+        max-width: 767px;
+    }
+
+    header nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    header nav .navNormal {
+        display: none;
+    }
+
+    header nav .mobileMenu,
+    header nav .logoMobile {
+        display: block;
+    }
+
+    header nav .mobileMenu {
+        width: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 5px;
+        cursor: pointer;
+        transition: .8s;
+    }
+
+    header nav .mobileMenu .linha1,
+    header nav .mobileMenu .linha2,
+    header nav .mobileMenu .linha3 {
+        width: 100%;
+        height: 3px;
+        margin: 3px 0;
+    }
+
+    .mobile_menu.active .linha1 {
+        transform: rotate(-45deg) translate(-8px, 8px);
+    }
+
+    .mobile_menu.active .linha2 {
+        opacity: 0;
+    }
+
+    .mobile_menu.active .linha3 {
+        transform: rotate(45deg) translate(-5px, -7px);
+    }
 }

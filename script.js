@@ -15,7 +15,7 @@ function proximaImagem() {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const nav = document.querySelector("header nav ul");
+  const nav = document.querySelector("header nav");
 
   // const response = await fetch("user_session.php");
   // const data = await response.json();
@@ -32,13 +32,32 @@ window.addEventListener("DOMContentLoaded", async () => {
   //       `;
   // } else {
   //   // Não logado
-    nav.innerHTML = `
-        <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
+  nav.innerHTML = `
+    <ul class="navNormal">
+      <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
+      <li><a href="busca.html" class="links">Barbearias</a></li>
+      <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
+      <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
+      <li><a href="login.html" class="links">Login</a></li>
+    </ul>
+
+    <li class="logoMobile"><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
+    <div class="mobileMenu">
+      <img class="linha1" src="../img/retangulo.png" style="margin="0px 0px 0px 0px">
+      <img class="linha2" src="../img/retangulo.png" style="margin="0px 0px 0px 0px">
+      <img class="linha3" src="../img/retangulo.png" style="margin="0px 0px 0px 0px">
+    </div>
+    <ul class="navMobile">
+        <hr>
         <li><a href="busca.html" class="links">Barbearias</a></li>
-        <li><a href="#quemSomos" class="links">Quem somos</a></li>
+        <hr>
+        <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
+        <hr>
         <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
+        <hr>
         <li><a href="login.html" class="links">Login</a></li>
-        `;
+        <hr>
+    </ul>`;
   // }
 });
 
@@ -172,30 +191,23 @@ let left_mover = () => {
   }
 };
 
-<<<<<<< HEAD
 span[1].onclick = () => { right_mover(); }
 span[0].onclick = () => { left_mover(); }
-
-
-
-
-
-
-
-
-            //Exibir a mensagem de erro/cadastrado
-    //Pega o que foi enviado pela barra de pesquisa
-    const pegar = new URLSearchParams(window.location.search);
-    //Pega a menssagem enviada
-    const mensagem = pegar.get('mensagem')
-    if(mensagem){
-    alert(mensagem)
-    }
-=======
 span[1].onclick = () => {
   right_mover();
 };
 span[0].onclick = () => {
   left_mover();
 };
->>>>>>> 893346cef503fb739638a11e2fedd1ffe404ea38
+
+// <<<<<<< HEAD
+// //Exibir a mensagem de erro/cadastrado
+// //Pega o que foi enviado pela barra de pesquisa
+// const pegar = new URLSearchParams(window.location.search);
+// //Pega a menssagem enviada
+// const mensagem = pegar.get('mensagem')
+// if (mensagem) {
+//   alert(mensagem)
+// }
+// =======
+// >>>>>>> 893346cef503fb739638a11e2fedd1ffe404ea38
