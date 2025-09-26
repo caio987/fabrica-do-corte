@@ -42,24 +42,41 @@ window.addEventListener("DOMContentLoaded", async () => {
     </ul>
 
     <li class="logoMobile"><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
-    <div class="mobileMenu">
-      <img class="linha1" src="../img/retangulo.png" style="margin="0px 0px 0px 0px">
-      <img class="linha2" src="../img/retangulo.png" style="margin="0px 0px 0px 0px">
-      <img class="linha3" src="../img/retangulo.png" style="margin="0px 0px 0px 0px">
+    <div class="mobileMenu" onclick="tresLinhas()">
+      <div class="linha1"></div>
+      <div class="linha2"></div>
+      <div class="linha3"></div>
     </div>
     <ul class="navMobile">
-        <hr>
-        <li><a href="busca.html" class="links">Barbearias</a></li>
-        <hr>
-        <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
-        <hr>
-        <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
-        <hr>
-        <li><a href="login.html" class="links">Login</a></li>
-        <hr>
+      <hr>
+      <li><a href="busca.html" class="links">Barbearias</a></li>
+      <hr>
+      <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
+      <hr>
+      <li><a href="escolherCadastro.html" class="links">Cadastrar</a></li>
+      <hr>
+      <li><a href="login.html" class="links">Login</a></li>
+      <hr>
     </ul>`;
   // }
 });
+// Menu
+function tresLinhas() {
+  navMobile = document.querySelector(".navMobile")
+  navMobile.classList.toggle("show")
+
+  if (navMobile.classList.contains("show")) {
+    // delay(50)
+    document.querySelector(".linha1").classList.add("active")
+    document.querySelector(".linha2").classList.add("active")
+    document.querySelector(".linha3").classList.add("active")
+  } else {
+    // delay(50)
+    document.querySelector(".linha1").classList.remove("active")
+    document.querySelector(".linha2").classList.remove("active")
+    document.querySelector(".linha3").classList.remove("active")
+  }
+}
 
 let carrossel = document.getElementById("carrossel");
 let caixaEstabelecimento = document.getElementById("caixaEstabelecimento");
