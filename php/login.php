@@ -44,11 +44,13 @@
             echo $_SESSION['tipo'];
             header("location: ../html/index.html");
         }else{
-            echo 'ERRO: Usuário ou senha incorretos';
+            $mensagem = 'ERRO: Usuário ou senha incorretos';
+            header("location: ../html/login.html?mensagem=".urlencode($mensagem));
         }
-        } catch (PDOException $e) {
-            $mensagem = $e->getMessage();
-            echo $mensagem;
+    } catch (PDOException $e) {
+        $mensagem = 'ERRO '. $e->getMessage();
+        header("location: ../html/login.html?mensagem=".urlencode($mensagem));
+            
         }
     }
 ?>

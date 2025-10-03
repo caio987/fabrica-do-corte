@@ -8,6 +8,34 @@
     <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Cadastro</title>
+    <style>
+        .labelArquivo {
+            color: #db9a32d6;
+        }
+
+        .labelArquivo,
+        .spanArquivo {
+
+            cursor: pointer;
+            padding: 8px 5px;
+        }
+
+        .spanArquivo {
+            font-size: .7em;
+            padding: 9px 0px;
+        }
+
+        main #etapa1 input {
+            margin: 54px auto;
+        }
+        main #etapa2 input {
+            margin: 32px auto 20px;
+        }
+
+        main form {
+            max-width: 500px;
+        }
+    </style>
 </head>
 
 <body>
@@ -47,14 +75,26 @@
                     <!-- </div> -->
 
                     <!-- <label style="" for="imagem" id="botaoArquivo">Selecionar foto do estabelecimento</label> -->
-                    <div style="">
-                        <input type="file" id="imagem" name="logo" accept="image/*" required style="opacity: 1;">
+                    <!-- FOTO do Estabelecimento -->
+                    <div style="text-align: start; width: 80%; margin: 0 auto 40px; border-bottom: 1px solid #e3a849;">
+                        <label for="foto" class="labelArquivo">
+                            Foto do estabelecimento
+                        </label>
+                        <input type="file" id="foto" name="foto" accept="image/*" required style="display: none;">
+                        <span id="foto-nome" class="spanArquivo">Nenhum arquivo
+                            selecionado</span>
                     </div>
 
-                    <!-- <label for="imagem" id="botaoArquivo2">Selecionar a logo do estabelecimento</label> -->
-                    <div style="">
-                        <input type="file" id="imagem" name="foto" accept="image/*" required style="opacity: 1;">
+                    <!-- LOGO do Estabelecimento -->
+                    <div style="text-align: start; width: 80%; margin: 0 auto 10px; border-bottom: 1px solid #e3a849;">
+                        <label for="logo" class="labelArquivo">
+                            Logo do estabelecimento
+                        </label>
+                        <input type="file" id="logo" name="logo" accept="image/*" required style="display: none;">
+                        <span id="logo-nome" class="spanArquivo">Nenhum arquivo
+                            selecionado</span>
                     </div>
+
                 </div>
 
                 <div style="display: flex;">
@@ -74,6 +114,17 @@
 
     <script src="../script.js"></script>
     <script src="../mensagem.js"></script>
+    <script>
+        document.getElementById('foto').addEventListener('change', function () {
+            const nome = this.files.length ? this.files[0].name : 'Nenhum arquivo selecionado';
+            document.getElementById('foto-nome').textContent = nome;
+        });
+
+        document.getElementById('logo').addEventListener('change', function () {
+            const nome = this.files.length ? this.files[0].name : 'Nenhum arquivo selecionado';
+            document.getElementById('logo-nome').textContent = nome;
+        });
+    </script>
 </body>
 
 </html>

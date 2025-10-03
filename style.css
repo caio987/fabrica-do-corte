@@ -365,7 +365,7 @@ main form,
 main #caixa {
     text-align: center;
     min-width: 300px;
-    max-width: 500px;
+    max-width: 425px;
     margin: 70px auto 0;
     border: solid #C4974F;
     border-radius: 10px;
@@ -374,7 +374,7 @@ main #caixa {
 main form h2 {
     font-size: 2em;
     text-align: center;
-    padding: 10px;
+    padding: 34px 0 14px;
 }
 
 main form #cliente {
@@ -404,7 +404,7 @@ main form input[type="file"] {
     color: #b88738;
     padding: 4px;
     display: block;
-    margin: 25px auto;
+    margin: 13px auto;
     background-color: transparent;
     border: none;
     border-bottom: 1.7px solid #C4974F;
@@ -412,7 +412,7 @@ main form input[type="file"] {
 
 main form input::placeholder {
     color: #b88738;
-    font-size: 1.1em;
+    font-size: 1.3em;
 }
 
 main form #botaoArquivo,
@@ -454,7 +454,7 @@ main div #button:hover {
 }
 
 main form fieldset p {
-    margin-bottom: 15px;
+    margin: 15px;
 }
 
 main form fieldset p a {
@@ -580,6 +580,7 @@ main #caixa .margem {
 
     header .navMobile.show {
         display: block;
+        height: 100%;
     }
 
     header .navMobile {
