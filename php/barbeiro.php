@@ -11,8 +11,8 @@
             $nome = filter_var($_POST['nome'], FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
             $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-            $confirmar = password_hash($_POST['confirmar'], PASSWORD_DEFAULT);
             $nome_estabelecimento = filter_var($_POST['nome_estabelecimento'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $telefone = filter_var($_POST['telefone'], FILTER_SANITIZE_SPECIAL_CHARS);
             $localizacao = filter_var($_POST['localizacao'], FILTER_SANITIZE_SPECIAL_CHARS);
             $foto = '';//Caso não coloque nenhuma imagem
             $logo = '';//Caso coloque nenhuma imagem
@@ -39,15 +39,20 @@
             }
             try {
                 //Inserir no banco de dados
-            $inserir = $pdo->prepare("INSERT INTO estabelecimento (nome,email,senha,nome_estabelecimento,localizacao,foto,logo) VALUES (:nome,:email,:senha,:nome_estabelecimento,localizacao,foto,logo)");
+            $inserir = $pdo->prepare("INSERT INTO estabelecimento (nome_proprietario,email_proprietario,senha_proprietario,nome_estabelecimento,telefone_estabelecimento,localizacao,foto_estabelecimento,logo_barbearia) VALUES (:nome,:email,:senha,:nome_estabelecimento,:telefone,:localizacao,:foto,:logo)");
             $inserir->bindParam(':nome', $nome);
             $inserir->bindParam(':email', $email);
             $inserir->bindParam(':senha', $senha);
             $inserir->bindParam(':nome_estabelecimento', $nome_estabelecimento);
+            $inserir->bindParam(':telefone', $telefone);
             $inserir->bindParam(':localizacao', $localizacao);
             $inserir->bindParam(':foto', $foto);
             $inserir->bindParam(':logo', $logo);
             $inserir->execute();
+            $mensagem = 'Cadastro Realizado';
+            header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+            exit;
+
             } catch (PDOException $e) {
                 //Mandar mensagem de erro que o usuário ta cadastrado
                 if ($e->getCode() === 23000) {
@@ -56,14 +61,15 @@
                 }else{
                 //Mandar mensagem de erro genérica
                 $mensagem = 'ERRO '. $e->getMessage();
-                header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));  
-                }
+                header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
             }
-            
-
-
-        }else{
-            $erro = "Senha e confirar senha estão diferentes";
+        }
+        
+        
+        
+    }else{
+        $mensagem = "Senha e confirar senha estão diferentes";
+        header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
         }
         
     }

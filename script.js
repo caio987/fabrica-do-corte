@@ -18,22 +18,45 @@ function proximaImagem() {
 window.addEventListener("DOMContentLoaded", async () => {
   const header = document.querySelector("header");
 
-  // const response = await fetch("user_session.php");
-  // const data = await response.json();
+  const response = await fetch("../php/user_session.php");
+  const data = await response.json();
 
   header.innerHTML = ""; // Limpa os links padrão
 
-  // if (data.loggedIn) {
-  //   // Usuário logado
-  //   header.innerHTML = `
-  //       <li><a href="index.html">Home</a></li>
-  //       <li><a href="buscarPaciente.php">Buscar Pacientes</a></li>
-  //       <li><a href="cadastroPaciente.html">Cadastrar Paciente</a></li>
-  //       <li><a href="minhaConta.php">Minha Conta (${data.userName})</a></li>
-  //       `;
-  // } else {
-  //   // Não logado
-  //um comentario
+  if (data.logado) {
+    // Usuário logado
+    header.innerHTML = `
+        <nav>
+      <ul class="navNormal">
+        <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
+        <li><a href="" class="links">Olá ${data.nome_usuario}</a></li>
+        <li><a href="busca.html" class="links">Barbearias</a></li>
+        <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
+        <li><a href="infoContaCliente.html" class="links">Minha Conta</a></li>
+      </ul>
+
+      <li class="logoMobile"><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
+        <div class="mobileMenu" onclick="tresLinhas()">
+          <div class="linha1"></div>
+          <div class="linha2"></div>
+          <div class="linha3"></div>
+        </div>
+    </nav>
+      <ul class="navMobile">
+      <hr>
+      <li><a href="" class="links">Olá ${data.nome_usuario}</a></li>
+      <hr>
+      <li><a href="busca.html" class="links">Barbearias</a></li>
+      <hr>
+      <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
+      <hr>
+      <li><a href="escolherCadastro.html" class="links">Minha Conta</a></li>
+      </ul>
+      
+    </nav>
+        `;
+  } else {
+    // Não logado
   header.innerHTML = `
     <nav>
       <ul class="navNormal">
@@ -61,7 +84,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       <li><a href="login.html" class="links">Login</a></li>
       <hr>
       </ul>`;
-  // }
+   }
 });
 // Menu
 function tresLinhas() {
@@ -220,14 +243,4 @@ span[0].onclick = () => {
   left_mover();
 };
 
-// <<<<<<< HEAD
-// //Exibir a mensagem de erro/cadastrado
-// //Pega o que foi enviado pela barra de pesquisa
-// const pegar = new URLSearchParams(window.location.search);
-// //Pega a menssagem enviada
-// const mensagem = pegar.get('mensagem')
-// if (mensagem) {
-//   alert(mensagem)
-// }
-// =======
-// >>>>>>> 893346cef503fb739638a11e2fedd1ffe404ea38
+
