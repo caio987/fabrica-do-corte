@@ -38,38 +38,48 @@
                 $logo = 'type:'. $tipo. ';base64,'. base64_encode($conteudo);
             }
             try {
-                //Inserir no banco de dados
-            $inserir = $pdo->prepare("INSERT INTO estabelecimento (nome_proprietario,email_proprietario,senha_proprietario,nome_estabelecimento,telefone_estabelecimento,localizacao,foto_estabelecimento,logo_barbearia) VALUES (:nome,:email,:senha,:nome_estabelecimento,:telefone,:localizacao,:foto,:logo)");
-            $inserir->bindParam(':nome', $nome);
-            $inserir->bindParam(':email', $email);
-            $inserir->bindParam(':senha', $senha);
-            $inserir->bindParam(':nome_estabelecimento', $nome_estabelecimento);
-            $inserir->bindParam(':telefone', $telefone);
-            $inserir->bindParam(':localizacao', $localizacao);
-            $inserir->bindParam(':foto', $foto);
-            $inserir->bindParam(':logo', $logo);
-            $inserir->execute();
-            $mensagem = 'Cadastro Realizado';
-            header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
-            exit;
+                if ($email) {
+                   
+                    //Inserir no banco de dados
+                    $inserir = $pdo->prepare("INSERT INTO estabelecimento (nome_proprietario,email_proprietario,senha_proprietario,nome_estabelecimento,telefone_estabelecimento,localizacao,foto_estabelecimento,logo_barbearia) VALUES (:nome,:email,:senha,:nome_estabelecimento,:telefone,:localizacao,:foto,:logo)");
+                    $inserir->bindParam(':nome', $nome);
+                    $inserir->bindParam(':email', $email);
+                    $inserir->bindParam(':senha', $senha);
+                    $inserir->bindParam(':nome_estabelecimento', $nome_estabelecimento);
+                    $inserir->bindParam(':telefone', $telefone);
+                    $inserir->bindParam(':localizacao', $localizacao);
+                    $inserir->bindParam(':foto', $foto);
+                    $inserir->bindParam(':logo', $logo);
+                    $inserir->execute();
+                    $mensagem = 'Cadastro Realizado';
+                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                    exit;
+                }else{
+                $mensagem = 'Email invalido';
+                header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                }
+                exit;
 
             } catch (PDOException $e) {
                 //Mandar mensagem de erro que o usuário ta cadastrado
-                if ($e->getCode() === 23000) {
-                    $mensagem = 'ERRO: Este E-mail já está cadastrado';
-                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                if ($e->getCode() == 23000) {
+                    $mensagem = 'ERRO: Este E-mail ou Endereço já está cadastrado';
+                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));
+                      
                 }else{
-                //Mandar mensagem de erro genérica
-                $mensagem = 'ERRO '. $e->getMessage();
-                header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                    //Mandar mensagem de erro genérica
+                    $mensagem = 'ERRO '. $e->getMessage();
+                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                }
+                exit;  
             }
-        }
-        
-        
-        
-    }else{
-        $mensagem = "Senha e confirar senha estão diferentes";
-        header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+            
+            
+            
+        }else{
+            $mensagem = "Senha e confirar senha estão diferentes";
+            header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+            exit;  
         }
         
     }
