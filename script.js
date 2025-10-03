@@ -29,7 +29,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         <nav>
       <ul class="navNormal">
         <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
-        <li><a href="" class="links">Olá ${data.nome_usuario}</a></li>
         <li><a href="busca.html" class="links">Barbearias</a></li>
         <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
         <li><a href="infoContaCliente.html" class="links">Minha Conta</a></li>
@@ -44,7 +43,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     </nav>
       <ul class="navMobile">
       <hr>
-      <li><a href="" class="links">Olá ${data.nome_usuario}</a></li>
       <hr>
       <li><a href="busca.html" class="links">Barbearias</a></li>
       <hr>

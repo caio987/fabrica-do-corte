@@ -43,7 +43,7 @@
                 <label for="">E-mail:</label>
                 <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="emailUser"><br>
             </div>
-            <button id="button">Sair da conta</button>
+            <button id="button" type="button" onclick="sair()">Sair da conta</button>
         </div>
     </main>
 
@@ -53,6 +53,11 @@
     </footer>
 
     <script src="../script.js"></script>
+    <script>
+        function sair(){
+            window.location.href="../php/sair.php?";
+        }
+    </script>
 </body>
 
 </html>
