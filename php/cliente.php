@@ -12,20 +12,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sobrenome = filter_var($_POST['sobrenome'],FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
             $senha = password_hash($_POST['senha'],PASSWORD_DEFAULT);
+            //Caso o E-mail não tenha passado na validação
            if ($email) {
+            //Inserindo os dados no banco de dados
                 $inserir = $pdo->prepare("INSERT INTO cliente (nome,sobrenome,email,senha) VALUES (:nome,:sobrenome,:email,:senha)");
                 $inserir->bindParam(':nome',$nome);
                 $inserir->bindParam(':sobrenome',$sobrenome);
                 $inserir->bindParam(':email',$email);
                 $inserir->bindParam(':senha',$senha);
                 $inserir->execute();
+                //Tratamento de mensagem de cadastro realizado
                 $mensagem = 'Cadastro realizado com sucesso';
-                header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
+                header("location: ../html/login.html?mensagem=".urlencode($mensagem));
             }else{
+                //Tratamento de erro caso o E-mail seja inválido
                 $mensagem = "Email Invalido";
                 header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
            }
         }else{
+            //Tratamento de erro caso as senhas sejam diferentes
             $mensagem = 'Senha e confirmar senha estão diferentes';
             header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
             exit;

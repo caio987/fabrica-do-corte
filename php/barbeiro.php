@@ -51,10 +51,12 @@
                     $inserir->bindParam(':foto', $foto);
                     $inserir->bindParam(':logo', $logo);
                     $inserir->execute();
+                     //Tratamento de mensagem de cadastro realizado
                     $mensagem = 'Cadastro Realizado';
-                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                    header("location: ../html/login.html?mensagem=".urlencode($mensagem));  
                     exit;
                 }else{
+                     //Tratamento de erro caso o email seja inválido
                 $mensagem = 'Email invalido';
                 header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
                 }
@@ -66,20 +68,20 @@
                     $mensagem = 'ERRO: Este E-mail ou Endereço já está cadastrado';
                     header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));
                       
-                }else{
+                }else {
                     //Mandar mensagem de erro genérica
                     $mensagem = 'ERRO '. $e->getMessage();
                     header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
                 }
-                exit;  
+                exit;
             }
             
             
             
         }else{
             $mensagem = "Senha e confirar senha estão diferentes";
-            header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
-            exit;  
+            header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));
+            exit;
         }
         
     }
