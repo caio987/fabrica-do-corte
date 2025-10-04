@@ -1,1 +1,1 @@
-# Fabrica-do-corte
+# Fabrica-do-corte Branch para versões estáveis do código
