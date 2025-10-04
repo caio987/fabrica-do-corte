@@ -4,10 +4,10 @@ require_once 'config.php';
 //Confirmar se os dados foram enviados via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        //Pegar as informações do formulário
         
         //Confirmar se a senha e a confirmação são iguais
         if($_POST['senha'] == $_POST['confirmar']){
+            //Pegar as informações do formulário
             $nome = filter_var($_POST['nome'],FILTER_SANITIZE_SPECIAL_CHARS);
             $sobrenome = filter_var($_POST['sobrenome'],FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);

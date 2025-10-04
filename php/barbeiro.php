@@ -79,6 +79,7 @@
             
             
         }else{
+            //Mandar mensagem d erro caso as senhas sejam diferentes
             $mensagem = "Senha e confirar senha estão diferentes";
             header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));
             exit;
