@@ -35,7 +35,7 @@
                 //Pegar o conteudo da imagem
                 $conteudo = file_get_contents($caminho);
                 //Transformar a imagem em binário
-                $logo = 'type:'. $tipo. ';base64,'. base64_encode($conteudo);
+                $logo = 'data:'. $tipo. ';base64,'. base64_encode($conteudo);
             }
             try {
                 if ($email) {

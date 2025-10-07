@@ -1,13 +1,14 @@
 <?php
 require_once 'config.php';
-
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     try {
+        //Falar para o naveador que os dados serão enviados via JSON
         // Limpa a entrada do usuário
         $busca = filter_var($_POST['busca'], FILTER_SANITIZE_SPECIAL_CHARS);
 
         // Prepara a consulta com LIKE
-        $consulta = $pdo->prepare("SELECT * FROM cliente WHERE nome LIKE :nome");
+        $consulta = $pdo->prepare("SELECT * FROM estabelecimento WHERE nome_estabelecimento LIKE :nome");
 
         // Adiciona os curingas para o LIKE
         $nome = "%{$busca}%";
@@ -23,13 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         // Exibe os resultados encontrados
         if (count($resultados) > 0) {
-            foreach ($resultados as $cliente) {
-                echo "Nome: {$cliente['nome']} ";
-                echo "Sobrenome: {$cliente['sobrenome']} ";
-                echo "E-mail: {$cliente['email']}<br>";
-            }
+            // $dados  = json_encode($resultados);
+            $_SESSION['resultados'] = $resultados;
+            header('location: ../html/resultado.html');
         } else {
-            echo "Nenhum cliente encontrado com esse nome.";
+            $_SESSION['resultados'] = '';
+            header('location: ../html/resultado.html');
         }
     } catch (PDOException $e) {
         echo 'ERRO: ' . $e->getMessage();
