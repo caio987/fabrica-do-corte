@@ -9,41 +9,112 @@
 </head>
 
 <body>
-    <div id="div"></div>
+    <header>
+        <nav>
+            <ul>
+                <!-- <li><a href="#" class="links">Conta</a></li> -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div id="caixaBarbearia"></div>
+    </main>
+    <footer>
+        <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+    </footer>
+    <script src="../script.js"></script>
     <script>
-        //Esperar carregar a página
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                //Elemento html que vai exibir a resposta
-                const div = document.getElementById('div');
-                //Fazer uma requirição ao PHP
+                const container = document.getElementById('div');
                 const resposta = await fetch('../php/exibir.php');
                 const dados = await resposta.json();
-                //Caso não tenha nenhum estabelecimento com nome
+
                 if (!dados || dados.length === 0) {
-                    div.innerHTML = 'Nenhum estabelecimento encontrado';
+                    container.innerHTML = 'Nenhum estabelecimento encontrado';
                     return;
                 }
-                //O que será exibido no html
-                let html = '';
-                dados.forEach(e => {
-                    html += /*html*/`
-                <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 100px;">
-                    <h2>${e.nome_estabelecimento}</h2>                   
-                    ${e.logo ? `<img src="${e.logo}" alt="${e.nome_estabelecimento}"></img>` : '<p>Sem imagem</p>'}
-                    <p>Localização: ${e.localizacao}</p>
-                    ${e.foto ? `<img src="${e.foto}" alt="${e.nome_estabelecimento}"></img>` : '<p>Sem imagem</p>'}
-                    <p>Contato: ${e.telefone_estabelecimento}</p>
-                    <p>Apresentação: ${e.apresentacao}</p>
-                </div>
-            `
-                });
-                div.innerHTML = html;
-            } catch (error) {
-                console.error('Erro ao pegar os dados da sessão ', error)
 
+                dados.forEach(e => {
+                    const caixa = document.getElementById("caixaBarbearia");
+                    caixa.classList.add("caixaBarbearia");
+
+                    caixa.onclick = () => {
+                        caixa.classList.toggle("active");
+                        sinopse.classList.toggle("active");
+                    };
+
+                    // imagem principal (logo)
+                    const foto = document.createElement("img");
+                    foto.classList.add("fotoBarbearia");
+
+                    // se o PHP já devolve o caminho completo
+                    foto.src = e.logo;
+                    // se ele devolve só o nome do arquivo, use:
+                    // foto.src = "../img/" + e.logo;
+
+                    foto.alt = e.nome_estabelecimento;
+
+                    // nome
+                    const nome = document.createElement("p");
+                    nome.classList.add("nomeEstabelecimento");
+                    nome.innerText = e.nome_estabelecimento;
+
+                    // avaliação
+                    const avaliacao = document.createElement("div");
+                    avaliacao.classList.add("avaliacao");
+
+                    const nota = document.createElement("img");
+                    nota.src = "../img/icons/avaliacao.png";
+                    avaliacao.appendChild(nota);
+
+                    // bloco de informações
+                    const caixaInformacoes = document.createElement("div");
+                    caixaInformacoes.classList.add("caixaInformacoes");
+                    caixaInformacoes.appendChild(nome);
+                    caixaInformacoes.appendChild(avaliacao);
+
+                    // localização
+                    const localizacao = document.createElement("p");
+                    localizacao.classList.add("localizacao");
+                    localizacao.innerText = "Localização: " + e.localizacao;
+
+                    // imagem adicional
+                    const fotoExtra = document.createElement("img");
+                    fotoExtra.src = e.foto; // ou "../img/" + e.foto;
+                    fotoExtra.alt = "Foto do local";
+
+                    // contato
+                    const contato = document.createElement("p");
+                    contato.innerText = "Contato: " + e.telefone_estabelecimento;
+
+                    // apresentação
+                    const sinopse = document.createElement("p");
+                    sinopse.classList.add("sinopse");
+                    sinopse.innerText = e.apresentacao || "Sem descrição disponível.";
+
+                    // seta
+                    const seta = document.createElement("img");
+                    seta.src = "../img/icons/seta.png";
+                    seta.classList.add("seta");
+
+                    // montagem final
+                    caixa.appendChild(foto);
+                    caixa.appendChild(caixaInformacoes);
+                    caixa.appendChild(localizacao);
+                    caixa.appendChild(fotoExtra);
+                    caixa.appendChild(contato);
+                    caixa.appendChild(sinopse);
+                    caixa.appendChild(seta);
+
+                    container.appendChild(caixa);
+                });
+            } catch (error) {
+                console.error('Erro ao pegar os dados da sessão ', error);
             }
-        })
+        });
+
     </script>
 </body>
 
