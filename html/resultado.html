@@ -53,7 +53,6 @@
                     foto.src = e.logo;
                     // se ele devolve só o nome do arquivo, use:
                     // foto.src = "../img/" + e.logo;
-
                     foto.alt = e.nome_estabelecimento;
 
                     // nome
@@ -72,40 +71,42 @@
                     // bloco de informações
                     const caixaInformacoes = document.createElement("div");
                     caixaInformacoes.classList.add("caixaInformacoes");
-                    caixaInformacoes.appendChild(nome);
-                    caixaInformacoes.appendChild(avaliacao);
-
+                    
                     // localização
                     const localizacao = document.createElement("p");
                     localizacao.classList.add("localizacao");
                     localizacao.innerText = "Localização: " + e.localizacao;
-
+                    
                     // imagem adicional
                     const fotoExtra = document.createElement("img");
                     fotoExtra.src = e.foto; // ou "../img/" + e.foto;
                     fotoExtra.alt = "Foto do local";
-
+                    fotoExtra.style.display = "none"
+                    
                     // contato
                     const contato = document.createElement("p");
+                    contato.classList.add("contato")
                     contato.innerText = "Contato: " + e.telefone_estabelecimento;
-
+                    
                     // apresentação
                     const sinopse = document.createElement("p");
                     sinopse.classList.add("sinopse");
                     sinopse.innerText = e.apresentacao || "Sem descrição disponível.";
-
+                    
                     // seta
                     const seta = document.createElement("img");
                     seta.src = "../img/icons/seta.png";
                     seta.classList.add("seta");
-
+                    
                     // montagem final
+                    caixaInformacoes.appendChild(nome);
+                    caixaInformacoes.appendChild(avaliacao);
+                    caixaInformacoes.appendChild(localizacao);
+                    caixaInformacoes.appendChild(contato);
+                    caixaInformacoes.appendChild(sinopse);
                     caixa.appendChild(foto);
                     caixa.appendChild(caixaInformacoes);
-                    caixa.appendChild(localizacao);
                     caixa.appendChild(fotoExtra);
-                    caixa.appendChild(contato);
-                    caixa.appendChild(sinopse);
                     caixa.appendChild(seta);
 
                     container.appendChild(caixa);

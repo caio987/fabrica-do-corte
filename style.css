@@ -199,6 +199,8 @@ main #carrossel::-webkit-scrollbar {
 } */
 
 main .caixaBarbearia {
+    display: flex;
+    align-items: center;
     position: relative;
     transition: .5s;
     width: fit-content;
@@ -207,7 +209,7 @@ main .caixaBarbearia {
     background-color: #201F1F;
     border: solid #C4974F;
     border-radius: 20px;
-    margin: 20px;
+    margin: 20px auto;
     transition: .5s;
     cursor: pointer;
 }
@@ -225,6 +227,8 @@ main .nomeEstabelecimento {
 }
 
 main .caixaBarbearia .localizacao,
+main .caixaBarbearia .contato,
+main .caixaBarbearia .sinopse,
 main #quemSomos p {
     color: white;
 }
