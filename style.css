@@ -192,6 +192,10 @@ main .seta {
     margin: 15px;
 }
 
+main .seta:hover{
+    scale: 1.1 !important;
+}
+
 main .alinhamento,
 main #cardsQuemSomos {
     width: 70%;
@@ -227,7 +231,7 @@ main .caixaBarbearia {
     display: flex;
     align-items: center;
     position: relative;
-    transition: .5s;
+    transition: 0.5s !important;
     width: fit-content;
     padding: 10px;
     text-align: center;
