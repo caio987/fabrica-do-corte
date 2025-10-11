@@ -14,7 +14,8 @@ body {
 header,
 footer {
     background-color: black;
-    border: solid #C4974F;
+    border-top: solid #C4974F;
+    border-bottom: solid #C4974F;
     padding: 5px;
     text-align: center;
 }
@@ -31,6 +32,28 @@ header nav .logoMobile,
 header nav .mobileMenu,
 header .navMobile {
     display: none;
+}
+
+header nav .navNormal a:has(img){
+    display: flex;
+    height: fit-content;
+    border-radius: 50%;
+    outline: 1px solid transparent;
+}
+header nav .navNormal a:has(img):focus-within{
+    outline: 1px solid #daa248;
+}
+
+header a:not(a:has(img)){
+    padding: 8px;
+    outline: 1px solid transparent;
+    border-radius: 12px;
+}
+header a:not(a:has(img)):hover,
+header a:not(a:has(img)):focus-within{
+    padding: 8px;
+    outline: 1px solid #daa248;
+    background-color: #1b1b1b;
 }
 
 header a,
@@ -56,6 +79,8 @@ main .link:hover {
 
 footer {
     border: 1px solid #C4974F;
+    border-left: 0;
+    border-right: 0;
 }
 
 footer img {
@@ -370,7 +395,7 @@ main #caixa {
     text-align: center;
     min-width: 300px;
     max-width: 425px;
-    margin: 70px auto 0;
+    margin: 32px auto 0;
     border: solid #C4974F;
     border-radius: 10px;
 }
