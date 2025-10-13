@@ -27,7 +27,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                const container = document.getElementById('div');
+                // container principal que vai receber TODAS as barbearias
+                const container = document.getElementById('caixaBarbearia');
+
+                // requisita os dados do PHP
                 const resposta = await fetch('../php/exibir.php');
                 const dados = await resposta.json();
 
@@ -36,10 +39,13 @@
                     return;
                 }
 
+                // percorre cada barbearia retornada
                 dados.forEach(e => {
-                    const caixa = document.getElementById("caixaBarbearia");
+                    // NOVO: cria uma nova div para cada barbearia (antes pegava sempre o mesmo elemento)
+                    const caixa = document.createElement("div");
                     caixa.classList.add("caixaBarbearia");
 
+                    // evento de clique
                     caixa.onclick = () => {
                         caixa.classList.toggle("active");
                         sinopse.classList.toggle("active");
@@ -109,13 +115,13 @@
                     caixa.appendChild(fotoExtra);
                     caixa.appendChild(seta);
 
+                    // NOVO: adiciona a caixa criada ao container principal
                     container.appendChild(caixa);
                 });
             } catch (error) {
                 console.error('Erro ao pegar os dados da sessão ', error);
             }
         });
-
     </script>
 </body>
 

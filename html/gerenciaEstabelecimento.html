@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <title>Agendamento com Botões de Horário</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+    }
+
+    #calendar {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    #horarios {
+      display: none;
+      margin-top: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .hora-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #e0e0e0;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 16px;
+    }
+
+    .hora-btn:hover {
+      background-color: #c5c5c5;
+    }
+
+    .hora-btn.selecionada {
+      background-color: #1c3c17;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Escolha a data e o horário</h2>
+
+<div id="calendar"></div>
+<div id="horarios"></div>
+<button onclick="enviar()">Enviar</button>
+
+<script>
+let datasSelecionadas = [];
+let horariosSelecionados = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+  const hoje = new Date();
+  hoje.setHours(0,0,0,0);
+
+  const calendarEl = document.getElementById('calendar');
+  const horariosEl = document.getElementById('horarios');
+
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'pt-br',
+    dateClick: function(info) {
+      const dataClicada = new Date(info.dateStr);
+      dataClicada.setHours(0,0,0,0);
+
+      if (dataClicada < hoje) {
+        alert('Data expirada!');
+        return;
+      }
+
+      const dataStr = info.dateStr;
+
+      // Toggle seleção da data
+      if (datasSelecionadas.includes(dataStr)) {
+        datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1);
+      } else {
+        datasSelecionadas.push(dataStr);
+      }
+
+      // Remove eventos antigos
+      calendar.getEvents().forEach(e => e.remove());
+
+      // Adiciona destaque na data
+      datasSelecionadas.forEach(d => {
+        calendar.addEvent({
+          title: "Selecionado",
+          start: d,
+          display: 'background',
+          backgroundColor: '#1c3c17'
+        });
+      });
+
+      // Mostrar horários para a data selecionada
+      mostrarHorarios(dataStr);
+    }
+  });
+
+  calendar.render();
+
+  function mostrarHorarios(dataStr) {
+    horariosSelecionados = [];
+    horariosEl.innerHTML = '';
+    horariosEl.style.display = 'flex';
+
+    const startHour = 8;
+    const endHour = 20;
+    const intervalo = 30; // minutos
+
+    for (let h = startHour; h < endHour; h++) {
+      for (let m = 0; m < 60; m += intervalo) {
+        const hora = String(h).padStart(2, '0');
+        const minuto = String(m).padStart(2, '0');
+        const horaStr = `${hora}:${minuto}`;
+
+        const btn = document.createElement('button');
+        btn.textContent = horaStr;
+        btn.classList.add('hora-btn');
+        btn.addEventListener('click', () => {
+          if (horariosSelecionados.includes(horaStr)) {
+            horariosSelecionados.splice(horariosSelecionados.indexOf(horaStr), 1);
+            btn.classList.remove('selecionada');
+          } else {
+            horariosSelecionados.push(horaStr);
+            btn.classList.add('selecionada');
+          }
+          console.log(`Data: ${datasSelecionadas} | Horários selecionados:`, horariosSelecionados);
+        });
+
+        horariosEl.appendChild(btn);
+      }
+    }
+  }
+});
+
+// Função de envio
+function enviar() {
+  if (datasSelecionadas.length === 0 || horariosSelecionados.length === 0) {
+    alert("Selecione pelo menos uma data e um horário!");
+    return;
+  }
+
+  fetch("../php/disponibilidade.php", {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ datas: datasSelecionadas, horarios: horariosSelecionados })
+  })
+  .then(res => res.text())
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
+}
+</script>
+
+
+</body>
+</html>
