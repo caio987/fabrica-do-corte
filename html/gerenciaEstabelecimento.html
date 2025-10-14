@@ -59,11 +59,35 @@
 
 <div id="calendar"></div>
 <div id="horarios"></div>
+<input type="text" placeholder="Coloque aqui o nome do corte" name="corte" required id="corte">
+<input type="number" placeholder="Preço R$0,00" name="preco" required id="preco">
+<button onclick="adicionar()">Adicionar</button>
+<div id="caixa"></div>
 <button onclick="enviar()">Enviar</button>
-
 <script>
-let datasSelecionadas = [];
-let horariosSelecionados = [];
+  let datasSelecionadas = [];
+  let horariosSelecionados = [];
+  let servico =[];
+  let preco = [];
+  
+  function adicionar(){
+    const caixa = document.getElementById('caixa');
+    servico.push(document.getElementById('corte').value);
+    preco.push(document.getElementById('preco').value);
+    console.log(servico);
+    console.log(preco);
+    caixa.innerHTML=``
+    servico.forEach((item,i)=>{
+      caixa.innerHTML+=`
+      <input type="text" name="servico" id="servico" value="${item}">
+      `
+    })
+    preco.forEach((item,i)=>{
+      caixa.innerHTML+=`
+      <input type="text" name="preco" id="preco" value="${item}">
+      `
+    })
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   const hoje = new Date();
@@ -159,6 +183,15 @@ function enviar() {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ datas: datasSelecionadas, horarios: horariosSelecionados })
+  })
+  .then(res => res.text())
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
+
+  fetch("../php/servico.php",{
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({servico: servico, preco: preco})
   })
   .then(res => res.text())
   .then(res => console.log(res))
