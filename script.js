@@ -220,43 +220,77 @@ function voltar() {
 }
 
 // Carrosel
+// TESTE-----------------
+
+let product = document.getElementsByClassName("caixaBarbearia");
+let productStyles = undefined
+let widthRestante = undefined
+let numberProduct = undefined
 let span = document.getElementsByTagName("span");
-let product = document.getElementsByClassName("caixaGeral");
-let product_page = Math.ceil(product.length / 4);
+// let product_page = Math.ceil(product.length / 4);
 let l = 0;
-let movePer = 27;
-let maxMove = 108;
+let movePer = 0;
+
+setTimeout(() => {
+  // Pegar todos os produtos e quantos são
+  product = document.getElementsByClassName("caixaBarbearia");
+  numberProduct = product.length
+
+  function updateWidth(){
+    // Pegar os estilos de um produto e do carrosel
+    productStyles = window.getComputedStyle(product[0])
+    carrosselStyles = window.getComputedStyle(carrossel)
+
+    // Pega o width desses elementos
+    const widthProduct = parseFloat(productStyles.getPropertyValue("width").replace("px", "")) + 26 // 26 = border + padding
+    const widthVisivel = parseFloat(carrosselStyles.getPropertyValue("width").replace("px", ""))
+
+    // tamanho_oculto = tamanho_produto * numero_produtos - tamanho_visivel_carrossel
+    widthRestante = widthProduct * numberProduct - widthVisivel
+
+    // tamanho_mover = tamanho_oculto / numero_produtos
+    movePer = widthRestante / numberProduct
+
+  }
+
+  updateWidth()
+
+  // Atualiza valores para ficar responsivo
+  window.addEventListener("resize", () => updateWidth)
+}, 500) // Espera carregar produtos do db
+
+// ------------
+
+
 
 let right_mover = () => {
   l = l + movePer;
-  console.log(l);
   if (product == 1) {
     l = 0;
   }
   for (const i of product) {
-    if (l > maxMove) {
+    if (l > widthRestante) {
       l = l - movePer;
     }
-    i.style.left = "-" + l + "%";
+    i.style.left = "-" + l + "px";
   }
 };
 
 let left_mover = () => {
   l = l - movePer;
-  console.log(l);
   if (l <= 0) {
     l = 0;
   }
   for (const i of product) {
-    i.style.left = "-" + l + "%";
+    i.style.left = "-" + l + "px";
   }
 };
 
 span[1].onclick = () => { right_mover(); }
 span[0].onclick = () => { left_mover(); }
-span[1].onclick = () => {
-  right_mover();
-};
-span[0].onclick = () => {
-  left_mover();
-};
+// span[1].onclick = () => {
+//   right_mover();
+// };
+// span[0].onclick = () => {
+//   left_mover();
+// };

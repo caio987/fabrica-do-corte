@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const dataStr = info.dateStr;
 
-      // Toggle seleção da data
+      // Caso a data já esteja selecionada excluir
       if (datasSelecionadas.includes(dataStr)) {
         datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1);
       } else {
