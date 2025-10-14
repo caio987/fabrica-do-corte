@@ -12,6 +12,10 @@
         main form {
             max-width: 80%;
         }
+
+        main #caixaEstabelecimento .caixaBarbearia {
+            width: 90%;
+        }
     </style>
 </head>
 
@@ -27,9 +31,10 @@
     <main>
         <form action="../php/busca.php" method="post" style="border: none; width: 80%;">
             <div id="caixapesquisa" style="width: 80%;">
-                <input type="text" id="barraDePesquisa" name="busca"> 
-            <button type="submit" style="background-color: transparent; border: none; cursor: pointer;"><img src="../img/icons/lupa.png" alt="botao pra pesquisar" style="z-index: 1;"></button>
-        </div>
+                <input type="text" id="barraDePesquisa" name="busca">
+                <button type="submit" style="background-color: transparent; border: none; cursor: pointer;"><img
+                        src="../img/icons/lupa.png" alt="botao pra pesquisar" style="z-index: 1;"></button>
+            </div>
         </form>
 
         <div id="caixaEstabelecimento"></div>
@@ -41,5 +46,67 @@
     </footer>
 
     <script src="../script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const container = document.getElementById('caixaEstabelecimento');
+
+                // 1️⃣ Requisição — pega todos os dados do PHP
+                const resposta = await fetch('../php/exibir2.php'); // sem parâmetros
+                const dados = await resposta.json();
+
+                // 2️⃣ Verifica se veio algo
+                if (!dados || dados.length === 0) {
+                    container.innerHTML = '<p>Nenhum estabelecimento encontrado.</p>';
+                    return;
+                }
+
+                // 3️⃣ Cria uma caixa para cada item
+                dados.forEach(e => {
+                    const caixaGeral = document.createElement('div');
+                    caixaGeral.classList.add('caixaGeral');
+
+                    const caixa = document.createElement('div');
+                    caixa.classList.add('caixaBarbearia');
+
+                    const foto = document.createElement('img');
+                    foto.src = e.logo; // se PHP já devolve o caminho completo
+                    foto.classList.add('fotoBarbearia');
+
+                    const nome = document.createElement('p');
+                    nome.classList.add('nomeEstabelecimento');
+                    nome.textContent = e.nome_estabelecimento;
+
+                    const localizacao = document.createElement('p');
+                    localizacao.classList.add('localizacao');
+                    localizacao.textContent = 'Localização: ' + e.localizacao;
+
+                    const contato = document.createElement('p');
+                    contato.classList.add('contato');
+                    contato.textContent = 'Contato: ' + e.telefone_estabelecimento;
+
+                    const sinopse = document.createElement('p');
+                    sinopse.classList.add('sinopse');
+                    sinopse.textContent = e.apresentacao || 'Sem descrição disponível.';
+
+                    // Montagem do card
+                    caixa.appendChild(foto);
+                    caixa.appendChild(nome);
+                    caixa.appendChild(localizacao);
+                    caixa.appendChild(contato);
+                    caixa.appendChild(sinopse);
+                    caixaGeral.appendChild(caixa);
+
+                    // Adiciona ao container
+                    container.appendChild(caixaGeral);
+                });
+
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+            }
+        });
+
+    </script>
 </body>
+
 </html>

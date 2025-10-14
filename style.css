@@ -198,27 +198,24 @@ main #carrossel::-webkit-scrollbar {
     width: 200px;
 } */
 
-main .caixaBarbearia {
-    display: flex;
-    align-items: center;
+main .caixaGeral {
     position: relative;
     transition: .5s;
-    width: fit-content;
     padding: 10px;
     text-align: center;
     background-color: #201F1F;
     border: solid #C4974F;
     border-radius: 20px;
-    margin: 20px auto;
+    margin: 20px;
     transition: .5s;
     cursor: pointer;
 }
 
-main .caixaBarbearia:hover {
+main .caixaGeral:hover {
     scale: 1.1;
 }
 
-main .caixaBarbearia .fotoBarbearia {
+main .caixaGeral .fotoBarbearia {
     max-width: 203px;
 }
 
@@ -226,18 +223,18 @@ main .nomeEstabelecimento {
     margin-top: 10px;
 }
 
-main .caixaBarbearia .localizacao,
-main .caixaBarbearia .contato,
-main .caixaBarbearia .sinopse,
+main .caixaGeral .localizacao,
+main .caixaGeral .contato,
+main .caixaGeral .sinopse,
 main #quemSomos p {
     color: white;
 }
 
-main .caixaBarbearia p span {
+main .caixaGeral p span {
     color: red;
 }
 
-main .caixaBarbearia .avaliacao {
+main .caixaGeral .avaliacao {
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -246,16 +243,17 @@ main .caixaBarbearia .avaliacao {
     padding: 20px 0;
 }
 
-main .caixaBarbearia .localizacao {
+main .caixaGeral .localizacao,
+main .caixaGeral .contato {
     text-align: left;
     margin-left: 25px;
 }
 
-main .caixaBarbearia .avaliacao img {
+main .caixaGeral .avaliacao img {
     max-width: 80px;
 }
 
-main .caixaBarbearia button {
+main .caixaGeral button {
     background-color: #C4974F;
     color: white;
     width: 60%;
@@ -266,7 +264,7 @@ main .caixaBarbearia button {
     transition: .5s;
 }
 
-main .caixaBarbearia button:hover {
+main .caixaGeral button:hover {
     width: 70%;
     padding: 10px;
 }
@@ -495,45 +493,47 @@ main #caixaEstabelecimento {
     margin: auto;
 }
 
+main #caixaEstabelecimento .caixaGeral {
+    margin: 20px auto;
+    max-width: 900px;
+    padding: 10px
+}
 main #caixaEstabelecimento .caixaBarbearia {
     display: flex;
     align-items: center;
-    margin: 20px auto;
-    min-width: 700px;
-    max-width: 900px;
 }
 
-main #caixaEstabelecimento .caixaBarbearia .fotoBarbearia {
+main #caixaEstabelecimento .caixaGeral .fotoBarbearia {
     width: 150px;
 }
 
-main #caixaEstabelecimento .caixaBarbearia .caixaInformacoes {
+main #caixaEstabelecimento .caixaGeral .caixaInformacoes {
     width: 70%;
     /* height: 150px; */
     /* border: solid; */
 }
 
-main #caixaEstabelecimento .caixaBarbearia .caixaInformacoes .nomeEstabelecimento {
+main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
     margin: 0;
     font-size: 1.5em;
     font-weight: bold;
     color: #C4974F;
 }
 
-main #caixaEstabelecimento .active {
-    flex-wrap: wrap;
-}
-
 main #caixaEstabelecimento .active .seta {
     rotate: 90deg;
 }
 
-main #caixaEstabelecimento .sinopse {
+main #caixaEstabelecimento .caixaInvisivel {
     display: none;
 }
 
-main #caixaEstabelecimento .active .sinopse {
+main #caixaEstabelecimento .active .caixaInvisivel {
     display: block;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 /* CSS Info Conta Cliente */
@@ -622,35 +622,36 @@ main #caixa .margem {
         font-weight: 100;
     }
 
-    main .caixaBarbearia {
+    main .caixaGeral {
         padding: 5px 0;
     }
 
-    main .caixaBarbearia .fotoBarbearia {
+    main .caixaGeral .fotoBarbearia {
         max-width: 100px;
     }
 
     main .nomeEstabelecimento,
-    main .caixaBarbearia p span,
-    main .caixaBarbearia p {
+    main .caixaGeral p span,
+    main .caixaGeral p {
         font-size: .8em;
         margin: 2px;
     }
 
-    main .caixaBarbearia .avaliacao {
+    main .caixaGeral .avaliacao {
         width: 100px;
         display: flex;
         flex-wrap: wrap;
         padding: 8px;
     }
 
-    main .caixaBarbearia .avaliacao img {
+    main .caixaGeral .avaliacao img {
         max-width: 50px;
     }
 
     main #cardsQuemSomos {
         height: 240px;
     }
+
     main .cards {
         width: 80px;
         top: 40px;
@@ -681,7 +682,7 @@ main #caixa .margem {
         left: 240px;
     }
 
-     /* {
+    /* {
         font-size: 1em;
     } */
 }

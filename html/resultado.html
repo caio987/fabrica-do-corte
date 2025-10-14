@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        #caixaEstabelecimento .caixaBarbearia {
+            min-width: 300px;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,7 +22,7 @@
         </nav>
     </header>
     <main>
-        <div id="caixaBarbearia"></div>
+        <div id="caixaEstabelecimento"></div>
     </main>
     <footer>
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
@@ -28,7 +33,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 // container principal que vai receber TODAS as barbearias
-                const container = document.getElementById('caixaBarbearia');
+                const container = document.getElementById('caixaEstabelecimento');
 
                 // requisita os dados do PHP
                 const resposta = await fetch('../php/exibir.php');
@@ -42,14 +47,17 @@
                 // percorre cada barbearia retornada
                 dados.forEach(e => {
                     // NOVO: cria uma nova div para cada barbearia (antes pegava sempre o mesmo elemento)
+                    const caixaGeral = document.createElement("div");
+                    caixaGeral.classList.add("caixaGeral");
+                    
+                    // evento de clique
+                    caixaGeral.onclick = () => {
+                        caixaGeral.classList.toggle("active");
+                        caixaInvisivel.classList.toggle("active");
+                    };
+
                     const caixa = document.createElement("div");
                     caixa.classList.add("caixaBarbearia");
-
-                    // evento de clique
-                    caixa.onclick = () => {
-                        caixa.classList.toggle("active");
-                        sinopse.classList.toggle("active");
-                    };
 
                     // imagem principal (logo)
                     const foto = document.createElement("img");
@@ -77,46 +85,52 @@
                     // bloco de informações
                     const caixaInformacoes = document.createElement("div");
                     caixaInformacoes.classList.add("caixaInformacoes");
-                    
+
                     // localização
                     const localizacao = document.createElement("p");
                     localizacao.classList.add("localizacao");
                     localizacao.innerText = "Localização: " + e.localizacao;
-                    
-                    // imagem adicional
-                    const fotoExtra = document.createElement("img");
-                    fotoExtra.src = e.foto; // ou "../img/" + e.foto;
-                    fotoExtra.alt = "Foto do local";
-                    fotoExtra.style.display = "none"
-                    
+
                     // contato
                     const contato = document.createElement("p");
                     contato.classList.add("contato")
                     contato.innerText = "Contato: " + e.telefone_estabelecimento;
-                    
+
+                    // apresentação
+                    const caixaInvisivel = document.createElement("p");
+                    caixaInvisivel.classList.add("caixaInvisivel");
+
+                    // imagem adicional
+                    const fotoExtra = document.createElement("img");
+                    fotoExtra.src = e.foto; // ou "../img/" + e.foto;
+                    fotoExtra.alt = "Foto do local";
+                    fotoExtra.classList.add("fotoBarbearia");
+
                     // apresentação
                     const sinopse = document.createElement("p");
                     sinopse.classList.add("sinopse");
                     sinopse.innerText = e.apresentacao || "Sem descrição disponível.";
-                    
+
                     // seta
                     const seta = document.createElement("img");
                     seta.src = "../img/icons/seta.png";
                     seta.classList.add("seta");
-                    
+
                     // montagem final
                     caixaInformacoes.appendChild(nome);
                     caixaInformacoes.appendChild(avaliacao);
                     caixaInformacoes.appendChild(localizacao);
                     caixaInformacoes.appendChild(contato);
-                    caixaInformacoes.appendChild(sinopse);
+                    caixaInvisivel.appendChild(fotoExtra);
+                    caixaInvisivel.appendChild(sinopse);
                     caixa.appendChild(foto);
                     caixa.appendChild(caixaInformacoes);
-                    caixa.appendChild(fotoExtra);
                     caixa.appendChild(seta);
+                    caixaGeral.appendChild(caixa);
+                    caixaGeral.appendChild(caixaInvisivel);
 
                     // NOVO: adiciona a caixa criada ao container principal
-                    container.appendChild(caixa);
+                    container.appendChild(caixaGeral);
                 });
             } catch (error) {
                 console.error('Erro ao pegar os dados da sessão ', error);

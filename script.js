@@ -55,7 +55,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         `;
   } else {
     // Não logado
-  header.innerHTML = `
+    header.innerHTML = `
     <nav>
       <ul class="navNormal">
         <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
@@ -82,7 +82,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       <li><a href="login.html" class="links">Login</a></li>
       <hr>
       </ul>`;
-   }
+  }
 });
 // Menu
 function tresLinhas() {
@@ -103,83 +103,103 @@ function tresLinhas() {
 }
 
 let carrossel = document.getElementById("carrossel");
-let caixaEstabelecimento = document.getElementById("caixaEstabelecimento");
 
 function lojas(variavel) {
   fetch("../db.json")
     .then((response) => response.json())
     .then((data) => {
       const barbearias = data.barbearias;
+      const container = document.getElementById("caixaEstabelecimento");
 
-      barbearias.map((loja) => {
-        let caixa = document.createElement("div");
-        caixa.classList.add("caixaBarbearia");
-        caixa.id = loja.id;
-        caixa.onclick = function () {
-          // document.querySelectorAll(".caixaBarbearia").forEach(loja => {
-          //     loja.classList.remove("active");
-          // });
-          // document.querySelectorAll(".sinopse").forEach(loja => {
-          //     loja.classList.remove("active");
-          // });
-          caixa.classList.toggle("active");
-          sinopse.classList.toggle("active");
-        };
+      barbearias.forEach((loja) => {
+        const caixaGeral = document.createElement("div");
+        caixaGeral.classList.add("caixaGeral");
 
-        let sinopse = document.createElement("p");
-        sinopse.innerHTML = loja.sinopse;
-        sinopse.classList.add("sinopse");
-
-        let foto = document.createElement("img");
-        foto.src = "../" + loja.img; // Ajuste do caminho
-        foto.classList.add("fotoBarbearia");
-
-        let nome = document.createElement("p");
-        nome.classList.add("nomeEstabelecimento");
-        nome.innerHTML = loja.nome;
-
-        let avaliacao = document.createElement("div");
-        avaliacao.classList.add("avaliacao");
-
-        let nota = document.createElement("img");
-        nota.src = "../img/icons/avaliacao.png";
-
-        let curtidas = document.createElement("p");
-        curtidas.innerHTML = loja.curtidas;
-
-        let coracao = document.createElement("span");
-        coracao.innerHTML = "❤";
-
-        let caixaInformacoes = document.createElement("div");
-        caixaInformacoes.classList.add("caixaInformacoes");
-
-        let seta = document.createElement("img");
-        seta.src = "../img/icons/seta.png";
-        seta.classList.add("seta");
-
-        let localizacao = document.createElement("p");
-        localizacao.classList.add("localizacao");
-        localizacao.innerHTML = loja.localizacao;
-
-        avaliacao.appendChild(nota);
-        curtidas.appendChild(coracao);
-        avaliacao.appendChild(curtidas);
-        caixa.appendChild(foto);
-        caixaInformacoes.appendChild(nome);
-        caixaInformacoes.appendChild(avaliacao);
-        caixa.appendChild(caixaInformacoes);
-
+        // ============= CASO 1 =============
         if (variavel == 1) {
-          carrossel.appendChild(caixa);
-        } else {
-          caixaInformacoes.appendChild(localizacao);
-          caixa.appendChild(seta);
-          caixaEstabelecimento.appendChild(caixa);
-          caixa.appendChild(sinopse);
+          const foto = document.createElement("img");
+          foto.src = "../" + loja.img;
+          foto.classList.add("fotoBarbearia");
+
+          const nome = document.createElement("p");
+          nome.classList.add("nomeEstabelecimento");
+          nome.innerText = loja.nome;
+
+          const avaliacao = document.createElement("div");
+          avaliacao.classList.add("avaliacao");
+
+          const nota = document.createElement("img");
+          nota.src = "../img/icons/avaliacao.png";
+          avaliacao.appendChild(nota);
+
+          const curtidas = document.createElement("p");
+          curtidas.innerHTML = loja.curtidas + " ❤";
+          avaliacao.appendChild(curtidas);
+
+          caixaGeral.appendChild(foto);
+          caixaGeral.appendChild(nome);
+          caixaGeral.appendChild(avaliacao);
+
+          carrossel.appendChild(caixaGeral);
         }
+
+        // // ============= CASO 2 =============
+        // else if (variavel == 2) {
+        //   const caixa = document.createElement("div");
+        //   caixa.classList.add("caixaBarbearia");
+
+        //   const foto = document.createElement("img");
+        //   foto.src = "../" + loja.img;
+        //   foto.classList.add("fotoBarbearia");
+
+        //   const nome = document.createElement("p");
+        //   nome.classList.add("nomeEstabelecimento");
+        //   nome.innerText = loja.nome;
+
+        //   const localizacao = document.createElement("p");
+        //   localizacao.classList.add("localizacao");
+        //   localizacao.innerText = loja.localizacao;
+
+        //   const contato = document.createElement("p");
+        //   contato.classList.add("contato");
+        //   contato.innerText = loja.contato;
+
+        //   const sinopse = document.createElement("p");
+        //   sinopse.classList.add("sinopse");
+        //   sinopse.innerText = loja.sinopse;
+
+        //   const seta = document.createElement("img");
+        //   seta.src = "../img/icons/seta.png";
+        //   seta.classList.add("seta");
+
+        //   const caixaInvisivel = document.createElement("div");
+        //   caixaInvisivel.classList.add("caixaInvisivel");
+        //   caixaInvisivel.appendChild(sinopse);
+          
+        //   caixaGeral.onclick = () => {
+        //     caixaGeral.classList.toggle("active");
+        //     caixaInvisivel.classList.toggle("active");
+        //   };
+          
+        //   const caixaInformacoes = document.createElement("div");
+        //   caixaInformacoes.classList.add("caixaInformacoes");
+        //   caixaInformacoes.appendChild(nome);
+        //   caixaInformacoes.appendChild(localizacao);
+        //   caixaInformacoes.appendChild(contato);
+
+        //   caixa.appendChild(foto);
+        //   caixa.appendChild(caixaInformacoes);
+        //   caixa.appendChild(seta);
+
+        //   caixaGeral.appendChild(caixa);
+        //   caixaGeral.appendChild(caixaInvisivel);
+
+        //   container.appendChild(caixaGeral);
+        // }
       });
     });
 }
+
 
 // cadastro barbeiro
 function avancar() {
@@ -201,7 +221,7 @@ function voltar() {
 
 // Carrosel
 let span = document.getElementsByTagName("span");
-let product = document.getElementsByClassName("caixaBarbearia");
+let product = document.getElementsByClassName("caixaGeral");
 let product_page = Math.ceil(product.length / 4);
 let l = 0;
 let movePer = 27;
