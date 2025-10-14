@@ -9,7 +9,7 @@ foreach ($resultados as &$e) {
     if (isset($e['foto_estabelecimento'])&& isset($e['logo_barbearia'])) {
         $e['foto'] = str_replace('type:','data:',$e['foto_estabelecimento']);
         $e['logo'] = str_replace('type:','data:',$e['logo_barbearia']);
-    }else {
+    }else { 
         $e['foto'] = [];
         $e['logo'] = [];
     }

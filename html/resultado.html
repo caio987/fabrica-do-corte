@@ -4,8 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Estabelecimentos</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        main #caixaEstabelecimento .caixaBarbearia {
+            width: 90%;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,109 +22,122 @@
         </nav>
     </header>
     <main>
-        <div id="caixaBarbearia"></div>
+        <div id="caixaEstabelecimento"></div>
     </main>
     <footer>
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
     </footer>
+
     <script src="../script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // container principal que vai receber TODAS as barbearias
-                const container = document.getElementById('caixaBarbearia');
+            const container = document.getElementById('caixaEstabelecimento');
 
-                // requisita os dados do PHP
+            try {
                 const resposta = await fetch('../php/exibir.php');
                 const dados = await resposta.json();
 
                 if (!dados || dados.length === 0) {
-                    container.innerHTML = 'Nenhum estabelecimento encontrado';
+                    container.innerHTML = '<p>Nenhum estabelecimento encontrado.</p>';
                     return;
                 }
 
-                // percorre cada barbearia retornada
                 dados.forEach(e => {
-                    // NOVO: cria uma nova div para cada barbearia (antes pegava sempre o mesmo elemento)
+                    // caixa invisível criada antes do onclick
+                    const caixaInvisivel = document.createElement("div");
+                    caixaInvisivel.classList.add("caixaInvisivel");
+
+                    const caixaGeral = document.createElement("div");
+                    caixaGeral.classList.add("caixaGeral");
+
+                    caixaGeral.onclick = () => {
+                        caixaGeral.classList.toggle("active");
+                        caixaInvisivel.classList.toggle("active");
+                    };
+
                     const caixa = document.createElement("div");
                     caixa.classList.add("caixaBarbearia");
 
-                    // evento de clique
-                    caixa.onclick = () => {
-                        caixa.classList.toggle("active");
-                        sinopse.classList.toggle("active");
-                    };
-
-                    // imagem principal (logo)
                     const foto = document.createElement("img");
                     foto.classList.add("fotoBarbearia");
+                    foto.src = e.logo || "../img/default-logo.png";
+                    foto.alt = e.nome_estabelecimento || "Estabelecimento";
 
-                    // se o PHP já devolve o caminho completo
-                    foto.src = e.logo;
-                    // se ele devolve só o nome do arquivo, use:
-                    // foto.src = "../img/" + e.logo;
-                    foto.alt = e.nome_estabelecimento;
-
-                    // nome
                     const nome = document.createElement("p");
                     nome.classList.add("nomeEstabelecimento");
-                    nome.innerText = e.nome_estabelecimento;
+                    nome.innerText = e.nome_estabelecimento || "Sem nome";
 
-                    // avaliação
                     const avaliacao = document.createElement("div");
                     avaliacao.classList.add("avaliacao");
-
                     const nota = document.createElement("img");
                     nota.src = "../img/icons/avaliacao.png";
                     avaliacao.appendChild(nota);
 
-                    // bloco de informações
                     const caixaInformacoes = document.createElement("div");
                     caixaInformacoes.classList.add("caixaInformacoes");
-                    
-                    // localização
+
                     const localizacao = document.createElement("p");
                     localizacao.classList.add("localizacao");
-                    localizacao.innerText = "Localização: " + e.localizacao;
-                    
-                    // imagem adicional
-                    const fotoExtra = document.createElement("img");
-                    fotoExtra.src = e.foto; // ou "../img/" + e.foto;
-                    fotoExtra.alt = "Foto do local";
-                    fotoExtra.style.display = "none"
-                    
-                    // contato
+                    localizacao.innerText = "Localização: " + (e.localizacao || "Não informada");
+
                     const contato = document.createElement("p");
-                    contato.classList.add("contato")
-                    contato.innerText = "Contato: " + e.telefone_estabelecimento;
+                    contato.classList.add("contato");
+                    contato.innerText = "Contato: " + (e.telefone_estabelecimento || "Não informado");
+
+
+                    const div1 = document.createElement("div");
+                    const texto1 = document.createElement("p");
+                    texto1.innerHTML = "Foto de nossa barbearia"
+
+                    const fotoExtra = document.createElement("img");
+                    fotoExtra.src = e.foto || "../img/default-foto.png";
+                    fotoExtra.alt = "Foto do local";
+                    fotoExtra.classList.add("fotoBarbearia");
+                    div1.appendChild(texto1)
+                    div1.appendChild(fotoExtra)
                     
-                    // apresentação
+                    const div2 = document.createElement("div");
+                    const texto2 = document.createElement("p");
+                    texto2.innerHTML = "Um pouco sobre nossos serviços"
+                    
                     const sinopse = document.createElement("p");
                     sinopse.classList.add("sinopse");
                     sinopse.innerText = e.apresentacao || "Sem descrição disponível.";
-                    
-                    // seta
+                    div2.appendChild(texto2)
+                    div2.appendChild(sinopse)
+
                     const seta = document.createElement("img");
                     seta.src = "../img/icons/seta.png";
                     seta.classList.add("seta");
-                    
-                    // montagem final
+
+                    const salvarBarbearia = document.createElement("button");
+                    salvarBarbearia.classList.add("salvarBarbearia");
+                    salvarBarbearia.innerText = "Salvar Barbearia";
+
+                    // montagem
                     caixaInformacoes.appendChild(nome);
                     caixaInformacoes.appendChild(avaliacao);
                     caixaInformacoes.appendChild(localizacao);
                     caixaInformacoes.appendChild(contato);
-                    caixaInformacoes.appendChild(sinopse);
+
+                    caixaInvisivel.appendChild(div1);
+                    caixaInvisivel.appendChild(div2);
+
                     caixa.appendChild(foto);
                     caixa.appendChild(caixaInformacoes);
-                    caixa.appendChild(fotoExtra);
                     caixa.appendChild(seta);
 
-                    // NOVO: adiciona a caixa criada ao container principal
-                    container.appendChild(caixa);
+                    caixaGeral.appendChild(caixa);
+                    caixaGeral.appendChild(caixaInvisivel);
+                    caixaGeral.appendChild(salvarBarbearia);
+
+                    container.appendChild(caixaGeral);
                 });
+
             } catch (error) {
-                console.error('Erro ao pegar os dados da sessão ', error);
+                console.error('Erro ao pegar os dados da sessão', error);
+                container.innerHTML = '<p>Ocorreu um erro ao carregar os estabelecimentos.</p>';
             }
         });
     </script>

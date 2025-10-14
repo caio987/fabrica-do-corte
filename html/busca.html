@@ -6,40 +6,155 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
-    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
     <title>Busca</title>
     <style>
         main form {
             max-width: 80%;
         }
+
+        main #caixaEstabelecimento .caixaBarbearia {
+            width: 90%;
+        }
     </style>
 </head>
 
-<body onload="lojas(2)">
+<body>
     <header>
         <nav>
-            <ul>
-                <!-- <li><a href="#" class="links">Conta</a></li> -->
-            </ul>
+            <ul></ul>
         </nav>
     </header>
 
     <main>
         <form action="../php/busca.php" method="post" style="border: none; width: 80%;">
             <div id="caixapesquisa" style="width: 80%;">
-                <input type="text" id="barraDePesquisa" name="busca"> 
-            <button type="submit" style="background-color: transparent; border: none; cursor: pointer;"><img src="../img/icons/lupa.png" alt="botao pra pesquisar" style="z-index: 1;"></button>
-        </div>
+                <input type="text" id="barraDePesquisa" name="busca">
+                <button type="submit" style="background-color: transparent; border: none; cursor: pointer;">
+                    <img src="../img/icons/lupa.png" alt="botao pra pesquisar" style="z-index: 1;">
+                </button>
+            </div>
         </form>
-
         <div id="caixaEstabelecimento"></div>
     </main>
 
-    <footer class="">
+    <footer>
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
     </footer>
 
     <script src="../script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('caixaEstabelecimento');
+
+            try {
+                const resposta = await fetch('../php/exibir2.php');
+                const dados = await resposta.json();
+
+                console.log("Retorno do PHP:", dados);
+
+                if (!Array.isArray(dados) || dados.length === 0) {
+                    container.innerHTML = '<p>Nenhum estabelecimento encontrado.</p>';
+                    return;
+                }
+
+                dados.forEach(e => {
+                    // cria a caixa invisível antes do onclick
+                    const caixaInvisivel = document.createElement("div");
+                    caixaInvisivel.classList.add("caixaInvisivel");
+
+                    const caixaGeral = document.createElement("div");
+                    caixaGeral.classList.add("caixaGeral");
+
+                    caixaGeral.onclick = () => {
+                        caixaGeral.classList.toggle("active");
+                        caixaInvisivel.classList.toggle("active");
+                    };
+
+                    const caixa = document.createElement("div");
+                    caixa.classList.add("caixaBarbearia");
+
+                    const foto = document.createElement("img");
+                    foto.classList.add("fotoBarbearia");
+                    foto.src = e.logo || "../img/default-logo.png";
+                    foto.alt = e.nome_estabelecimento || "Estabelecimento";
+
+                    const nome = document.createElement("p");
+                    nome.classList.add("nomeEstabelecimento");
+                    nome.innerText = e.nome_estabelecimento || "Sem nome";
+
+                    const avaliacao = document.createElement("div");
+                    avaliacao.classList.add("avaliacao");
+                    const nota = document.createElement("img");
+                    nota.src = "../img/icons/avaliacao.png";
+                    avaliacao.appendChild(nota);
+
+                    const caixaInformacoes = document.createElement("div");
+                    caixaInformacoes.classList.add("caixaInformacoes");
+
+                    const localizacao = document.createElement("p");
+                    localizacao.classList.add("localizacao");
+                    localizacao.innerText = "Localização: " + (e.localizacao || "Não informada");
+
+                    const contato = document.createElement("p");
+                    contato.classList.add("contato");
+                    contato.innerText = "Contato: " + (e.telefone_estabelecimento || "Não informado");
+
+                    const div1 = document.createElement("div");
+                    const texto1 = document.createElement("p");
+                    texto1.innerHTML = "Foto de nossa barbearia"
+
+                    const fotoExtra = document.createElement("img");
+                    fotoExtra.src = e.foto || "../img/default-foto.png";
+                    fotoExtra.alt = "Foto do local";
+                    fotoExtra.classList.add("fotoBarbearia");
+                    div1.appendChild(texto1)
+                    div1.appendChild(fotoExtra)
+
+                    const div2 = document.createElement("div");
+                    const texto2 = document.createElement("p");
+                    texto2.innerHTML = "Um pouco sobre nossos serviços"
+
+                    const sinopse = document.createElement("p");
+                    sinopse.classList.add("sinopse");
+                    sinopse.innerText = e.apresentacao || "Sem descrição disponível.";
+                    div2.appendChild(texto2)
+                    div2.appendChild(sinopse)
+
+                    const seta = document.createElement("img");
+                    seta.src = "../img/icons/seta.png";
+                    seta.classList.add("seta");
+
+                    const salvarBarbearia = document.createElement("button");
+                    salvarBarbearia.classList.add("salvarBarbearia");
+                    salvarBarbearia.innerText = "Salvar Barbearia";
+
+                    // montagem
+                    caixaInformacoes.appendChild(nome);
+                    caixaInformacoes.appendChild(avaliacao);
+                    caixaInformacoes.appendChild(localizacao);
+                    caixaInformacoes.appendChild(contato);
+
+                    caixaInvisivel.appendChild(div1);
+                    caixaInvisivel.appendChild(div2);
+
+                    caixa.appendChild(foto);
+                    caixa.appendChild(caixaInformacoes);
+                    caixa.appendChild(seta);
+
+                    caixaGeral.appendChild(caixa);
+                    caixaGeral.appendChild(caixaInvisivel);
+                    caixaGeral.appendChild(salvarBarbearia);
+
+                    container.appendChild(caixaGeral);
+                });
+
+            } catch (error) {
+                console.error('Erro ao pegar os dados do banco: ', error);
+                container.innerHTML = '<p>Ocorreu um erro ao carregar os estabelecimentos.</p>';
+            }
+        });
+    </script>
 </body>
+
 </html>
