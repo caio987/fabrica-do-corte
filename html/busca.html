@@ -100,19 +100,31 @@
                     contato.classList.add("contato");
                     contato.innerText = "Contato: " + (e.telefone_estabelecimento || "Não informado");
 
+                    const div1 = document.createElement("div");
+                    const texto1 = document.createElement("p");
+                    texto1.innerHTML = "Foto de nossa barbearia"
+
                     const fotoExtra = document.createElement("img");
                     fotoExtra.src = e.foto || "../img/default-foto.png";
                     fotoExtra.alt = "Foto do local";
                     fotoExtra.classList.add("fotoBarbearia");
+                    div1.appendChild(texto1)
+                    div1.appendChild(fotoExtra)
+
+                    const div2 = document.createElement("div");
+                    const texto2 = document.createElement("p");
+                    texto2.innerHTML = "Um pouco sobre nossos serviços"
 
                     const sinopse = document.createElement("p");
                     sinopse.classList.add("sinopse");
                     sinopse.innerText = e.apresentacao || "Sem descrição disponível.";
-                    
+                    div2.appendChild(texto2)
+                    div2.appendChild(sinopse)
+
                     const seta = document.createElement("img");
                     seta.src = "../img/icons/seta.png";
                     seta.classList.add("seta");
-                    
+
                     const salvarBarbearia = document.createElement("button");
                     salvarBarbearia.classList.add("salvarBarbearia");
                     salvarBarbearia.innerText = "Salvar Barbearia";
@@ -123,8 +135,8 @@
                     caixaInformacoes.appendChild(localizacao);
                     caixaInformacoes.appendChild(contato);
 
-                    caixaInvisivel.appendChild(fotoExtra);
-                    caixaInvisivel.appendChild(sinopse);
+                    caixaInvisivel.appendChild(div1);
+                    caixaInvisivel.appendChild(div2);
 
                     caixa.appendChild(foto);
                     caixa.appendChild(caixaInformacoes);

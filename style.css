@@ -34,23 +34,25 @@ header .navMobile {
     display: none;
 }
 
-header nav .navNormal a:has(img){
+header nav .navNormal a:has(img) {
     display: flex;
     height: fit-content;
     border-radius: 50%;
     outline: 1px solid transparent;
 }
-header nav .navNormal a:has(img):focus-within{
+
+header nav .navNormal a:has(img):focus-within {
     outline: 1px solid #daa248;
 }
 
-header a:not(a:has(img)){
+header a:not(a:has(img)) {
     padding: 8px;
     outline: 1px solid transparent;
     border-radius: 12px;
 }
+
 header a:not(a:has(img)):hover,
-header a:not(a:has(img)):focus-within{
+header a:not(a:has(img)):focus-within {
     padding: 8px;
     outline: 1px solid #daa248;
     background-color: #1b1b1b;
@@ -192,7 +194,7 @@ main .seta {
     margin: 15px;
 }
 
-main .seta:hover{
+main .seta:hover {
     scale: 1.1 !important;
 }
 
@@ -258,6 +260,7 @@ main .caixaGeral .contato,
 main .caixaGeral .sinopse,
 main #quemSomos p {
     color: white;
+    font-size: 1.2em;
 }
 
 main .caixaGeral p span {
@@ -275,13 +278,13 @@ main .caixaGeral .avaliacao {
 
 main .caixaGeral .localizacao,
 main .caixaGeral .contato,
-main .caixaGeral .nomeEstabelecimento{
+main .caixaGeral .nomeEstabelecimento {
     text-align: left;
     margin-left: 25px;
 }
 
 main .caixaGeral .avaliacao img {
-    max-width: 80px;
+    max-width: 110px;
 }
 
 main .caixaGeral button {
@@ -530,17 +533,17 @@ main #caixaEstabelecimento .caixaGeral {
     justify-content: center;
     padding: 5px;
     margin: 20px auto;
-    width: 80%;
+    width: 60%;
 }
-main #caixaEstabelecimento .caixaGeral .caixaBarbearia{
+
+main #caixaEstabelecimento .caixaGeral .caixaBarbearia {
     display: flex;
     align-items: center;
 }
-main #caixaEstabelecimento .caixaGeral .caixaInvisivel{
-}
 
 main #caixaEstabelecimento .caixaGeral .fotoBarbearia {
-    width: 150px;
+    width: 200px;
+    height: 130px;
 }
 
 main #caixaEstabelecimento .caixaGeral .caixaInformacoes {
@@ -552,7 +555,7 @@ main #caixaEstabelecimento .caixaGeral .caixaInformacoes {
 
 main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
     /* margin: 0; */
-    font-size: 1.5em;
+    font-size: 2em;
     font-weight: bold;
     /* color: #C4974F; */
 }
@@ -566,7 +569,7 @@ main #caixaEstabelecimento .active .seta {
 }
 
 main #caixaEstabelecimento .caixaInvisivel,
-main #caixaEstabelecimento .salvarBarbearia{
+main #caixaEstabelecimento .salvarBarbearia {
     display: none;
 }
 
@@ -574,10 +577,10 @@ main #caixaEstabelecimento .active .caixaInvisivel {
     width: 100%;
     margin: 20px;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: space-around;  
 }
-main #caixaEstabelecimento .active .salvarBarbearia{
+
+main #caixaEstabelecimento .active .salvarBarbearia {
     display: block;
 }
 
@@ -696,6 +699,7 @@ main #caixa .margem {
     main #cardsQuemSomos {
         height: 240px;
     }
+
     main .cards {
         width: 80px;
         top: 40px;
@@ -726,7 +730,7 @@ main #caixa .margem {
         left: 240px;
     }
 
-     /* {
+    /* {
         font-size: 1em;
     } */
 }
