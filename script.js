@@ -43,12 +43,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     </nav>
       <ul class="navMobile">
       <hr>
-      <hr>
       <li><a href="busca.html" class="links">Barbearias</a></li>
       <hr>
       <li><a href="index.html#quemSomos" class="links">Quem somos</a></li>
       <hr>
-      <li><a href="escolherCadastro.html" class="links">Minha Conta</a></li>
+      <li><a href="infoContaCliente.html" class="links">Minha Conta</a></li>
       </ul>
       
     </nav>
