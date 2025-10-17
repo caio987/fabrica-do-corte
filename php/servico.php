@@ -4,7 +4,7 @@ require_once 'config.php';
 session_start();
 // Receber o JSON enviado pelo fetch
 $json = file_get_contents('php://input');
-
+$id = $_SESSION['id'];
 // Transformar em array associativo
 $data = json_decode($json, true);
 

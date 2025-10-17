@@ -62,7 +62,7 @@
       color: white;
     }
 
-    /* Estilo para exibir funcionário (não utilizado no script atual) */
+    /* Estilo para exibir funcionário */
     #funcionario {
       width: 140px;
       height: 200px;
@@ -94,16 +94,86 @@
 <!-- Onde os serviços adicionados serão listados -->
 <div id="caixa"></div>
 
+<!-- Funcionario -->
+<div id="funcionario" onclick="adFuncionario()">
+  <img src="https://marketplace.canva.com/oM_oU/MAEmtLoM_oU/1/tl/canva-user-icon-MAEmtLoM_oU.png" alt="">
+</div>
+
+<!-- Formulário do funcionário/barbeiro -->
+<!-- Formulário do funcionário/barbeiro -->
+<div id="formFuncionario" style="display: none;">
+  <form action="" enctype="multipart/form-data">
+    <label for="">Foto do barbeiro</label>
+    <input type="file" accept="image/*" name="foto" id=""><br>
+    <label for="">Nome:</label><br>
+    <input type="text" placeholder="nome" name="nome" id=""><br>
+    <label for="selectServico1">Corte 1:</label>
+    <select id="selectServico1" name="selectServico1">
+      <option value="">Carregando serviços...</option>
+    </select><br>
+
+    <label for="selectServico2">Corte 2:</label>
+    <select id="selectServico2" name="selectServico2">
+      <option value="">Carregando serviços...</option>
+    </select><br>
+
+    <label for="selectServico3">Corte 3:</label>
+    <select id="selectServico3" name="selectServico3">
+      <option value="">Carregando serviços...</option>
+    </select><br><br>
+
+    <button type="submit">Selecionar</button>
+  </form>
+</div>
+
+
 <!-- Botão final para enviar os dados -->
 <button onclick="enviar()">Enviar</button>
 
 <script>
   // Variáveis globais
-  let datasSelecionadas = [];      // Armazena as datas escolhidas no calendário
-  let horariosSelecionados = [];   // Armazena os horários escolhidos
-  let servico = [];                // Armazena os nomes dos serviços adicionados
-  let preco = [];                  // Armazena os preços dos serviços
+  let datasSelecionadas = [];
+  let horariosSelecionados = [];
+  let servico = [];
+  let preco = [];
   const caixa = document.getElementById('caixa');
+
+  const funcionario = document.getElementById('funcionario');
+  const formFuncionario = document.getElementById('formFuncionario');
+
+  // Função para mostrar o formulário do funcionário e preencher o select
+  async function adFuncionario(){
+    formFuncionario.style.display = 'block';
+    try {
+      const resposta = await fetch("../php/servicoInformacao.php");
+      if(!resposta.ok) throw new Error("Erro ao buscar serviços");
+      const dados = await resposta.json();
+  
+      // Lista dos 3 selects
+      const selects = [
+        document.getElementById('selectServico1'),
+        document.getElementById('selectServico2'),
+        document.getElementById('selectServico3')
+      ];
+  
+      selects.forEach(select => {
+        select.innerHTML = '<option value="">Selecione um corte</option>';
+        dados.forEach(servico => {
+          const option = document.createElement('option');
+          option.value = servico.id_servico;
+          option.textContent = servico.nome_servico;
+          select.appendChild(option);
+        });
+      });
+  
+    } catch(e) {
+      console.error('Erro ao carregar serviços:', e);
+      ['selectServico1','selectServico2','selectServico3'].forEach(id => {
+        document.getElementById(id).innerHTML = '<option value="">Erro ao carregar</option>';
+      });
+    }
+  }
+  
 
   // Ao carregar a página, busca os serviços já cadastrados no banco
   document.addEventListener('DOMContentLoaded', async () => {
@@ -111,7 +181,6 @@
       const resposta = await fetch('../php/informacaoEstabelecimento.php');
       const dados = await resposta.json();
 
-      // Exibe cada serviço e preço retornado do banco
       dados.forEach(item => {
         caixa.innerHTML += `
           <input type="text" name="servico" id="servico" value="${item.nome_servico}">
@@ -123,36 +192,31 @@
     }
   });
 
-  // Função para adicionar manualmente novos serviços e preços
+  // Adicionar manualmente novos serviços
   function adicionar() {
-    // Captura os valores dos campos
     servico.push(document.getElementById('corte').value);
     preco.push(document.getElementById('preco').value);
 
-    // Limpa a caixa e atualiza com os novos valores
-    caixa.innerHTML = ``;
+    caixa.innerHTML = '';
 
-    // Mostra os serviços adicionados
-    servico.forEach((item, i) => {
+    servico.forEach(item => {
       caixa.innerHTML += `<input type="text" name="servico" id="servico" value="${item}">`;
     });
 
-    // Mostra os preços adicionados
-    preco.forEach((item, i) => {
+    preco.forEach(item => {
       caixa.innerHTML += `<input type="text" name="preco" id="preco" value="${item}">`;
     });
   }
 
   // Configuração do calendário
   document.addEventListener('DOMContentLoaded', async function() {
-    const hoje = new Date(); // Data atual
+    const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
 
     const calendarEl = document.getElementById('calendar');
     const horariosEl = document.getElementById('horarios');
-    let datasBloqueadas = []; // Datas já cadastradas no banco
+    let datasBloqueadas = [];
 
-    // Busca as datas bloqueadas (já ocupadas)
     try {
       const resposta = await fetch('../php/datasCadastradas.php');
       datasBloqueadas = await resposta.json();
@@ -160,23 +224,18 @@
       console.error('Erro ao carregar datas cadastradas:', erro);
     }
 
-    // Criação do calendário usando FullCalendar
     const calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       locale: 'pt-br',
-
-      // Quando o usuário clica em uma data
       dateClick: function(info) {
         const dataClicada = new Date(info.dateStr);
         dataClicada.setHours(0, 0, 0, 0);
 
-        // Impede selecionar datas passadas
         if (dataClicada < hoje) {
           alert('Data expirada!');
           return;
         }
 
-        // Impede selecionar datas já cadastradas
         if (datasBloqueadas.includes(info.dateStr)) {
           alert('Essa data já está cadastrada');
           return;
@@ -184,28 +243,22 @@
 
         const dataStr = info.dateStr;
 
-        // Alterna a seleção (marca ou desmarca)
         if (datasSelecionadas.includes(dataStr)) {
           datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1);
         } else {
           datasSelecionadas.push(dataStr);
         }
 
-        // Atualiza as cores e horários
         atualizarEventos();
         mostrarHorarios(dataStr);
       }
     });
 
-    // Renderiza o calendário na tela
     calendar.render();
 
-    // Atualiza visualmente as datas selecionadas e bloqueadas
     function atualizarEventos() {
-      // Remove eventos antigos
       calendar.getEvents().forEach(e => e.remove());
 
-      // Marca as datas selecionadas com verde escuro
       datasSelecionadas.forEach(d => {
         calendar.addEvent({
           title: "Selecionado",
@@ -215,7 +268,6 @@
         });
       });
 
-      // Marca as datas bloqueadas com vermelho
       datasBloqueadas.forEach(d => {
         calendar.addEvent({
           title: "Indisponível",
@@ -228,17 +280,15 @@
 
     atualizarEventos();
 
-    // Gera os botões de horários disponíveis
     function mostrarHorarios(dataStr) {
-      horariosSelecionados = [];      // limpa seleção anterior
-      horariosEl.innerHTML = '';      // limpa os botões
+      horariosSelecionados = [];
+      horariosEl.innerHTML = '';
       horariosEl.style.display = 'flex';
 
-      const startHour = 8;   // início do expediente
-      const endHour = 20;    // fim do expediente
-      const intervalo = 30;  // minutos entre horários
+      const startHour = 8;
+      const endHour = 20;
+      const intervalo = 30;
 
-      // Gera os horários em intervalos de 30 minutos
       for (let h = startHour; h < endHour; h++) {
         for (let m = 0; m < 60; m += intervalo) {
           const hora = String(h).padStart(2, '0');
@@ -249,9 +299,7 @@
           btn.textContent = horaStr;
           btn.classList.add('hora-btn');
 
-          // Evento de clique no botão de horário
           btn.addEventListener('click', () => {
-            // Alterna seleção do horário
             if (horariosSelecionados.includes(horaStr)) {
               horariosSelecionados.splice(horariosSelecionados.indexOf(horaStr), 1);
               btn.classList.remove('selecionada');
@@ -260,7 +308,6 @@
               btn.classList.add('selecionada');
             }
 
-            // Exibe no console as seleções atuais
             console.log(`Data: ${datasSelecionadas} | Horários selecionados:`, horariosSelecionados);
           });
 
@@ -270,15 +317,13 @@
     }
   });
 
-  // Função final de envio dos dados ao servidor
+  // Envio dos dados
   function enviar() {
-    // Verifica se há pelo menos uma data e um horário
     if (datasSelecionadas.length === 0 || horariosSelecionados.length === 0) {
       alert("Selecione pelo menos uma data e um horário!");
       return;
     }
 
-    // Envia datas e horários para o servidor (PHP)
     fetch("../php/disponibilidade.php", {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -288,7 +333,6 @@
     .then(res => console.log(res))
     .catch(err => console.error(err));
 
-    // Envia serviços e preços para o servidor (PHP)
     fetch("../php/servico.php", {
       method: 'POST',
       headers: {'content-type': 'application/json'},
@@ -297,7 +341,26 @@
     .then(res => res.text())
     .then(res => console.log(res))
     .catch(err => console.error(err));
+ 
+    const form = document.querySelector('#formFuncionario form');
+    const formData = new FormData(form); // cria um FormData que suporta arquivos
+  
+    // Adiciona os cortes selecionados (serviço) manualmente se quiser
+    formData.append('servico1', document.getElementById('selectServico1').value);
+    formData.append('servico2', document.getElementById('selectServico2').value);
+    formData.append('servico3', document.getElementById('selectServico3').value);
+  
+    fetch('../php/cadastrarFuncionario.php', {
+      method: 'POST',
+      body: formData // envia como multipart/form-data
+    })
+    .then(res => res.text())
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
   }
+
+
+
 </script>
 
 </body>
