@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Importa a biblioteca FullCalendar (para exibir o calendário interativo) -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+
   <title>Agendamento com Botões de Horário</title>
+
   <style>
+    /* Estilo geral da página */
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
       text-align: center;
     }
 
+    /* Estilo do calendário */
     #calendar {
       max-width: 900px;
       margin: 20px auto;
@@ -21,8 +27,9 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
+    /* Contêiner dos botões de horário */
     #horarios {
-      display: none;
+      display: none; /* oculto inicialmente */
       margin-top: 20px;
       max-width: 900px;
       margin-left: auto;
@@ -33,6 +40,7 @@
       justify-content: center;
     }
 
+    /* Botão de horário */
     .hora-btn {
       padding: 10px 16px;
       border: none;
@@ -43,84 +51,161 @@
       font-size: 16px;
     }
 
+    /* Efeito ao passar o mouse */
     .hora-btn:hover {
       background-color: #c5c5c5;
     }
 
+    /* Botão selecionado (horário escolhido) */
     .hora-btn.selecionada {
       background-color: #1c3c17;
       color: white;
     }
+
+    /* Estilo para exibir funcionário (não utilizado no script atual) */
+    #funcionario {
+      width: 140px;
+      height: 200px;
+      background-color: rgb(0, 0, 0);
+      border-radius: 10px;
+    }
+
+    #funcionario img {
+      width: 70%;
+    }
   </style>
 </head>
+
 <body>
 
 <h2>Escolha a data e o horário</h2>
 
+<!-- Calendário interativo -->
 <div id="calendar"></div>
+
+<!-- Contêiner para os botões de horários -->
 <div id="horarios"></div>
+
+<!-- Campos para adicionar novo serviço -->
 <input type="text" placeholder="Coloque aqui o nome do corte" name="corte" required id="corte">
 <input type="number" placeholder="Preço R$0,00" name="preco" required id="preco">
 <button onclick="adicionar()">Adicionar</button>
+
+<!-- Onde os serviços adicionados serão listados -->
 <div id="caixa"></div>
+
+<!-- Botão final para enviar os dados -->
 <button onclick="enviar()">Enviar</button>
+
 <script>
-  let datasSelecionadas = [];
-  let horariosSelecionados = [];
-  let servico =[];
-  let preco = [];
-  
-  function adicionar(){
-    const caixa = document.getElementById('caixa');
+  // Variáveis globais
+  let datasSelecionadas = [];      // Armazena as datas escolhidas no calendário
+  let horariosSelecionados = [];   // Armazena os horários escolhidos
+  let servico = [];                // Armazena os nomes dos serviços adicionados
+  let preco = [];                  // Armazena os preços dos serviços
+  const caixa = document.getElementById('caixa');
+
+  // Ao carregar a página, busca os serviços já cadastrados no banco
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const resposta = await fetch('../php/informacaoEstabelecimento.php');
+      const dados = await resposta.json();
+
+      // Exibe cada serviço e preço retornado do banco
+      dados.forEach(item => {
+        caixa.innerHTML += `
+          <input type="text" name="servico" id="servico" value="${item.nome_servico}">
+          <input type="text" name="preco" id="precoCorte" value="${item.preco}"><br>
+        `;
+      });
+    } catch (erro) {
+      console.error('Erro ao carregar dados:', erro);
+    }
+  });
+
+  // Função para adicionar manualmente novos serviços e preços
+  function adicionar() {
+    // Captura os valores dos campos
     servico.push(document.getElementById('corte').value);
     preco.push(document.getElementById('preco').value);
-    console.log(servico);
-    console.log(preco);
-    caixa.innerHTML=``
-    servico.forEach((item,i)=>{
-      caixa.innerHTML+=`
-      <input type="text" name="servico" id="servico" value="${item}">
-      `
-    })
-    preco.forEach((item,i)=>{
-      caixa.innerHTML+=`
-      <input type="text" name="preco" id="preco" value="${item}">
-      `
-    })
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-  const hoje = new Date();
-  hoje.setHours(0,0,0,0);
+    // Limpa a caixa e atualiza com os novos valores
+    caixa.innerHTML = ``;
 
-  const calendarEl = document.getElementById('calendar');
-  const horariosEl = document.getElementById('horarios');
+    // Mostra os serviços adicionados
+    servico.forEach((item, i) => {
+      caixa.innerHTML += `<input type="text" name="servico" id="servico" value="${item}">`;
+    });
 
-  const calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    locale: 'pt-br',
-    dateClick: function(info) {
-      const dataClicada = new Date(info.dateStr);
-      dataClicada.setHours(0,0,0,0);
+    // Mostra os preços adicionados
+    preco.forEach((item, i) => {
+      caixa.innerHTML += `<input type="text" name="preco" id="preco" value="${item}">`;
+    });
+  }
 
-      if (dataClicada < hoje) {
-        alert('Data expirada!');
-        return;
+  // Configuração do calendário
+  document.addEventListener('DOMContentLoaded', async function() {
+    const hoje = new Date(); // Data atual
+    hoje.setHours(0, 0, 0, 0);
+
+    const calendarEl = document.getElementById('calendar');
+    const horariosEl = document.getElementById('horarios');
+    let datasBloqueadas = []; // Datas já cadastradas no banco
+
+    // Busca as datas bloqueadas (já ocupadas)
+    try {
+      const resposta = await fetch('../php/datasCadastradas.php');
+      datasBloqueadas = await resposta.json();
+    } catch (erro) {
+      console.error('Erro ao carregar datas cadastradas:', erro);
+    }
+
+    // Criação do calendário usando FullCalendar
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'pt-br',
+
+      // Quando o usuário clica em uma data
+      dateClick: function(info) {
+        const dataClicada = new Date(info.dateStr);
+        dataClicada.setHours(0, 0, 0, 0);
+
+        // Impede selecionar datas passadas
+        if (dataClicada < hoje) {
+          alert('Data expirada!');
+          return;
+        }
+
+        // Impede selecionar datas já cadastradas
+        if (datasBloqueadas.includes(info.dateStr)) {
+          alert('Essa data já está cadastrada');
+          return;
+        }
+
+        const dataStr = info.dateStr;
+
+        // Alterna a seleção (marca ou desmarca)
+        if (datasSelecionadas.includes(dataStr)) {
+          datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1);
+        } else {
+          datasSelecionadas.push(dataStr);
+        }
+
+        // Atualiza as cores e horários
+        atualizarEventos();
+        mostrarHorarios(dataStr);
       }
+    });
 
-      const dataStr = info.dateStr;
+    // Renderiza o calendário na tela
+    calendar.render();
 
-      // Caso a data já esteja selecionada excluir
-      if (datasSelecionadas.includes(dataStr)) {
-        datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1);
-      } else {
-        datasSelecionadas.push(dataStr);
-      }
-
+    // Atualiza visualmente as datas selecionadas e bloqueadas
+    function atualizarEventos() {
       // Remove eventos antigos
       calendar.getEvents().forEach(e => e.remove());
 
-      // Adiciona destaque na data
+      // Marca as datas selecionadas com verde escuro
       datasSelecionadas.forEach(d => {
         calendar.addEvent({
           title: "Selecionado",
@@ -130,75 +215,90 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       });
 
-      // Mostrar horários para a data selecionada
-      mostrarHorarios(dataStr);
+      // Marca as datas bloqueadas com vermelho
+      datasBloqueadas.forEach(d => {
+        calendar.addEvent({
+          title: "Indisponível",
+          start: d,
+          display: 'background',
+          backgroundColor: '#d9534f'
+        });
+      });
+    }
+
+    atualizarEventos();
+
+    // Gera os botões de horários disponíveis
+    function mostrarHorarios(dataStr) {
+      horariosSelecionados = [];      // limpa seleção anterior
+      horariosEl.innerHTML = '';      // limpa os botões
+      horariosEl.style.display = 'flex';
+
+      const startHour = 8;   // início do expediente
+      const endHour = 20;    // fim do expediente
+      const intervalo = 30;  // minutos entre horários
+
+      // Gera os horários em intervalos de 30 minutos
+      for (let h = startHour; h < endHour; h++) {
+        for (let m = 0; m < 60; m += intervalo) {
+          const hora = String(h).padStart(2, '0');
+          const minuto = String(m).padStart(2, '0');
+          const horaStr = `${hora}:${minuto}`;
+
+          const btn = document.createElement('button');
+          btn.textContent = horaStr;
+          btn.classList.add('hora-btn');
+
+          // Evento de clique no botão de horário
+          btn.addEventListener('click', () => {
+            // Alterna seleção do horário
+            if (horariosSelecionados.includes(horaStr)) {
+              horariosSelecionados.splice(horariosSelecionados.indexOf(horaStr), 1);
+              btn.classList.remove('selecionada');
+            } else {
+              horariosSelecionados.push(horaStr);
+              btn.classList.add('selecionada');
+            }
+
+            // Exibe no console as seleções atuais
+            console.log(`Data: ${datasSelecionadas} | Horários selecionados:`, horariosSelecionados);
+          });
+
+          horariosEl.appendChild(btn);
+        }
+      }
     }
   });
 
-  calendar.render();
-
-  function mostrarHorarios(dataStr) {
-    horariosSelecionados = [];
-    horariosEl.innerHTML = '';
-    horariosEl.style.display = 'flex';
-
-    const startHour = 8;
-    const endHour = 20;
-    const intervalo = 30; // minutos
-
-    for (let h = startHour; h < endHour; h++) {
-      for (let m = 0; m < 60; m += intervalo) {
-        const hora = String(h).padStart(2, '0');
-        const minuto = String(m).padStart(2, '0');
-        const horaStr = `${hora}:${minuto}`;
-
-        const btn = document.createElement('button');
-        btn.textContent = horaStr;
-        btn.classList.add('hora-btn');
-        btn.addEventListener('click', () => {
-          if (horariosSelecionados.includes(horaStr)) {
-            horariosSelecionados.splice(horariosSelecionados.indexOf(horaStr), 1);
-            btn.classList.remove('selecionada');
-          } else {
-            horariosSelecionados.push(horaStr);
-            btn.classList.add('selecionada');
-          }
-          console.log(`Data: ${datasSelecionadas} | Horários selecionados:`, horariosSelecionados);
-        });
-
-        horariosEl.appendChild(btn);
-      }
+  // Função final de envio dos dados ao servidor
+  function enviar() {
+    // Verifica se há pelo menos uma data e um horário
+    if (datasSelecionadas.length === 0 || horariosSelecionados.length === 0) {
+      alert("Selecione pelo menos uma data e um horário!");
+      return;
     }
+
+    // Envia datas e horários para o servidor (PHP)
+    fetch("../php/disponibilidade.php", {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ datas: datasSelecionadas, horarios: horariosSelecionados })
+    })
+    .then(res => res.text())
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
+
+    // Envia serviços e preços para o servidor (PHP)
+    fetch("../php/servico.php", {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({ servico: servico, preco: preco })
+    })
+    .then(res => res.text())
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
   }
-});
-
-// Função de envio
-function enviar() {
-  if (datasSelecionadas.length === 0 || horariosSelecionados.length === 0) {
-    alert("Selecione pelo menos uma data e um horário!");
-    return;
-  }
-
-  fetch("../php/disponibilidade.php", {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ datas: datasSelecionadas, horarios: horariosSelecionados })
-  })
-  .then(res => res.text())
-  .then(res => console.log(res))
-  .catch(err => console.error(err));
-
-  fetch("../php/servico.php",{
-    method: 'POST',
-    headers: {'content-type': 'application/json'},
-    body: JSON.stringify({servico: servico, preco: preco})
-  })
-  .then(res => res.text())
-  .then(res => console.log(res))
-  .catch(err => console.error(err));
-}
 </script>
-
 
 </body>
 </html>
