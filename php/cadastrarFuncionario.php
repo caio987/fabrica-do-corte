@@ -1,19 +1,34 @@
 <?php
-// Nome do barbeiro
-$nome = $_POST['nome'] ?? '';
+// cadastrarFuncionario.php
+session_start();
 
-// Serviços selecionados
-$servico1 = $_POST['servico1'] ?? '';
-$servico2 = $_POST['servico2'] ?? '';
-$servico3 = $_POST['servico3'] ?? '';
+try {
+    // Receber dados do formulário
+    $nome = $_POST['nome'] ?? '';
+    $servico1 = $_POST['servico1'] ?? null;
+    $servico2 = $_POST['servico2'] ?? null;
+    $servico3 = $_POST['servico3'] ?? null;
 
-// Foto do barbeiro
-if(isset($_FILES['foto']) && $_FILES['foto']['error'] === 0){
-    $fotoTmp = $_FILES['foto']['tmp_name'];
-    $fotoBlob = file_get_contents($fotoTmp); // pega o conteúdo binário
-    // Aqui você pode salvar $fotoBlob no banco de dados em um campo BLOB
+    // Receber dias/horários selecionados (JSON)
+    $diasHorarios = json_decode($_POST['diasHorarios'] ?? '[]', true);
+    if (!$diasHorarios) $diasHorarios = [];
+
+    // Receber e armazenar a foto como BLOB (apenas para teste, não salva)
+    $fotoInfo = '';
+    if(isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK){
+        $fotoInfo = "Arquivo recebido: " . $_FILES['foto']['name'] . " | Tamanho: " . $_FILES['foto']['size'] . " bytes";
+    } else {
+        $fotoInfo = "Nenhuma foto enviada";
+    }
+
+    // Exibir os dados recebidos
+    echo "<b>Nome:</b> $nome<br>";
+    echo "<b>Serviços selecionados:</b> $servico1, $servico2, $servico3<br>";
+    echo "<b>Dias/Horários selecionados:</b> " . implode(", ", $diasHorarios) . "<br>";
+    echo "<b>Foto:</b> $fotoInfo<br>";
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo "Erro ao processar os dados: " . $e->getMessage();
 }
-
-// Exemplo de retorno
-echo "Dados recebidos: $nome, $servico1, $servico2, $servico3, foto recebida.";
 ?>
