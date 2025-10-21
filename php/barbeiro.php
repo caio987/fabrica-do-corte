@@ -1,91 +1,91 @@
 <?php
-    require_once './config.php';
+require_once 'config.php';
+session_start();
 
-    //Verifica se os dados foram andados via POST
-    if ($_SERVER['REQUEST_METHOD'] === "POST") {
-        //Vereficar se a senha e o confirmar senha são iguais
-        $senha = $_POST['senha'];
-        $confirmar = $_POST['confirmar'];
-        if ($senha == $confirmar) {
-             //Pegar os dados enviados
-            $nome = filter_var($_POST['nome'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-            $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-            $nome_estabelecimento = filter_var($_POST['nome_estabelecimento'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $telefone = filter_var($_POST['telefone'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $localizacao = filter_var($_POST['localizacao'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $apresentacao = filter_var($_POST['apresentacao'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $foto = '';//Caso não coloque nenhuma imagem
-            $logo = '';//Caso coloque nenhuma imagem
-            //Verifica se a imagem existe
-            if (isset($_FILES['foto']) && $_FILES['foto'] ['error'] === 0) {
-                //Pegar o tipo da imagem
-                $tipo = $_FILES['foto'] ['type'];
-                //Pegar o caminha temporário
-                $caminho = $_FILES['foto'] ['tmp_name'];
-                //Pegar o conteudo da imagem
-                $conteudo = file_get_contents($caminho);
-                //Transformar a imagem em binário
-                $foto = 'type:'. $tipo. ';base64,'. base64_encode($conteudo);
-            }
-            if (isset($_FILES['logo']) && $_FILES['logo'] ['error'] === 0) {
-                //Pegar o tipo da imagem
-                $tipo = $_FILES['logo'] ['type'];
-                //Pegar o caminha temporário
-                $caminho = $_FILES['logo'] ['tmp_name'];
-                //Pegar o conteudo da imagem
-                $conteudo = file_get_contents($caminho);
-                //Transformar a imagem em binário
-                $logo = 'type:'. $tipo. ';base64,'. base64_encode($conteudo);
-            }
-            try {
-                if ($email) {
-                   
-                    //Inserir no banco de dados
-                    $inserir = $pdo->prepare("INSERT INTO estabelecimento (nome_proprietario,email_proprietario,senha_proprietario,nome_estabelecimento,telefone_estabelecimento,localizacao,foto_estabelecimento,logo_barbearia,apresentacao) VALUES (:nome,:email,:senha,:nome_estabelecimento,:telefone,:localizacao,:foto,:logo,:apresentacao)");
-                    $inserir->bindParam(':nome', $nome);
-                    $inserir->bindParam(':email', $email);
-                    $inserir->bindParam(':senha', $senha);
-                    $inserir->bindParam(':nome_estabelecimento', $nome_estabelecimento);
-                    $inserir->bindParam(':telefone', $telefone);
-                    $inserir->bindParam(':localizacao', $localizacao);
-                    $inserir->bindParam(':foto', $foto);
-                    $inserir->bindParam(':logo', $logo);
-                    $inserir->bindParam(':apresentacao', $apresentacao);
-                    $inserir->execute();
-                     //Tratamento de mensagem de cadastro realizado
-                    $mensagem = 'Cadastro Realizado';
-                    header("location: ../html/login.html?mensagem=".urlencode($mensagem));  
-                    exit;
-                }else{
-                     //Tratamento de erro caso o email seja inválido
-                $mensagem = 'Email invalido';
-                header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
-                }
-                exit;
+// Verifica se o usuário (estabelecimento) está logado
+if (!isset($_SESSION['id'])) {
+    $mensagem = 'Sessão expirada. Faça login novamente.';
+    header("location: ../html/login.html?mensagem=" . urlencode($mensagem));
+    exit;
+}
 
-            } catch (PDOException $e) {
-                //Mandar mensagem de erro que o usuário ta cadastrado
-                if ($e->getCode() == 23000) {
-                    $mensagem = 'ERRO: Este E-mail ou Endereço já está cadastrado';
-                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));
-                      
-                }else {
-                    //Mandar mensagem de erro genérica
-                    $mensagem = 'ERRO '. $e->getMessage();
-                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
-                }
-                exit;
-            }
-            
-            
-            
-        }else{
-            //Mandar mensagem d erro caso as senhas sejam diferentes
-            $mensagem = "Senha e confirar senha estão diferentes";
-            header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));
-            exit;
-        }
-        
+$id_estabelecimento = $_SESSION['id'];
+
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+
+    // Pegando dados básicos
+    $nome = filter_var($_POST['nome'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $servicos = json_decode($_POST['servicos'] ?? '[]', true);
+    $diasHorarios = json_decode($_POST['diasHorarios'] ?? '[]', true);
+    $foto = '';
+
+    // --- Tratamento da imagem ---
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === 0) {
+        $tipo = $_FILES['foto']['type'];
+        $caminho = $_FILES['foto']['tmp_name'];
+        $conteudo = file_get_contents($caminho);
+        $foto = 'type:' . $tipo . ';base64,' . base64_encode($conteudo);
     }
+
+    try {
+        // --- Inicia transação ---
+        $pdo->beginTransaction();
+
+        // 1️⃣ Cadastrar funcionário
+        $inserirFuncionario = $pdo->prepare("
+            INSERT INTO funcionarios (id_estabelecimento, nome, foto)
+            VALUES (:id_estabelecimento, :nome, :foto)
+        ");
+        $inserirFuncionario->bindParam(':id_estabelecimento', $id_estabelecimento);
+        $inserirFuncionario->bindParam(':nome', $nome);
+        $inserirFuncionario->bindParam(':foto', $foto);
+        $inserirFuncionario->execute();
+
+        $id_funcionario = $pdo->lastInsertId();
+
+        // 2️⃣ Vincular serviços selecionados
+        if (!empty($servicos)) {
+            $inserirServico = $pdo->prepare("
+                INSERT INTO funcionario_servico (id_funcionario, id_servico)
+                VALUES (:id_funcionario, :id_servico)
+            ");
+            foreach ($servicos as $id_servico) {
+                $inserirServico->bindParam(':id_funcionario', $id_funcionario);
+                $inserirServico->bindParam(':id_servico', $id_servico);
+                $inserirServico->execute();
+            }
+        }
+
+        // 3️⃣ Vincular disponibilidades selecionadas
+        if (!empty($diasHorarios)) {
+            $inserirDisp = $pdo->prepare("
+                INSERT INTO funcionario_disponibilidade (id_funcionario, id_disponibilidade)
+                VALUES (:id_funcionario, :id_disponibilidade)
+            ");
+            foreach ($diasHorarios as $id_disp) {
+                $inserirDisp->bindParam(':id_funcionario', $id_funcionario);
+                $inserirDisp->bindParam(':id_disponibilidade', $id_disp);
+                $inserirDisp->execute();
+            }
+        }
+
+        // --- Tudo certo, confirma ---
+        $pdo->commit();
+
+        $mensagem = 'Funcionário cadastrado com sucesso!';
+        header("location: ../html/funcionarios.html?mensagem=" . urlencode($mensagem));
+        exit;
+
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+
+        $mensagem = 'Erro ao cadastrar funcionário: ' . $e->getMessage();
+        header("location: ../html/funcionarios.html?mensagem=" . urlencode($mensagem));
+        exit;
+    }
+} else {
+    $mensagem = 'Método inválido.';
+    header("location: ../html/funcionarios.html?mensagem=" . urlencode($mensagem));
+    exit;
+}
 ?>
