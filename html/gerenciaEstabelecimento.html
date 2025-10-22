@@ -12,8 +12,9 @@
   .hora-btn { padding: 10px 16px; border: none; border-radius: 8px; background-color: #e0e0e0; cursor: pointer; transition: 0.2s; font-size: 16px; }
   .hora-btn:hover { background-color: #c5c5c5; }
   .hora-btn.selecionada { background-color: #1c3c17; color: white; }
-  #funcionario { width: 140px; height: 200px; background-color: rgb(0, 0, 0); border-radius: 10px; cursor: pointer; margin: 20px auto; }
-  #funcionario img { width: 70%; margin-top: 20px; }
+  #caixaFuncionario{display: flex; width: 80%;}
+  .funcionario { width: 140px; height: 200px; background-color: rgb(0, 0, 0); border-radius: 10px; cursor: pointer; margin: 20px; }
+  .funcionario img { width: 70%; margin-top: 20px; }
   #formFuncionario { display: none; background: #f9f9f9; border-radius: 10px; padding: 20px; max-width: 400px; margin: 20px auto; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
   #formFuncionario input, #formFuncionario select { width: 100%; margin-bottom: 10px; padding: 6px; }
   #diasHorariosContainer { background: #fff; padding: 10px; border-radius: 8px; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; }
@@ -25,16 +26,20 @@
 <h2>Escolha a data e o horário</h2>
 
 <div id="calendar"></div>
-<div id="horarios"></div>
+<div id="horarios"></div><br><br>
+<button onclick="enviarDisponibilidade()">Enviar Datas e Horários</button><br><br><br>
 
 <input type="text" placeholder="Coloque aqui o nome do corte" name="corte" required id="corte">
 <input type="number" placeholder="Preço R$0,00" name="preco" required id="preco">
 <button onclick="adicionar()">Adicionar</button>
 
-<div id="caixa"></div>
+<div id="caixa"></div><br><br>
+<button onclick="cadastroServico()">Cadastrar novos serviços</button>
 
-<div id="funcionario" onclick="adFuncionario()">
+<div id="caixaFuncionario">
+  <div id="funcionario" class="funcionario" onclick="adFuncionario()">
   <img src="https://marketplace.canva.com/oM_oU/MAEmtLoM_oU/1/tl/canva-user-icon-MAEmtLoM_oU.png" alt="">
+</div>
 </div>
 
 <div id="formFuncionario">
@@ -61,171 +66,7 @@
   </form>
 </div>
 
-<button onclick="enviarDisponibilidade()">Enviar Datas e Horários</button>
 
-<script>
-let datasSelecionadas = [];
-let horariosSelecionados = [];
-let servico = [];
-let preco = [];
-const caixa = document.getElementById('caixa');
-const formFuncionario = document.getElementById('formFuncionario');
-
-async function adFuncionario(){
-  formFuncionario.style.display = 'block';
-  try {
-    const resposta = await fetch("../php/servicoInformacao.php");
-    const dados = await resposta.json();
-
-    const selects = [document.getElementById('selectServico1'), document.getElementById('selectServico2'), document.getElementById('selectServico3')];
-    selects.forEach(select => {
-      select.innerHTML = '<option value="">Selecione um corte</option>';
-      dados.forEach(servico => {
-        const option = document.createElement('option');
-        option.value = servico.id_servico;
-        option.textContent = servico.nome_servico;
-        select.appendChild(option);
-      });
-    });
-
-    const respDias = await fetch("../php/buscarDisponibilidade.php");
-    const diasHorarios = await respDias.json();
-
-    const container = document.getElementById('diasHorariosContainer');
-    container.innerHTML = '';
-    diasHorarios.forEach(item => {
-      const div = document.createElement('div');
-      div.innerHTML = `<label><input type="checkbox" name="diasHorarios[]" value="${item.id_disponibilidade}"> ${item.dia} - ${item.horario}</label>`;
-      container.appendChild(div);
-    });
-
-  } catch(e) {
-    console.error('Erro ao carregar dados:', e);
-    document.getElementById('diasHorariosContainer').innerHTML = 'Erro ao carregar!';
-  }
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const resposta = await fetch('../php/informacaoEstabelecimento.php');
-    const dados = await resposta.json();
-    dados.forEach(item => {
-      caixa.innerHTML += `<input type="text" name="servico" value="${item.nome_servico}"><input type="text" name="preco" value="${item.preco}"><br>`;
-    });
-  } catch (erro) {
-    console.error('Erro ao carregar dados:', erro);
-  }
-});
-
-function adicionar() {
-  servico.push(document.getElementById('corte').value);
-  preco.push(document.getElementById('preco').value);
-  caixa.innerHTML = '';
-  servico.forEach((item,i) => {
-    caixa.innerHTML += `<input type="text" name="servico" value="${item}"><input type="text" name="preco" value="${preco[i]}"><br>`;
-  });
-}
-
-document.addEventListener('DOMContentLoaded', async function() {
-  const hoje = new Date();
-  hoje.setHours(0, 0, 0, 0);
-  const calendarEl = document.getElementById('calendar');
-  const horariosEl = document.getElementById('horarios');
-  let datasBloqueadas = [];
-
-  try {
-    const resposta = await fetch('../php/datasCadastradas.php');
-    datasBloqueadas = await resposta.json();
-  } catch (erro) {
-    console.error('Erro ao carregar datas cadastradas:', erro);
-  }
-
-  const calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    locale: 'pt-br',
-    validRange: function(nowDate) {
-      const maxDate = new Date(nowDate);
-      maxDate.setMonth(maxDate.getMonth() + 3);
-      return { start: nowDate, end: maxDate };
-    },
-    dateClick: function(info) {
-      const dataStr = info.dateStr;
-      if (datasBloqueadas.includes(dataStr)) { alert('Essa data já está cadastrada'); return; }
-      if (datasSelecionadas.includes(dataStr)) { datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1); } 
-      else { datasSelecionadas.push(dataStr); }
-      atualizarEventos();
-      mostrarHorarios(dataStr);
-    }
-  });
-
-  calendar.render();
-
-  function atualizarEventos() {
-    calendar.getEvents().forEach(e => e.remove());
-    datasSelecionadas.forEach(d => calendar.addEvent({title:"Selecionado", start:d, display:'background', backgroundColor:'#1c3c17'}));
-    datasBloqueadas.forEach(d => calendar.addEvent({title:"Indisponível", start:d, display:'background', backgroundColor:'#d9534f'}));
-  }
-
-  function mostrarHorarios(dataStr) {
-    horariosSelecionados = [];
-    horariosEl.innerHTML = '';
-    horariosEl.style.display = 'flex';
-    const startHour = 8;
-    const endHour = 20;
-    const intervalo = 30;
-    for(let h=startHour; h<endHour; h++){
-      for(let m=0; m<60; m+=intervalo){
-        const horaStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-        const btn = document.createElement('button');
-        btn.textContent = horaStr;
-        btn.classList.add('hora-btn');
-        btn.addEventListener('click',()=>{
-          if(horariosSelecionados.includes(horaStr)){
-            horariosSelecionados.splice(horariosSelecionados.indexOf(horaStr),1);
-            btn.classList.remove('selecionada');
-          } else {
-            horariosSelecionados.push(horaStr);
-            btn.classList.add('selecionada');
-          }
-        });
-        horariosEl.appendChild(btn);
-      }
-    }
-  }
-});
-
-async function enviarFuncionario() {
-    const form = document.querySelector('#formFuncionario form');
-    const nome = form.nome.value;
-    const foto = form.foto.files[0];
-    const servicosSelecionados = [form.selectServico1.value, form.selectServico2.value, form.selectServico3.value].filter(v => v !== "");
-    const checkboxes = Array.from(form.querySelectorAll('input[name="diasHorarios[]"]:checked'));
-    const diasHorariosSelecionados = checkboxes.map(cb => cb.value); // IDs corretos
-
-    const formData = new FormData();
-    formData.append('nome', nome);
-    formData.append('foto', foto);
-    formData.append('servicos', JSON.stringify(servicosSelecionados));
-    formData.append('diasHorarios', JSON.stringify(diasHorariosSelecionados));
-    formData.append('horariosSelecionados', JSON.stringify(horariosSelecionados));
-
-    try {
-        const resposta = await fetch('../php/cadastrarFuncionario.php', { method:'POST', body:formData });
-        const resultado = await resposta.text();
-
-        // Exibe no console
-        console.log('Retorno do PHP:\n', resultado);
-        console.log('Nome do funcionário:', nome);
-        console.log('Serviços selecionados:', servicosSelecionados);
-        console.log('Dias/Horários selecionados (IDs):', diasHorariosSelecionados);
-        console.log('Horários do calendário selecionados:', horariosSelecionados);
-
-        form.reset();
-        formFuncionario.style.display = 'none';
-    } catch (erro) {
-        console.error('Erro ao cadastrar funcionário:', erro);
-    }
-}
-</script>
+<script src="../gerenciamento.js"></script>
 </body>
 </html>

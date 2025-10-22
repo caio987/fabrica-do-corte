@@ -1,35 +1,90 @@
 <?php
+require_once './config.php';
 session_start();
-require_once 'config.php';
 
-$nome = $_POST['nome'] ?? '';
-$servicos = isset($_POST['servicos']) ? json_decode($_POST['servicos'], true) : [];
-$diasHorarios = isset($_POST['diasHorarios']) ? json_decode($_POST['diasHorarios'], true) : [];
-$horariosSelecionados = isset($_POST['horariosSelecionados']) ? json_decode($_POST['horariosSelecionados'], true) : [];
-
-$fotoInfo = '';
-if(isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK){
-    $fotoInfo = "📁 Nome: " . $_FILES['foto']['name'] . "<br>" .
-                "📏 Tamanho: " . round($_FILES['foto']['size']/1024,2) . " KB<br>" .
-                "🧠 Tipo: " . $_FILES['foto']['type'] . "<br>" .
-                "<img src='data:" . $_FILES['foto']['type'] . ";base64," . base64_encode(file_get_contents($_FILES['foto']['tmp_name'])) . "' style='max-width:150px;margin-top:10px;'>";
-} else {
-    $fotoInfo = "Nenhuma foto enviada";
+// Verifica se o usuário (estabelecimento) está logado
+if (!isset($_SESSION['id'])) {
+    $mensagem = 'Sessão expirada. Faça login novamente.';
+    header("location: ../html/login.html?mensagem=" . urlencode($mensagem));
+    exit;
 }
 
-echo "<h2>Funcionário Cadastrado</h2>";
-echo "<b>Nome:</b> $nome<br>";
-echo "<b>Serviços selecionados:</b> " . implode(", ", array_filter($servicos)) . "<br>";
-echo "<b>Dias/Horários (IDs) selecionados:</b> " . (!empty($diasHorarios) ? implode(", ", $diasHorarios) : "Nenhum selecionado") . "<br>";
-echo "<b>Horários do calendário selecionados:</b> " . (!empty($horariosSelecionados) ? implode(", ", $horariosSelecionados) : "Nenhum selecionado") . "<br>";
-echo "<b>Foto recebida:</b><br>$fotoInfo<br>";
+$id_estabelecimento = $_SESSION['id'];
 
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
-try {
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $inserir = $pdo->prepare("INSERT INTO funcionarios VALUES ");
+    // Pegando dados básicos
+    $nome = filter_var($_POST['nome'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $servicos = json_decode($_POST['servicos'] ?? '[]', true);
+    $diasHorarios = json_decode($_POST['diasHorarios'] ?? '[]', true);
+    $foto = '';
+
+    // --- Tratamento da imagem ---
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === 0) {
+        $tipo = $_FILES['foto']['type'];
+        $caminho = $_FILES['foto']['tmp_name'];
+        $conteudo = file_get_contents($caminho);
+        $foto = 'type:' . $tipo . ';base64,' . base64_encode($conteudo);
     }
-} catch (\Throwable $th) {
-    //throw $th;
+
+    try {
+        // --- Inicia transação ---
+        $pdo->beginTransaction();
+
+        // 1️⃣ Cadastrar funcionário
+        $inserirFuncionario = $pdo->prepare("INSERT INTO funcionarios (id_estabelecimento, nome, foto)
+            VALUES (:id_estabelecimento, :nome, :foto)
+        ");
+        $inserirFuncionario->bindParam(':id_estabelecimento', $id_estabelecimento);
+        $inserirFuncionario->bindParam(':nome', $nome);
+        $inserirFuncionario->bindParam(':foto', $foto);
+        $inserirFuncionario->execute();
+
+        $id_funcionario = $pdo->lastInsertId();
+
+        // 2️⃣ Vincular serviços selecionados
+        if (!empty($servicos)) {
+            $inserirServico = $pdo->prepare("INSERT INTO servico_funcionario (id_funcionario, id_servico)
+                VALUES (:id_funcionario, :id_servico)
+            ");
+            foreach ($servicos as $id_servico) {
+                $inserirServico->bindParam(':id_funcionario', $id_funcionario);
+                $inserirServico->bindParam(':id_servico', $id_servico);
+                $inserirServico->execute();
+            }
+        }
+
+        // 3️⃣ Vincular disponibilidades selecionadas
+        if (!empty($diasHorarios)) {
+            $inserirDisp = $pdo->prepare("INSERT INTO disponibilidade_funcionario (id_funcionario, id_disponibilidade)
+                VALUES (:id_funcionario, :id_disponibilidade)
+            ");
+            foreach ($diasHorarios as $id_disp) {
+                $inserirDisp->bindParam(':id_funcionario', $id_funcionario);
+                $inserirDisp->bindParam(':id_disponibilidade', $id_disp);
+                $inserirDisp->execute();
+            }
+        }
+
+        // --- Tudo certo, confirma ---
+        $pdo->commit();
+
+        $mensagem = 'Funcionário cadastrado com sucesso!';
+        header("location: ../html/funcionarios.html?mensagem=" . urlencode($mensagem));
+        exit;
+
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+
+        $mensagem = 'Erro ao cadastrar funcionário: ' . $e->getMessage();
+        header("location: ../html/gerenciaEstabelecimento.html?mensagem=" . urlencode($mensagem));
+        echo "Cadastro feito com sucesso";
+        exit;
+    }
+} else {
+    $mensagem = 'Método inválido.';
+    header("location: ../html/gerenciaEstabelecimento.html?mensagem=" . urlencode($mensagem));
+    echo "Cadastro não realizado";
+    exit;
 }
 ?>
