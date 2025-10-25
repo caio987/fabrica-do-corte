@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="teste"></p>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async ()=>{
+
+            const teste = document.getElementById('teste');
+            
+            const pegar = new URLSearchParams(window.location.search);
+            //Pega a menssagem enviada
+            const id = pegar.get('id');
+            const resposta = await fetch("../php/estabelecimento.php",{
+                method: 'POST',
+                headers:{"content-type": "application/json"},
+                body: JSON.stringify({
+                    id:id
+                }  )
+                
+            });
+            const dados = await resposta.json()
+            console.log(`Estabelecimento: ${dados.nome_estabelecimento}`);
+        })
+    </script>
+</body>
+</html>

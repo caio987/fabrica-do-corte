@@ -79,9 +79,12 @@
                     foto.src = e.logo || "../img/default-logo.png";
                     foto.alt = e.nome_estabelecimento || "Estabelecimento";
 
-                    const nome = document.createElement("p");
+                    const nome = document.createElement("a");
                     nome.classList.add("nomeEstabelecimento");
                     nome.innerText = e.nome_estabelecimento || "Sem nome";
+                    let id = e.id_estabelecimento;
+                    nome.href = `estabelecimento.html?id=${id}`;
+               
 
                     const avaliacao = document.createElement("div");
                     avaliacao.classList.add("avaliacao");
