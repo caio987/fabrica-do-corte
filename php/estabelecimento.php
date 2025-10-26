@@ -1,8 +1,10 @@
 <?php
     require_once 'config.php';
+    session_start();
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $input = json_decode(file_get_contents("php://input"), true);
         $id = $input['id'] ?? null;
+        $_SESSION['id_agendamento'] = $id;
         try {
             $consulta = $pdo->prepare("SELECT id_estabelecimento, nome_proprietario, nome_estabelecimento, telefone_estabelecimento,localizacao, logo_barbearia, foto_estabelecimento, apresentacao FROM estabelecimento WHERE id_estabelecimento = :id");
             $consulta->bindParam(":id", $id);

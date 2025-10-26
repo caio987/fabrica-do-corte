@@ -1,33 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendamento</title>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <style>
+    body {
+      background: #f5f5f5;
+      margin: 20px;
+      color: #333;
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+    }
+
+    #dias {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .fc-daygrid-day-number {
+      color: #333 !important;
+      font-weight: bold;
+    }
+
+    .fc-event {
+      font-size: 12px !important;
+      text-align: center;
+    }
+
+    .legenda {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .legenda-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cor {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid #6ac878;
+    }
+
+    /* Aumenta o texto dos eventos dentro do dia */
+.fc-event {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px !important;
+    font-weight: bold;
+}
+.horario{
+    background-color: transparent;
+    color: #d68400;
+    padding: 3px;
+    border: solid 1px #d68400;
+}
+.selecionado{
+    background-color:#d68400 ;
+    color: white;
+    padding: 5px;
+    border: solid 1px #d68400;
+}
+.caixaServico{
+    display: flex;
+}
+.caixaServico button{
+    margin-left: 10px;
+}
+
+  </style>
 </head>
 <body>
-    <p id="teste"></p>
+  <h1 id="nome_estabelecimento"></h1>
+  <p id="apresentacao" style="text-align:center"></p>
+  <hr>
+  <h2>Preencha os espaços para realizar o agendamento</h2>
+  <h3>Selecione o dia que deseja</h3>
+  <div id="dias"></div>
+  <br><br><br>
+  <div id="horarios"></div><br><br><br>
+  <h3>Selecione os serviços que deseja</h3><br><br>
+  <div id="servicos"></div><br><br>
+  <div id="funcionario"></div><br><br><br>
+  <button>Agendar</button>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const servicos = document.getElementById('servicos');
+      const nome_estabelecimento = document.getElementById('nome_estabelecimento');
+      const apresentacao = document.getElementById('apresentacao');
+      let horarios = document.getElementById('horarios');
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
 
-    <script>
-        document.addEventListener("DOMContentLoaded", async ()=>{
+      // Busca os dados do estabelecimento
+      const respostaEstabelecimento = await fetch("../php/estabelecimento.php", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id })
+      });
+      const dadosEtabelecimento = await respostaEstabelecimento.json();
+      //Imprimir o nome do estabelecimento e a apresntação
+      nome_estabelecimento.textContent = dadosEtabelecimento.nome_estabelecimento;
+      apresentacao.textContent = dadosEtabelecimento.apresentacao;
 
-            const teste = document.getElementById('teste');
+      // Busca os dias disponíveis
+      const respostaDisponibilidade = await fetch("../php/exibirDia.php");
+      const dadosDisponibilidade = await respostaDisponibilidade.json();
+
+      const diasCadastrados = dadosDisponibilidade.map(e => e.dia);
+      console.log("Dias disponíveis:", diasCadastrados);
+
+      // Inicializa o calendário
+      const calendarEl = document.getElementById("dias");
+      let diaSelecionado = null; // apenas um dia pode ser selecionado
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "dayGridMonth",
+        locale: "pt-br",
+        selectable: true,
+        validRange: function(nowDate) {
+          const maxDate = new Date(nowDate);
+          maxDate.setMonth(maxDate.getMonth() + 3);
+          return { start: nowDate, end: maxDate };
+        },
+        dateClick: function(info) {
+          const dataStr = info.dateStr;
+        
+          // Ignora dias não cadastrados
+          if (!diasCadastrados.includes(dataStr)) {
+            alert("Este dia não está disponível para agendamento.");
+            return;
+          }
+
+          // Se o mesmo dia for clicado, desmarca
+          if (diaSelecionado === dataStr) {
+            diaSelecionado = null;
+          } else {
+            diaSelecionado = dataStr;
+            mostarHorario();
             
-            const pegar = new URLSearchParams(window.location.search);
-            //Pega a menssagem enviada
-            const id = pegar.get('id');
-            const resposta = await fetch("../php/estabelecimento.php",{
-                method: 'POST',
-                headers:{"content-type": "application/json"},
-                body: JSON.stringify({
-                    id:id
-                }  )
-                
-            });
-            const dados = await resposta.json()
-            console.log(`Estabelecimento: ${dados.nome_estabelecimento}`);
+            
+          }
+
+          atualizarEventos();
+        }
+      });
+
+      calendar.render();
+      atualizarEventos(); // mostra logo de início os dias disponíveis
+
+      function atualizarEventos() {
+        calendar.getEvents().forEach(e => e.remove());
+
+        // Exibe todos os dias cadastrados como disponíveis (cinza)
+        diasCadastrados.forEach(d => {
+          calendar.addEvent({
+            start: d,
+            display: "background",
+            backgroundColor: "#3aa551"
+          });
+        });
+
+        // Exibe o dia selecionado (azul)
+       // Exibe o dia selecionado (azul) com title em preto
+if (diaSelecionado) {
+  calendar.addEvent({
+    start: diaSelecionado,
+    title: 'Selecionado',
+    textColor: '#000',       // cor do texto
+    display: "block",        // mostra título
+    backgroundColor: "#007BFF",
+
+  });
+}
+
+      }
+      //Função para mostrar horários disponiveis
+     async function  mostarHorario () {
+        console.log('Dia selecionado: ',diaSelecionado)
+        horarios.innerHTML = "";
+        const respostaHorario = await fetch('../php/exibirHorario.php',{
+            headers:{"Content-Type":"application/json"},
+            method:'POST',
+            body:JSON.stringify({dia: diaSelecionado})
+        });
+        const dadosHorario = await respostaHorario.json();
+        dadosHorario.forEach(e =>{
+            console.log('Horário disponível: ',e.horario);
+            let horario = document.createElement("button");
+        horario.innerText = e.horario;
+        horario.classList = 'horario';
+        horario.addEventListener('click', ()=>{
+            document.querySelectorAll('.horario').forEach(btn => btn.classList.remove('selecionado'));
+            horario.classList.add('selecionado');
+            let horarioSelecionado = e.horario
+            console.log('Horário selecionado: ',horarioSelecionado);
+
         })
-    </script>
+        horarios.appendChild(horario);
+        })
+        
+      }
+
+      //Imprimir os serviços do estabelecimento
+        const respostaServico = await fetch("../php/exibirServico.php");
+        const dadosServico = await respostaServico.json();
+
+        // Limpa o container
+      let id_servico = [];
+        dadosServico.forEach(e => {
+            console.log('Nome do serviço: ', e.nome_servico, ' Preço ', e.preco);
+            // Cria elemento para cada serviço
+            const caixaServico = document.createElement('div');
+            const servico = document.createElement('p');
+            const adicionar = document.createElement('button');
+            caixaServico.classList = 'caixaServico'
+            servico.innerText = `${e.nome_servico} - ${e.preco}`;
+            adicionar.classList='adicionar';
+            adicionar.innerText = "Adicionar";
+            adicionar.addEventListener('click', () =>{
+                id_servico.push(e.id_servico);
+                console.log(id_servico)
+            })
+            caixaServico.appendChild(servico)
+            caixaServico.appendChild(adicionar)
+            servicos.appendChild(caixaServico)
+        });
+    });
+  </script>
 </body>
 </html>
