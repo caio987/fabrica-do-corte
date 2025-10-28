@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agendamento</title>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <link rel="stylesheet" href="../style.css">
   <style>
     body {
       background: #f5f5f5;
-      margin: 20px;
       color: #333;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       text-align: center;
     }
 
@@ -38,44 +41,65 @@
       font-weight: bold;
     }
 
-    .horario{
+    .horario {
       background-color: transparent;
       color: #d68400;
       padding: 3px;
       border: solid 1px #d68400;
     }
-    .selecionado{
-      background-color:#d68400 ;
+
+    .selecionado {
+      background-color: #d68400;
       color: white;
       padding: 5px;
       border: solid 1px #d68400;
     }
-    .caixaServico{
+
+    .caixaServico {
       display: flex;
     }
-    .caixaServico button{
+
+    .caixaServico button {
       margin-left: 10px;
     }
-    #funcionarios div{
+
+    #funcionarios div {
       margin-bottom: 10px;
     }
   </style>
 </head>
-<body>
-  <h1 id="nome_estabelecimento"></h1>
-  <p id="apresentacao" style="text-align:center"></p>
-  <hr>
-  <h2>Preencha os espaços para realizar o agendamento</h2>
-  <h3>Selecione o dia que deseja</h3>
-  <div id="dias"></div>
-  <br><br><br>
-  <div id="horarios"></div><br><br><br>
-  <h3>Selecione os serviços que deseja</h3><br><br>
-  <div id="servicos"></div><br><br>
-  <div id="resultado"></div><br><br>
-  <div id="funcionarios"></div><br><br><br>
-  <button>Agendar</button>
 
+<body>
+  <header>
+    <nav>
+      <ul>
+        <!-- <li><a href="#" class="links">Conta</a></li> -->
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1 id="nome_estabelecimento"></h1>
+    <p id="apresentacao" style="text-align:center"></p>
+    <hr>
+    <h2>Preencha os espaços para realizar o agendamento</h2>
+    <h3>Selecione o dia que deseja</h3>
+    <div id="dias"></div>
+    <br><br><br>
+    <div id="horarios"></div><br><br><br>
+    <h3>Selecione os serviços que deseja</h3><br><br>
+    <div id="servicos"></div><br><br>
+    <div id="resultado"></div><br><br>
+    <div id="funcionarios"></div><br><br><br>
+    <button>Agendar</button>
+  </main>
+
+  <footer class="">
+    <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
+    <p>©Todos os direitos reservados a Fábrica do Corte</p>
+  </footer>
+
+  <script src="../script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       const nome_estabelecimento = document.getElementById('nome_estabelecimento');
@@ -112,12 +136,12 @@
         initialView: "dayGridMonth",
         locale: "pt-br",
         selectable: true,
-        validRange: function(nowDate) {
+        validRange: function (nowDate) {
           const maxDate = new Date(nowDate);
           maxDate.setMonth(maxDate.getMonth() + 3);
           return { start: nowDate, end: maxDate };
         },
-        dateClick: function(info) {
+        dateClick: function (info) {
           const dataStr = info.dateStr;
           if (!diasCadastrados.includes(dataStr)) {
             alert("Este dia não está disponível para agendamento.");
@@ -141,119 +165,119 @@
       async function mostarHorario() {
         console.log('Dia selecionado: ', diaSelecionado)
         horarios.innerHTML = "";
-        if(!diaSelecionado) return;
-        const respostaHorario = await fetch('../php/exibirHorario.php',{
-            headers:{"Content-Type":"application/json"},
-            method:'POST',
-            body:JSON.stringify({dia: diaSelecionado})
+        if (!diaSelecionado) return;
+        const respostaHorario = await fetch('../php/exibirHorario.php', {
+          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          body: JSON.stringify({ dia: diaSelecionado })
         });
         const dadosHorario = await respostaHorario.json();
         dadosHorario.forEach(e => {
-            console.log('Horário disponível: ', e.horario);
-            let horario = document.createElement("button");
-            horario.innerText = e.horario;
-            horario.classList = 'horario';
-            horario.addEventListener('click', ()=>{
-                document.querySelectorAll('.horario').forEach(btn => btn.classList.remove('selecionado'));
-                horario.classList.add('selecionado');
-                horarioSelecionado = e.horario;
-                console.log('Horário selecionado: ', horarioSelecionado);
-            })
-            horarios.appendChild(horario);
+          console.log('Horário disponível: ', e.horario);
+          let horario = document.createElement("button");
+          horario.innerText = e.horario;
+          horario.classList = 'horario';
+          horario.addEventListener('click', () => {
+            document.querySelectorAll('.horario').forEach(btn => btn.classList.remove('selecionado'));
+            horario.classList.add('selecionado');
+            horarioSelecionado = e.horario;
+            console.log('Horário selecionado: ', horarioSelecionado);
+          })
+          horarios.appendChild(horario);
         });
       }
 
-// Serviços
-const respostaServico = await fetch("../php/exibirServico.php");
-const dadosServico = await respostaServico.json();
+      // Serviços
+      const respostaServico = await fetch("../php/exibirServico.php");
+      const dadosServico = await respostaServico.json();
 
-let idServico = [];
-let precoTotal = 0;
+      let idServico = [];
+      let precoTotal = 0;
 
-// Criação dos elementos principais do "carrinho"
-const carrinho = document.createElement('div');
-const preco = document.createElement('p');
-const listaServicos = document.createElement('div'); // ← agora é uma lista, não só texto
-const concluir = document.createElement('button');
+      // Criação dos elementos principais do "carrinho"
+      const carrinho = document.createElement('div');
+      const preco = document.createElement('p');
+      const listaServicos = document.createElement('div'); // ← agora é uma lista, não só texto
+      const concluir = document.createElement('button');
 
-carrinho.appendChild(preco);
-carrinho.appendChild(listaServicos);
-carrinho.appendChild(concluir);
+      carrinho.appendChild(preco);
+      carrinho.appendChild(listaServicos);
+      carrinho.appendChild(concluir);
 
-preco.innerText = "Preço total a pagar: R$ 0,00";
-concluir.innerText = "Concluir";
-resultado.appendChild(carrinho);
+      preco.innerText = "Preço total a pagar: R$ 0,00";
+      concluir.innerText = "Concluir";
+      resultado.appendChild(carrinho);
 
-dadosServico.forEach(e => {
-  const caixaServico = document.createElement('div');
-  const servico = document.createElement('p');
-  const adicionar = document.createElement('button');
+      dadosServico.forEach(e => {
+        const caixaServico = document.createElement('div');
+        const servico = document.createElement('p');
+        const adicionar = document.createElement('button');
 
-  caixaServico.classList = 'caixaServico';
-  servico.innerText = `${e.nome_servico} - R$ ${e.preco}`;
-  adicionar.classList = 'adicionar';
-  adicionar.innerText = "Adicionar";
+        caixaServico.classList = 'caixaServico';
+        servico.innerText = `${e.nome_servico} - R$ ${e.preco}`;
+        adicionar.classList = 'adicionar';
+        adicionar.innerText = "Adicionar";
 
-  // Quando clicar em adicionar
-  adicionar.addEventListener('click', () => {
-    if (idServico.includes(e.id_servico)) {
-      alert('Você já adicionou esse serviço');
-      return;
-    }
+        // Quando clicar em adicionar
+        adicionar.addEventListener('click', () => {
+          if (idServico.includes(e.id_servico)) {
+            alert('Você já adicionou esse serviço');
+            return;
+          }
 
-    // Adiciona o serviço
-    idServico.push(e.id_servico);
-    precoTotal += parseFloat(e.preco);
-    preco.innerText = `Preço total a pagar: R$ ${precoTotal.toFixed(2)}`;
+          // Adiciona o serviço
+          idServico.push(e.id_servico);
+          precoTotal += parseFloat(e.preco);
+          preco.innerText = `Preço total a pagar: R$ ${precoTotal.toFixed(2)}`;
 
-    // Cria item visível no carrinho
-    const item = document.createElement('div');
-    item.style.display = "flex";
-    item.style.alignItems = "center";
-    item.style.justifyContent = "space-between";
-    item.style.marginBottom = "5px";
+          // Cria item visível no carrinho
+          const item = document.createElement('div');
+          item.style.display = "flex";
+          item.style.alignItems = "center";
+          item.style.justifyContent = "space-between";
+          item.style.marginBottom = "5px";
 
-    const nome = document.createElement('span');
-    nome.innerText = e.nome_servico;
+          const nome = document.createElement('span');
+          nome.innerText = e.nome_servico;
 
-    const remover = document.createElement('button');
-    remover.innerText = "Remover";
-    remover.style.backgroundColor = "#d9534f";
-    remover.style.color = "white";
-    remover.style.border = "none";
-    remover.style.padding = "5px 10px";
-    remover.style.borderRadius = "5px";
-    remover.style.cursor = "pointer";
+          const remover = document.createElement('button');
+          remover.innerText = "Remover";
+          remover.style.backgroundColor = "#d9534f";
+          remover.style.color = "white";
+          remover.style.border = "none";
+          remover.style.padding = "5px 10px";
+          remover.style.borderRadius = "5px";
+          remover.style.cursor = "pointer";
 
-    // Quando clicar em remover
-    remover.addEventListener('click', () => {
-      // Remove o ID do array
-      idServico = idServico.filter(id => id !== e.id_servico);
+          // Quando clicar em remover
+          remover.addEventListener('click', () => {
+            // Remove o ID do array
+            idServico = idServico.filter(id => id !== e.id_servico);
 
-      // Atualiza o total
-      precoTotal -= parseFloat(e.preco);
-      preco.innerText = `Preço total a pagar: R$ ${precoTotal.toFixed(2)}`;
+            // Atualiza o total
+            precoTotal -= parseFloat(e.preco);
+            preco.innerText = `Preço total a pagar: R$ ${precoTotal.toFixed(2)}`;
 
-      // Remove o elemento visualmente
-      listaServicos.removeChild(item);
+            // Remove o elemento visualmente
+            listaServicos.removeChild(item);
 
-      console.log(`Serviço removido: ${e.nome_servico}`);
-      console.log('Serviços restantes:', idServico);
-    });
+            console.log(`Serviço removido: ${e.nome_servico}`);
+            console.log('Serviços restantes:', idServico);
+          });
 
-    item.appendChild(nome);
-    item.appendChild(remover);
-    listaServicos.appendChild(item);
+          item.appendChild(nome);
+          item.appendChild(remover);
+          listaServicos.appendChild(item);
 
-    console.log('Serviço adicionado:', e.nome_servico);
-    console.log('Serviços no carrinho:', idServico);
-    console.log('Preço total:', precoTotal);
-  });
+          console.log('Serviço adicionado:', e.nome_servico);
+          console.log('Serviços no carrinho:', idServico);
+          console.log('Preço total:', precoTotal);
+        });
 
-  caixaServico.appendChild(servico);
-  caixaServico.appendChild(adicionar);
-  servicos.appendChild(caixaServico);
-});
+        caixaServico.appendChild(servico);
+        caixaServico.appendChild(adicionar);
+        servicos.appendChild(caixaServico);
+      });
 
 
       // Concluir e exibir funcionários
@@ -307,4 +331,5 @@ dadosServico.forEach(e => {
     });
   </script>
 </body>
+
 </html>

@@ -487,7 +487,8 @@ main form #botaoArquivo:hover {
 }
 
 main form fieldset button,
-main div #button {
+main div #button,
+main .buttonBonito {
     cursor: pointer;
     font-weight: bold;
     margin: 30px auto 10px;
@@ -502,7 +503,8 @@ main div #button {
 }
 
 main form fieldset button:hover,
-main div #button:hover {
+main div #button:hover,
+main .buttonBonito:hover {
     font-size: 1.2em;
     padding: 12px 50px;
     opacity: 1;
@@ -606,6 +608,9 @@ main #caixaEstabelecimento .active .salvarBarbearia {
 main #caixa .margem {
     margin: 30px 1px;
 }
+
+/* CSS Gerencia Estabelecimento */
+
 
 @media (max-width: 767px) {
 

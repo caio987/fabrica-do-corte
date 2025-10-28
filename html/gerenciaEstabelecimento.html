@@ -1,72 +1,168 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
-<title>Agendamento com Botões de Horário</title>
-<style>
-  body { font-family: Arial; margin: 20px; text-align: center; }
-  #calendar { max-width: 900px; margin: 20px auto; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-  #horarios { display: none; margin-top: 20px; max-width: 900px; margin-left: auto; margin-right: auto; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-  .hora-btn { padding: 10px 16px; border: none; border-radius: 8px; background-color: #e0e0e0; cursor: pointer; transition: 0.2s; font-size: 16px; }
-  .hora-btn:hover { background-color: #c5c5c5; }
-  .hora-btn.selecionada { background-color: #1c3c17; color: white; }
-  #caixaFuncionario{display: flex; width: 80%;}
-  .funcionario { width: 140px; height: 200px; background-color: rgb(0, 0, 0); border-radius: 10px; cursor: pointer; margin: 20px; }
-  .funcionario img { width: 70%; margin-top: 20px; }
-  #formFuncionario { display: none; background: #f9f9f9; border-radius: 10px; padding: 20px; max-width: 400px; margin: 20px auto; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-  #formFuncionario input, #formFuncionario select { width: 100%; margin-bottom: 10px; padding: 6px; }
-  #diasHorariosContainer { background: #fff; padding: 10px; border-radius: 8px; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; }
-  #diasHorariosContainer div { margin-bottom: 5px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <link rel="stylesheet" href="../style.css">
+  <title>Agendamento com Botões de Horário</title>
+  <style>
+    main{
+      text-align: center;
+    }
+    #calendar {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #horarios {
+      display: none;
+      margin-top: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .hora-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #e0e0e0;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 16px;
+    }
+
+    .hora-btn:hover {
+      background-color: #c5c5c5;
+    }
+
+    .hora-btn.selecionada {
+      background-color: #1c3c17;
+      color: white;
+    }
+
+    #caixaFuncionario {
+      display: flex;
+      width: 80%;
+    }
+
+    .funcionario {
+      width: 140px;
+      height: 200px;
+      background-color: rgb(0, 0, 0);
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 20px;
+    }
+
+    .funcionario img {
+      width: 70%;
+      margin-top: 20px;
+    }
+
+    #formFuncionario {
+      display: none;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      margin: 20px auto;
+      text-align: left;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #formFuncionario input,
+    #formFuncionario select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 6px;
+    }
+
+    #diasHorariosContainer {
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+    }
+
+    #diasHorariosContainer div {
+      margin-bottom: 5px;
+    }
+  </style>
 </head>
+
 <body>
+  <header>
+    <nav>
+      <ul>
+        <!-- <li><a href="../#" class="links">Conta</a></li> -->
+      </ul>
+    </nav>
+  </header>
 
-<h2>Escolha a data e o horário</h2>
+  <main>
+    <h2 style="margin: 10px;">Escolha a data e o horário</h2>
 
-<div id="calendar"></div>
-<div id="horarios"></div><br><br>
-<button onclick="enviarDisponibilidade()">Enviar Datas e Horários</button><br><br><br>
+    <div id="calendar"></div>
+    <div id="horarios"></div>
+    <button class="buttonBonito" onclick="enviarDisponibilidade()">Enviar Datas e Horários</button>
 
-<input type="text" placeholder="Coloque aqui o nome do corte" name="corte" required id="corte">
-<input type="number" placeholder="Preço R$0,00" name="preco" required id="preco">
-<button onclick="adicionar()">Adicionar</button>
+    <input type="text" placeholder="Coloque aqui o nome do corte" name="corte" required id="corte">
+    <input type="number" placeholder="Preço R$0,00" name="preco" required id="preco">
+    <button class="buttonBonito" onclick="adicionar()">Adicionar</button>
 
-<div id="caixa"></div><br><br>
-<button onclick="cadastroServico()">Cadastrar novos serviços</button>
+    <div id="caixa"></div>
+    <button class="buttonBonito" onclick="cadastroServico()">Cadastrar novos serviços</button>
 
-<div id="caixaFuncionario">
-  <div id="funcionario" class="funcionario" onclick="adFuncionario()">
-  <img src="https://marketplace.canva.com/oM_oU/MAEmtLoM_oU/1/tl/canva-user-icon-MAEmtLoM_oU.png" alt="">
-</div>
-</div>
+    <div id="caixaFuncionario">
+      <div id="funcionario" class="funcionario" onclick="adFuncionario()">
+        <img src="https://marketplace.canva.com/oM_oU/MAEmtLoM_oU/1/tl/canva-user-icon-MAEmtLoM_oU.png" alt="">
+      </div>
+    </div>
 
-<div id="formFuncionario">
-  <form enctype="multipart/form-data">
-    <label>Foto do barbeiro</label>
-    <input type="file" accept="image/*" name="foto"><br>
+    <div id="formFuncionario" style="">
+      <form enctype="multipart/form-data">
+        <label>Foto do barbeiro</label>
+        <input type="file" accept="image/*" name="foto"><br>
 
-    <label>Nome:</label>
-    <input type="text" placeholder="nome" name="nome" required><br>
+        <label>Nome:</label>
+        <input type="text" placeholder="nome" name="nome" required><br>
 
-    <label>Corte 1:</label>
-    <select id="selectServico1" name="selectServico1"></select><br>
+        <label>Corte 1:</label>
+        <select id="selectServico1" name="selectServico1"></select><br>
 
-    <label>Corte 2:</label>
-    <select id="selectServico2" name="selectServico2"></select><br>
+        <label>Corte 2:</label>
+        <select id="selectServico2" name="selectServico2"></select><br>
 
-    <label>Corte 3:</label>
-    <select id="selectServico3" name="selectServico3"></select><br>
+        <label>Corte 3:</label>
+        <select id="selectServico3" name="selectServico3"></select><br>
 
-    <h4>Dias e horários disponíveis:</h4>
-    <div id="diasHorariosContainer">Carregando...</div><br>
+        <h4>Dias e horários disponíveis:</h4>
+        <div id="diasHorariosContainer">Carregando...</div>
 
-    <button type="button" onclick="enviarFuncionario()">Cadastrar Funcionário</button>
-  </form>
-</div>
+        <button class="buttonBonito" type="button" onclick="enviarFuncionario()">Cadastrar Funcionário</button>
+      </form>
+    </div>
+  </main>
 
+  <footer class="">
+    <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
+    <p>©Todos os direitos reservados a Fábrica do Corte</p>
+  </footer>
 
-<script src="../gerenciamento.js"></script>
+  <script src="../gerenciamento.js"></script>
+  <script src="../script.js"></script>
 </body>
+
 </html>
