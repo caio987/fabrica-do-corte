@@ -91,7 +91,7 @@
     <div id="servicos"></div><br><br>
     <div id="resultado"></div><br><br>
     <div id="funcionarios"></div><br><br><br>
-    <button>Agendar</button>
+    <button onclick="agendar()">Agendar</button>
   </main>
 
   <footer class="">
@@ -99,9 +99,11 @@
     <p>©Todos os direitos reservados a Fábrica do Corte</p>
   </footer>
 
-  <script src="../script.js"></script>
   <script>
     let sucesso = '';
+    let idServico = [];
+    let idDisponibilidade = '';
+    let idFuncionario = '';
     document.addEventListener("DOMContentLoaded", async () => {
       const nome_estabelecimento = document.getElementById('nome_estabelecimento');
       const apresentacao = document.getElementById('apresentacao');
@@ -110,7 +112,6 @@
       const resultado = document.getElementById('resultado');
       const funcionarios = document.getElementById('funcionarios');
       const params = new URLSearchParams(window.location.search);
-      let idDisponibilidade = '';
       const id = params.get('id');
 
       let diaSelecionado = null;
@@ -192,7 +193,7 @@
       const respostaServico = await fetch("../php/exibirServico.php");
       const dadosServico = await respostaServico.json();
 
-      let idServico = [];
+      
       let precoTotal = 0;
 
       // Criação dos elementos principais do "carrinho"
@@ -312,9 +313,20 @@
             sucesso = 'sucesso'
             resultadoPHP.data.forEach(f => {
               const div = document.createElement('div');
+              const nome = document.createElement('p');
+              const foto = document.createElement('img');
+              const botao = document.createElement('button');
+              nome.innerText = f.nome;
+              foto.src = f.foto;
+              botao.innerText = 'Selecionar barbeiro';
+              botao.addEventListener('click', ()=>{
+                idFuncionario = f.id_funcionario;
+                console.log(idFuncionario)
+              })
               div.innerHTML = ''
-              div.innerHTML = `<p><strong>${f.nome}</strong></p>
-                               <img src="${f.foto}" alt="${f.nome}" width="100">`;
+              div.appendChild(nome);
+              div.appendChild(foto);
+              div.appendChild(botao);
               funcionarios.appendChild(div);
             });
           } else {
@@ -331,21 +343,42 @@
       });
 
     });
+    function selecionar(){
+      alert('funciona')
+    }
     async function agendar(){
        if(sucesso == 'sucesso'){
          //Agendamento
  
-         //id_cliente
-         //id_funcionario
-         //id_disponibilidade
+         //id_cliente - certo
+         //id_funcionario 
+         //idFuncionario
+         //id_disponibilidade - certo
  
          //Agendamento_servico
  
          //id_agendamento
-         //id_servico
-         const respostaAgendamento = await fetch('../php/agendamento.php')
+         //id_servico - certo
+
+        
+        const idsAgendamento = {
+            id_servico: idServico,         // array de serviços
+            id_funcionario: idFuncionario,  
+            id_disponibilidade: idDisponibilidade
+           
+          };
+
+
+
+         const respostaAgendamento = await fetch('../php/agendamento.php', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(idsAgendamento)
+        });
          const dadosAgendamento = await respostaAgendamento.text();
+         console.log('Isso é algo ',idServico)
          console.log(dadosAgendamento)
+        }else{
          alert('Você pulou alguma etapa do agendamento!')
        }
     }
