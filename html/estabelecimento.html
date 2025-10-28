@@ -33,53 +33,32 @@
     .fc-event {
       font-size: 12px !important;
       text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px !important;
+      font-weight: bold;
     }
 
-    .legenda {
+    .horario{
+      background-color: transparent;
+      color: #d68400;
+      padding: 3px;
+      border: solid 1px #d68400;
+    }
+    .selecionado{
+      background-color:#d68400 ;
+      color: white;
+      padding: 5px;
+      border: solid 1px #d68400;
+    }
+    .caixaServico{
       display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 20px;
     }
-
-    .legenda-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .caixaServico button{
+      margin-left: 10px;
     }
-
-    .cor {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      border: 1px solid #6ac878;
+    #funcionarios div{
+      margin-bottom: 10px;
     }
-
-    /* Aumenta o texto dos eventos dentro do dia */
-.fc-event {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px !important;
-    font-weight: bold;
-}
-.horario{
-    background-color: transparent;
-    color: #d68400;
-    padding: 3px;
-    border: solid 1px #d68400;
-}
-.selecionado{
-    background-color:#d68400 ;
-    color: white;
-    padding: 5px;
-    border: solid 1px #d68400;
-}
-.caixaServico{
-    display: flex;
-}
-.caixaServico button{
-    margin-left: 10px;
-}
-
   </style>
 </head>
 <body>
@@ -93,40 +72,42 @@
   <div id="horarios"></div><br><br><br>
   <h3>Selecione os serviços que deseja</h3><br><br>
   <div id="servicos"></div><br><br>
-  <div id="funcionario"></div><br><br><br>
+  <div id="resultado"></div><br><br>
+  <div id="funcionarios"></div><br><br><br>
   <button>Agendar</button>
 
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
-      const servicos = document.getElementById('servicos');
       const nome_estabelecimento = document.getElementById('nome_estabelecimento');
       const apresentacao = document.getElementById('apresentacao');
-      let horarios = document.getElementById('horarios');
+      const horarios = document.getElementById('horarios');
+      const servicos = document.getElementById('servicos');
+      const resultado = document.getElementById('resultado');
+      const funcionarios = document.getElementById('funcionarios');
       const params = new URLSearchParams(window.location.search);
+      let idDisponibilidade = '';
       const id = params.get('id');
 
-      // Busca os dados do estabelecimento
+      let diaSelecionado = null;
+      let horarioSelecionado = null;
+
+      // Busca dados do estabelecimento
       const respostaEstabelecimento = await fetch("../php/estabelecimento.php", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ id })
       });
       const dadosEtabelecimento = await respostaEstabelecimento.json();
-      //Imprimir o nome do estabelecimento e a apresntação
       nome_estabelecimento.textContent = dadosEtabelecimento.nome_estabelecimento;
       apresentacao.textContent = dadosEtabelecimento.apresentacao;
 
-      // Busca os dias disponíveis
+      // Busca dias disponíveis
       const respostaDisponibilidade = await fetch("../php/exibirDia.php");
       const dadosDisponibilidade = await respostaDisponibilidade.json();
-
       const diasCadastrados = dadosDisponibilidade.map(e => e.dia);
-      console.log("Dias disponíveis:", diasCadastrados);
 
-      // Inicializa o calendário
+      // Inicializa calendário
       const calendarEl = document.getElementById("dias");
-      let diaSelecionado = null; // apenas um dia pode ser selecionado
-
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "dayGridMonth",
         locale: "pt-br",
@@ -138,107 +119,191 @@
         },
         dateClick: function(info) {
           const dataStr = info.dateStr;
-        
-          // Ignora dias não cadastrados
           if (!diasCadastrados.includes(dataStr)) {
             alert("Este dia não está disponível para agendamento.");
             return;
           }
-
-          // Se o mesmo dia for clicado, desmarca
-          if (diaSelecionado === dataStr) {
-            diaSelecionado = null;
-          } else {
-            diaSelecionado = dataStr;
-            mostarHorario();
-            
-            
-          }
-
+          diaSelecionado = diaSelecionado === dataStr ? null : dataStr;
+          mostarHorario();
           atualizarEventos();
         }
       });
-
       calendar.render();
-      atualizarEventos(); // mostra logo de início os dias disponíveis
 
       function atualizarEventos() {
         calendar.getEvents().forEach(e => e.remove());
-
-        // Exibe todos os dias cadastrados como disponíveis (cinza)
-        diasCadastrados.forEach(d => {
-          calendar.addEvent({
-            start: d,
-            display: "background",
-            backgroundColor: "#3aa551"
-          });
-        });
-
-        // Exibe o dia selecionado (azul)
-       // Exibe o dia selecionado (azul) com title em preto
-if (diaSelecionado) {
-  calendar.addEvent({
-    start: diaSelecionado,
-    title: 'Selecionado',
-    textColor: '#000',       // cor do texto
-    display: "block",        // mostra título
-    backgroundColor: "#007BFF",
-
-  });
-}
-
+        diasCadastrados.forEach(d => calendar.addEvent({ start: d, display: "background", backgroundColor: "#3aa551" }));
+        if (diaSelecionado) {
+          calendar.addEvent({ start: diaSelecionado, title: 'Selecionado', textColor: '#000', display: "block", backgroundColor: "#007BFF" });
+        }
       }
-      //Função para mostrar horários disponiveis
-     async function  mostarHorario () {
-        console.log('Dia selecionado: ',diaSelecionado)
+
+      async function mostarHorario() {
+        console.log('Dia selecionado: ', diaSelecionado)
         horarios.innerHTML = "";
+        if(!diaSelecionado) return;
         const respostaHorario = await fetch('../php/exibirHorario.php',{
             headers:{"Content-Type":"application/json"},
             method:'POST',
             body:JSON.stringify({dia: diaSelecionado})
         });
         const dadosHorario = await respostaHorario.json();
-        dadosHorario.forEach(e =>{
-            console.log('Horário disponível: ',e.horario);
+        dadosHorario.forEach(e => {
+            console.log('Horário disponível: ', e.horario);
             let horario = document.createElement("button");
-        horario.innerText = e.horario;
-        horario.classList = 'horario';
-        horario.addEventListener('click', ()=>{
-            document.querySelectorAll('.horario').forEach(btn => btn.classList.remove('selecionado'));
-            horario.classList.add('selecionado');
-            let horarioSelecionado = e.horario
-            console.log('Horário selecionado: ',horarioSelecionado);
-
-        })
-        horarios.appendChild(horario);
-        })
-        
+            horario.innerText = e.horario;
+            horario.classList = 'horario';
+            horario.addEventListener('click', ()=>{
+                document.querySelectorAll('.horario').forEach(btn => btn.classList.remove('selecionado'));
+                horario.classList.add('selecionado');
+                horarioSelecionado = e.horario;
+                console.log('Horário selecionado: ', horarioSelecionado);
+            })
+            horarios.appendChild(horario);
+        });
       }
 
-      //Imprimir os serviços do estabelecimento
-        const respostaServico = await fetch("../php/exibirServico.php");
-        const dadosServico = await respostaServico.json();
+// Serviços
+const respostaServico = await fetch("../php/exibirServico.php");
+const dadosServico = await respostaServico.json();
 
-        // Limpa o container
-      let id_servico = [];
-        dadosServico.forEach(e => {
-            console.log('Nome do serviço: ', e.nome_servico, ' Preço ', e.preco);
-            // Cria elemento para cada serviço
-            const caixaServico = document.createElement('div');
-            const servico = document.createElement('p');
-            const adicionar = document.createElement('button');
-            caixaServico.classList = 'caixaServico'
-            servico.innerText = `${e.nome_servico} - ${e.preco}`;
-            adicionar.classList='adicionar';
-            adicionar.innerText = "Adicionar";
-            adicionar.addEventListener('click', () =>{
-                id_servico.push(e.id_servico);
-                console.log(id_servico)
-            })
-            caixaServico.appendChild(servico)
-            caixaServico.appendChild(adicionar)
-            servicos.appendChild(caixaServico)
-        });
+let idServico = [];
+let precoTotal = 0;
+
+// Criação dos elementos principais do "carrinho"
+const carrinho = document.createElement('div');
+const preco = document.createElement('p');
+const listaServicos = document.createElement('div'); // ← agora é uma lista, não só texto
+const concluir = document.createElement('button');
+
+carrinho.appendChild(preco);
+carrinho.appendChild(listaServicos);
+carrinho.appendChild(concluir);
+
+preco.innerText = "Preço total a pagar: R$ 0,00";
+concluir.innerText = "Concluir";
+resultado.appendChild(carrinho);
+
+dadosServico.forEach(e => {
+  const caixaServico = document.createElement('div');
+  const servico = document.createElement('p');
+  const adicionar = document.createElement('button');
+
+  caixaServico.classList = 'caixaServico';
+  servico.innerText = `${e.nome_servico} - R$ ${e.preco}`;
+  adicionar.classList = 'adicionar';
+  adicionar.innerText = "Adicionar";
+
+  // Quando clicar em adicionar
+  adicionar.addEventListener('click', () => {
+    if (idServico.includes(e.id_servico)) {
+      alert('Você já adicionou esse serviço');
+      return;
+    }
+
+    // Adiciona o serviço
+    idServico.push(e.id_servico);
+    precoTotal += parseFloat(e.preco);
+    preco.innerText = `Preço total a pagar: R$ ${precoTotal.toFixed(2)}`;
+
+    // Cria item visível no carrinho
+    const item = document.createElement('div');
+    item.style.display = "flex";
+    item.style.alignItems = "center";
+    item.style.justifyContent = "space-between";
+    item.style.marginBottom = "5px";
+
+    const nome = document.createElement('span');
+    nome.innerText = e.nome_servico;
+
+    const remover = document.createElement('button');
+    remover.innerText = "Remover";
+    remover.style.backgroundColor = "#d9534f";
+    remover.style.color = "white";
+    remover.style.border = "none";
+    remover.style.padding = "5px 10px";
+    remover.style.borderRadius = "5px";
+    remover.style.cursor = "pointer";
+
+    // Quando clicar em remover
+    remover.addEventListener('click', () => {
+      // Remove o ID do array
+      idServico = idServico.filter(id => id !== e.id_servico);
+
+      // Atualiza o total
+      precoTotal -= parseFloat(e.preco);
+      preco.innerText = `Preço total a pagar: R$ ${precoTotal.toFixed(2)}`;
+
+      // Remove o elemento visualmente
+      listaServicos.removeChild(item);
+
+      console.log(`Serviço removido: ${e.nome_servico}`);
+      console.log('Serviços restantes:', idServico);
+    });
+
+    item.appendChild(nome);
+    item.appendChild(remover);
+    listaServicos.appendChild(item);
+
+    console.log('Serviço adicionado:', e.nome_servico);
+    console.log('Serviços no carrinho:', idServico);
+    console.log('Preço total:', precoTotal);
+  });
+
+  caixaServico.appendChild(servico);
+  caixaServico.appendChild(adicionar);
+  servicos.appendChild(caixaServico);
+});
+
+
+      // Concluir e exibir funcionários
+      concluir.addEventListener('click', async () => {
+        if (idServico.length === 0) {
+          alert('Selecione no mínimo 1 serviço');
+          return;
+        }
+        alert('Serviços concluídos!');
+        if (!diaSelecionado) { alert('Selecione um dia!'); return; }
+        if (!horarioSelecionado) { alert('Selecione um horário!'); return; }
+
+        // Envia dados para PHP
+        const dadosParaPHP = {
+          id_servico: idServico,
+          dia: diaSelecionado,
+          horario: horarioSelecionado
+        };
+
+        try {
+          const resposta = await fetch('../php/exibirFuncionario.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosParaPHP)
+          });
+
+          const resultadoPHP = await resposta.json();
+          funcionarios.innerHTML = "";
+
+          if (resultadoPHP.status === 'success') {
+            resultadoPHP.data.forEach(f => {
+              const div = document.createElement('div');
+              div.innerHTML = ''
+              div.innerHTML = `<p><strong>${f.nome}</strong></p>
+                               <img src="${f.foto}" alt="${f.nome}" width="100">`;
+              funcionarios.appendChild(div);
+            });
+          } else {
+            funcionarios.innerHTML = `<p>${resultadoPHP.message}</p>`;
+          }
+
+        } catch (err) {
+          console.error('Erro ao buscar funcionários:', err);
+          funcionarios.innerHTML = "<p>Erro ao buscar funcionários.</p>";
+        }
+
+        console.log('Serviços adicionados:', idServico);
+        console.log('Preço total:', precoTotal);
+      });
+
     });
   </script>
 </body>

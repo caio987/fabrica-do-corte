@@ -65,16 +65,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function adicionar() {
- if (servico && preco>0) {
-   servico.push(document.getElementById('corte').value);
-  preco.push(document.getElementById('preco').value);
-  caixa.innerHTML = '';
-  servico.forEach((item,i) => {
-    caixa.innerHTML += `<input type="text" name="servico" value="${item}"><input type="text" name="preco" value="${preco[i]}"><br>`;
-  });
- }else{
-    alert("Coloque um valor para ser adicionado");
- }
+  if (servico.includes(document.getElementById('corte').value)) {
+    alert('corte já está adicionado')
+  }else{
+    caixa.innerHTML = '';
+     servico.push(document.getElementById('corte').value);
+    preco.push(document.getElementById('preco').value);
+    servico.forEach((item,i) => {
+      caixa.innerHTML += `<input type="text" name="servico" value="${item}"><input type="text" name="preco" value="${preco[i]}"><br>`;
+    });
+
+  }
 
 }
 
