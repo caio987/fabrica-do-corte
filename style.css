@@ -6,6 +6,13 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+}
+
 body {
     background-color: #151615;
     color: #C4974F;
@@ -375,6 +382,7 @@ main #quemSomos .alinhamento p {
 
 /* CSS escolherCadastro */
 main .alinhamento .caixas {
+    width: 200px;
     height: 180px;
     padding: 20px;
     border: solid #C4974F;
@@ -383,7 +391,6 @@ main .alinhamento .caixas {
     align-content: center;
     text-decoration: none;
     color: #b88738;
-    width: 200px;
     transition: .5s;
 }
 
@@ -434,7 +441,8 @@ main form #barbearia {
 }
 
 main input,
-main form input[type="file"] {
+main form input[type="file"],
+main form textarea {
     width: 80%;
     outline: none;
     color: #b88738;
@@ -444,6 +452,17 @@ main form input[type="file"] {
     background-color: transparent;
     border: none;
     border-bottom: 1.7px solid #C4974F;
+}
+
+main form textarea {
+    resize: vertical;
+    /* permite aumentar só pra baixo */
+    /* color: #b88738; */
+}
+
+main form textarea::placeholder {
+    color: #b88738;
+    opacity: 0.8;
 }
 
 main form input::placeholder {
@@ -490,7 +509,7 @@ main div #button:hover {
 }
 
 main form fieldset p {
-    margin: 15px;
+    margin: 15px auto;
 }
 
 main form fieldset p a {
@@ -499,12 +518,10 @@ main form fieldset p a {
 
 /* CSS busca de barbearias */
 main #caixapesquisa {
+    width: 50%;
     box-shadow: 0px 6px 15px #ad700e;
     border-radius: 20px;
     margin: 25px auto;
-    width: 50%;
-    /* max-width: 500px; */
-    /* height: 50px; */
     display: flex;
     padding: 6px;
 }
@@ -557,7 +574,8 @@ main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
     /* margin: 0; */
     font-size: 2em;
     font-weight: bold;
-    /* color: #C4974F; */
+    text-decoration: none;
+    color: #C4974F;
 }
 
 main #caixaEstabelecimento .active {
@@ -577,7 +595,7 @@ main #caixaEstabelecimento .active .caixaInvisivel {
     width: 100%;
     margin: 20px;
     display: flex;
-    justify-content: space-around;  
+    justify-content: space-around;
 }
 
 main #caixaEstabelecimento .active .salvarBarbearia {
@@ -593,7 +611,7 @@ main #caixa .margem {
 
     /* CSS MOBILE INDEX */
     header {
-        max-width: 767px;
+        width: 100%;
     }
 
     header nav {
@@ -680,9 +698,14 @@ main #caixa .margem {
 
     main .nomeEstabelecimento,
     main .caixaGeral p span,
-    main .caixaGeral p {
+    main .caixaGeral p,
+    main #quemSomos p {
         font-size: .8em;
-        margin: 2px;
+        margin: 2px auto;
+    }
+
+    main .caixaGeral .nomeEstabelecimento {
+        margin-left: 15px;
     }
 
     main .caixaGeral .avaliacao {
@@ -697,40 +720,66 @@ main #caixa .margem {
     }
 
     main #cardsQuemSomos {
-        height: 240px;
+        display: none;
     }
 
-    main .cards {
-        width: 80px;
-        top: 40px;
+    main #quemSomos .alinhamento {
+        flex-direction: column;
     }
 
-    main #cardDaEsquerda2 {
-        top: 80px;
-        left: 40px;
+    main #quemSomos .alinhamento #imagens img {
+        max-width: 285px;
+        height: 165px;
+        margin: 5px;
     }
 
-    main #cardDaEsquerda1 {
-        top: 30px;
-        left: 80px;
+    main #quemSomos .alinhamento p {
+        width: 90%;
     }
 
-    main #cardDoMeio {
-        top: -10px;
-        left: 140px;
+    /* CSS MOBILE BUSCA.HTML */
+    main #caixaEstabelecimento .caixaGeral {
+        width: auto;
     }
 
-    main #cardDaDireita1 {
-        top: 25px;
-        left: 200px;
+    main #caixaEstabelecimento .caixaGeral .fotoBarbearia {
+        /* width: 114px; */
+        height: 73px;
     }
 
-    main #cardDaDireita2 {
-        top: 80px;
-        left: 240px;
+    main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
+        font-size: 1.2em;
     }
 
-    /* {
-        font-size: 1em;
-    } */
+    main .caixaGeral .localizacao,
+    main .caixaGeral .contato,
+
+    main form fieldset p,
+    main input,
+
+    .labelArquivo,
+    .spanArquivo {
+        font-size: .8em;
+    }
+
+    /* CSS MOBILE CADASTROS */
+    main .alinhamento .caixas {
+        width: 110px;
+        height: 120px;
+        padding: 12px;
+        margin: 2px;
+    }
+
+    main .alinhamento .caixas img {
+        height: 70px;
+        width: 70px;
+    }
+    main .alinhamento .caixas p {
+        font-size: .6em;
+    }
+
+    main form,
+    main #caixa {
+        width: 80%;
+    }
 }
