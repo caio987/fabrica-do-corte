@@ -442,7 +442,8 @@ main form #barbearia {
 
 main input,
 main form input[type="file"],
-main form textarea {
+main textarea,
+main select {
     width: 80%;
     outline: none;
     color: #b88738;
@@ -454,7 +455,7 @@ main form textarea {
     border-bottom: 1.7px solid #C4974F;
 }
 
-main form textarea {
+main textarea {
     resize: vertical;
     /* permite aumentar só pra baixo */
     /* color: #b88738; */
@@ -697,10 +698,6 @@ main #caixa .margem {
         padding: 5px 0;
     }
 
-    main .caixaGeral .fotoBarbearia {
-        max-width: 100px;
-    }
-
     main .nomeEstabelecimento,
     main .caixaGeral p span,
     main .caixaGeral p,
@@ -738,8 +735,10 @@ main #caixa .margem {
         margin: 5px;
     }
 
+    main .caixaGeral .sinopse,
     main #quemSomos .alinhamento p {
         width: 90%;
+        font-size: .8em;
     }
 
     /* CSS MOBILE BUSCA.HTML */
@@ -747,9 +746,18 @@ main #caixa .margem {
         width: auto;
     }
 
+    main #caixaEstabelecimento .caixaGeral:hover {
+        scale: 1.05;
+    }
+
     main #caixaEstabelecimento .caixaGeral .fotoBarbearia {
-        /* width: 114px; */
-        height: 73px;
+        width: 68px;
+        height: 68px;
+    }
+
+    main #caixaEstabelecimento .caixaGeral .caixaInvisivel .fotoBarbearia {
+        width: 275px;
+        height: 90px;
     }
 
     main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
@@ -767,6 +775,9 @@ main #caixa .margem {
         font-size: .8em;
     }
 
+    main .seta{
+        margin: 0;
+    }
     /* CSS MOBILE CADASTROS */
     main .alinhamento .caixas {
         width: 110px;
@@ -779,6 +790,7 @@ main #caixa .margem {
         height: 70px;
         width: 70px;
     }
+
     main .alinhamento .caixas p {
         font-size: .6em;
     }
@@ -786,5 +798,10 @@ main #caixa .margem {
     main form,
     main #caixa {
         width: 80%;
+    }
+
+    /* CSS MOBILE INFO CONTA CLIENTE  */
+    main #link{
+        font-size: .8em;
     }
 }

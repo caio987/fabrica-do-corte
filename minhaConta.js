@@ -29,15 +29,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
             <div class="margem">
                 <label for="">Nome do estabelecimento:</label><br>
-                <input style="width: 70%; margin: 0; display: inline;" type="tel" disabled value="${dados.dados.nome_estabelecimento}"><br>
+                <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="${dados.dados.nome_estabelecimento}"><br>
             </div>
             <div class="margem">
                 <label for="">Localização:</label><br>
-                <input style="width: 70%; margin: 0; display: inline;" type="tel" disabled value="${dados.dados.localizacao}"><br>
+                <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="${dados.dados.localizacao}"><br>
                 </div>
             <div class="margem">
                 <label for="">Texto de apresentação</label><br>
-                <input style="width: 70%; margin: 0; display: inline;" type="tel" disabled value="${dados.dados.apresentacao}"><br>
+                <textarea id="apresentacao" name="" id="" style="width: 88%; margin: 0px; display: inline; height: 147px;" disabled >${dados.dados.apresentacao}</textarea><br>
             </div>
             <div class="margem">
                 <label for="">Logo:</label></br>

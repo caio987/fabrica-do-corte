@@ -36,6 +36,13 @@
         main form {
             max-width: 500px;
         }
+
+        @media (max-width: 767px) {
+            .footerFixo {
+                position: relative;
+                margin-top: 10px;
+            }
+        }
     </style>
 </head>
 
@@ -82,12 +89,12 @@
                             Foto do estabelecimento
                         </label>
                         <input type="file" id="foto" name="foto" accept="image/*" required style="display: none;">
-                        <span id="foto-nome" class="spanArquivo">Nenhum arquivo
+                        <span id="foto-nome" class="spanArquivo" style="font-size: .8em;">Nenhum arquivo
                             selecionado</span>
                     </div>
 
                     <!-- LOGO do Estabelecimento -->
-                    <div style="text-align: start; width: 80%; margin: 0 auto 10px; border-bottom: 1px solid #C4974F;">
+                    <div style="width: 80%; margin: 0 auto 10px; border-bottom: 1px solid #C4974F;">
                         <label for="logo" class="labelArquivo">
                             Logo do estabelecimento
                         </label>
@@ -109,7 +116,7 @@
         </form>
     </main>
 
-    <footer class="">
+    <footer class="footerFixo">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>©Todos os direitos reservados a Fábrica do Corte</p>
     </footer>

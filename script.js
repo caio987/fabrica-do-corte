@@ -42,6 +42,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         </div>
     </nav>
       <ul class="navMobile">
+      <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
       <hr>
       <li><a href="busca.html" class="links">Barbearias</a></li>
       <hr>
@@ -71,6 +72,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         </div>
     </nav>
       <ul class="navMobile">
+      <li><a href="index.html"><img src="../img/logo.png" alt="" style="margin-top: 10px; margin-bottom: -10px; width: 80px;"></a></li>
       <hr>
       <li><a href="busca.html" class="links">Barbearias</a></li>
       <hr>
@@ -218,78 +220,86 @@ function voltar() {
   document.getElementById("botao1").style.display = "inline-block";
 }
 
+// // Carrosel
+// // TESTE-----------------
+
+// let product = document.getElementsByClassName("caixaBarbearia");
+// let productStyles = undefined
+// let widthRestante = undefined
+// let numberProduct = undefined
+// let span = document.getElementsByTagName("span");
+// // let product_page = Math.ceil(product.length / 4);
+// let l = 0;
+// let movePer = 0;
+
+// setTimeout(() => {
+//   // Pegar todos os produtos e quantos são
+//   product = document.getElementsByClassName("caixaBarbearia");
+//   numberProduct = product.length
+
+//   function updateWidth(){
+//     // Pegar os estilos de um produto e do carrosel
+//     productStyles = window.getComputedStyle(product[0])
+//     carrosselStyles = window.getComputedStyle(carrossel)
+
+//     // Pega o width desses elementos
+//     const widthProduct = parseFloat(productStyles.getPropertyValue("width").replace("px", "")) + 26 // 26 = border + padding
+//     const widthVisivel = parseFloat(carrosselStyles.getPropertyValue("width").replace("px", ""))
+
+//     // tamanho_oculto = tamanho_produto * numero_produtos - tamanho_visivel_carrossel
+//     widthRestante = widthProduct * numberProduct - widthVisivel
+
+//     // tamanho_mover = tamanho_oculto / numero_produtos
+//     movePer = widthRestante / numberProduct
+
+//   }
+
+//   updateWidth()
+
+//   // Atualiza valores para ficar responsivo
+//   window.addEventListener("resize", () => updateWidth)
+// }, 500) // Espera carregar produtos do db
+
+// // ------------  
+
 // Carrosel
-// TESTE-----------------
-
-let product = document.getElementsByClassName("caixaBarbearia");
-let productStyles = undefined
-let widthRestante = undefined
-let numberProduct = undefined
 let span = document.getElementsByTagName("span");
-// let product_page = Math.ceil(product.length / 4);
+let product = document.getElementsByClassName("caixaGeral");
+let product_page = Math.ceil(product.length / 4);
 let l = 0;
-let movePer = 0;
-
-setTimeout(() => {
-  // Pegar todos os produtos e quantos são
-  product = document.getElementsByClassName("caixaBarbearia");
-  numberProduct = product.length
-
-  function updateWidth(){
-    // Pegar os estilos de um produto e do carrosel
-    productStyles = window.getComputedStyle(product[0])
-    carrosselStyles = window.getComputedStyle(carrossel)
-
-    // Pega o width desses elementos
-    const widthProduct = parseFloat(productStyles.getPropertyValue("width").replace("px", "")) + 26 // 26 = border + padding
-    const widthVisivel = parseFloat(carrosselStyles.getPropertyValue("width").replace("px", ""))
-
-    // tamanho_oculto = tamanho_produto * numero_produtos - tamanho_visivel_carrossel
-    widthRestante = widthProduct * numberProduct - widthVisivel
-
-    // tamanho_mover = tamanho_oculto / numero_produtos
-    movePer = widthRestante / numberProduct
-
-  }
-
-  updateWidth()
-
-  // Atualiza valores para ficar responsivo
-  window.addEventListener("resize", () => updateWidth)
-}, 500) // Espera carregar produtos do db
-
-// ------------
-
-
+let movePer = 27;
+let maxMove = 108;
 
 let right_mover = () => {
   l = l + movePer;
+  console.log(l);
   if (product == 1) {
     l = 0;
   }
   for (const i of product) {
-    if (l > widthRestante) {
+    if (l > maxMove) {
       l = l - movePer;
     }
-    i.style.left = "-" + l + "px";
+    i.style.left = "-" + l + "%";
   }
 };
 
 let left_mover = () => {
   l = l - movePer;
+  console.log(l);
   if (l <= 0) {
     l = 0;
   }
   for (const i of product) {
-    i.style.left = "-" + l + "px";
+    i.style.left = "-" + l + "%";
   }
 };
 
 span[1].onclick = () => { right_mover(); }
 span[0].onclick = () => { left_mover(); }
-// span[1].onclick = () => {
-//   right_mover();
-// };
-// span[0].onclick = () => {
-//   left_mover();
-// };
+span[1].onclick = () => {
+  right_mover();
+};
+span[0].onclick = () => {
+  left_mover();
+};

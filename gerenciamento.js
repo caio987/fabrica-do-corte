@@ -115,8 +115,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   function atualizarEventos() {
     calendar.getEvents().forEach(e => e.remove());
-    datasSelecionadas.forEach(d => calendar.addEvent({title:"Selecionado", start:d, display:'background', backgroundColor:'#1c3c17'}));
-    datasBloqueadas.forEach(d => calendar.addEvent({title:"Indisponível", start:d, display:'background', backgroundColor:'#d9534f'}));
+    datasSelecionadas.forEach(d => calendar.addEvent({title:"Selecionado", start:d, display:'background', backgroundColor:'#444743'}));
+    datasBloqueadas.forEach(d => calendar.addEvent({title:"Indisponível", start:d, display:'background', backgroundColor:'#512d2d'}));
   }
 
   function mostrarHorarios(dataStr) {
