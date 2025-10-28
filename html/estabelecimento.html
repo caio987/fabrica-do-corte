@@ -74,9 +74,10 @@
   <div id="servicos"></div><br><br>
   <div id="resultado"></div><br><br>
   <div id="funcionarios"></div><br><br><br>
-  <button>Agendar</button>
+  <button onclick="agendar()">Agendar</button>
 
   <script>
+    let sucesso = '';
     document.addEventListener("DOMContentLoaded", async () => {
       const nome_estabelecimento = document.getElementById('nome_estabelecimento');
       const apresentacao = document.getElementById('apresentacao');
@@ -284,6 +285,7 @@ dadosServico.forEach(e => {
           funcionarios.innerHTML = "";
 
           if (resultadoPHP.status === 'success') {
+            sucesso = 'sucesso'
             resultadoPHP.data.forEach(f => {
               const div = document.createElement('div');
               div.innerHTML = ''
@@ -305,6 +307,24 @@ dadosServico.forEach(e => {
       });
 
     });
+    async function agendar(){
+       if(sucesso == 'sucesso'){
+         //Agendamento
+ 
+         //id_cliente
+         //id_funcionario
+         //id_disponibilidade
+ 
+         //Agendamento_servico
+ 
+         //id_agendamento
+         //id_servico
+         const respostaAgendamento = await fetch('../php/agendamento.php')
+         const dadosAgendamento = await respostaAgendamento.text();
+         console.log(dadosAgendamento)
+         alert('Você pulou alguma etapa do agendamento!')
+       }
+    }
   </script>
 </body>
 </html>

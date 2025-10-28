@@ -33,6 +33,7 @@ try {
     $stmtDisp = $pdo->prepare($sqlDisp);
     $stmtDisp->execute([$dia, $horario]);
     $disp = $stmtDisp->fetch(PDO::FETCH_ASSOC);
+    $_SESSION['teste'] = $disp['id_disponibilidade'];
 
     if (!$disp) {
         echo json_encode([
