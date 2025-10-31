@@ -99,7 +99,7 @@
     <div id="servicos"></div><br><br>
     <h3>Informações sobre o(s) serviço(s) escolhido(s)</h3><br>
     <div id="resultado"></div><br><br>
-    <h3>Clique no botão de concluir serviço para selecionar o barbeiro que deseja</h3><br><br>
+    <h3>Clique no botão de concluir serviço antes de selecionar o barbeiro que deseja</h3><br><br>
     <div id="funcionarios"></div><br><br><br>
     <button onclick="agendar()">Agendar</button>
     <div style="display: none;" id="confirmacao"></div>
@@ -166,6 +166,7 @@
         }
       });
       calendar.render();
+      atualizarEventos();
 
       function atualizarEventos() {
         calendar.getEvents().forEach(e => e.remove());
@@ -342,18 +343,61 @@
       });
 
     });
-    function agendar(){
-      let confirmacao = document.getElementById('confirmacao');
-      confirmacao.style = 'display:block;'
-      const caixa = document.createElement('div');
-      const texto = document.createElement('p');
-      const alerta = document.createElement('h3');
-      const agendar = document.createElement('button');
-      const cancelar = document.createElement('button');
-      alerta.innerText = 'Tem ceteza que deseja realizar o agendamento?'
-      p.innerText = 'Clique em agendar se tem certeza. Caso não queira concluir o agendamento clique e cancelar';
+   function agendar() {
+  if(idFuncionario > 0){
 
-    }
+    let confirmacao = document.getElementById('confirmacao');
+    confirmacao.style.display = 'block';
+    confirmacao.innerHTML = '';
+  
+    // Cria os elementos
+    const caixa = document.createElement('div');
+    const texto = document.createElement('p');
+    const alerta = document.createElement('h3');
+    const concluir = document.createElement('button');
+    const cancelar = document.createElement('button');
+    const fechar = document.createElement('button');
+  
+    // Define textos
+    alerta.innerText = 'Tem certeza que deseja realizar o agendamento?';
+    texto.innerText = 'Clique em "Agendar" se tem certeza. Caso não queira, clique em "Cancelar".';
+    concluir.innerText = 'Agendar';
+    cancelar.innerText = 'Cancelar';
+    fechar.innerText = 'Fechar';
+  
+    // Adiciona classes (opcional, para estilizar)
+    caixa.classList.add('caixa-confirmacao');
+    concluir.classList.add('btn-concluir');
+    cancelar.classList.add('btn-cancelar');
+  
+    // Adiciona elementos dentro da caixa
+    caixa.appendChild(alerta);
+    caixa.appendChild(texto);
+    caixa.appendChild(concluir);
+    caixa.appendChild(cancelar);
+    caixa.appendChild(fechar);
+  
+    // Adiciona a caixa dentro da div de confirmação
+    confirmacao.appendChild(caixa);
+  
+    // Eventos
+    concluir.addEventListener('click', () => {
+      concluirAgendamento(); // sua função
+      confirmacao.style.display = 'none';
+    });
+  
+    cancelar.addEventListener('click', () => {
+      confirmacao.style.display = 'none';
+    });
+  
+    fechar.addEventListener('click', () => {
+      confirmacao.style.display = 'none';
+    });
+  }else{
+    alert('Preencha os outros campos antes de agendar')
+  }
+  }
+
     async function concluirAgendamento(){
        if(sucesso == 'sucesso'){
          //Agendamento        
@@ -373,6 +417,12 @@
         });
          const dadosAgendamento = await respostaAgendamento.text();
          console.log(dadosAgendamento)
+        alert(dadosAgendamento)
+        if(dadosAgendamento == 'Agendamento realizado com sucesso'){
+          window.location.href="agendamentoSalvo.html"
+        }else{
+          location.reload();
+        }
         }else{
          alert('Você pulou alguma etapa do agendamento!')
        }
