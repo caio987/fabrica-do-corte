@@ -8,71 +8,72 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
   <link rel="stylesheet" href="../style.css">
   <style>
-    body {
-      background: #f5f5f5;
-      color: #333;
-    }
-
-    h1,
-    h2,
-    h3 {
+    body{
       text-align: center;
     }
-
-    #dias {
+    0
+    main #dias {
       max-width: 900px;
-      margin: 40px auto;
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      background: #000000;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgb(0, 0, 0);
     }
 
-    .fc-daygrid-day-number {
-      color: #333 !important;
-      font-weight: bold;
-    }
-
-    .fc-event {
-      font-size: 12px !important;
-      text-align: center;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 16px !important;
-      font-weight: bold;
-    }
-
-    .horario {
-      background-color: transparent;
-      color: #d68400;
-      padding: 3px;
-      border: solid 1px #d68400;
-    }
-
-    .selecionado {
-      background-color: #d68400;
-      color: white;
-      padding: 5px;
-      border: solid 1px #d68400;
-    }
-
-    .caixaServico {
+    main #horarios {
+      width: 50%;
+      margin: auto;
+      flex-wrap: wrap;
       display: flex;
+      justify-content: space-evenly;
     }
 
-    .caixaServico button {
+    main .horario {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #F5A623;
+      cursor: pointer;
+      transition: 0main .2s;
+      font-size: 16px;
+    }
+
+    main .horario:hover {
+      background-color: #f5a523d2;
+    }
+
+    main .selecionado {
+      background-color: #ff9800;
+      color: white;
+    }
+
+    main .caixaServico {
+      display: flex;
+      justify-content: center;
+    }
+
+    main .caixaServico button {
       margin-left: 10px;
     }
-    .funcionarioSelecionado{
+
+    main .funcionarioSelecionado {
       border: solid color #d68400;
     }
-    .funcionarioSelecionado img{
+
+    main .funcionarioSelecionado img {
       width: 150px;
     }
-    #confirmacao{
+
+    main #confirmacao {
       width: 300px;
       position: fixed;
       top: 50%;
       left: 50%;
+    }
+
+    .fc .fc-bg-event {
+      opacity: 1;
     }
   </style>
 </head>
@@ -88,19 +89,18 @@
 
   <main>
     <h1 id="nome_estabelecimento"></h1>
-    <p id="apresentacao" style="text-align:center"></p>
+    <p id="apresentacao" style=""></p>
     <hr>
     <h2>Preencha os espaços para realizar o agendamento</h2>
     <h3>Selecione o dia que deseja</h3>
     <div id="dias"></div>
-    <br><br><br>
-    <div id="horarios"></div><br><br><br>
-    <h3>Selecione os serviços que deseja</h3><br><br>
-    <div id="servicos"></div><br><br>
+    <div id="horarios"></div>
+    <h3>Selecione os serviços que deseja</h3>
+    <div id="servicos"></div>
     <h3>Informações sobre o(s) serviço(s) escolhido(s)</h3><br>
-    <div id="resultado"></div><br><br>
-    <h3>Clique no botão de concluir serviço antes de selecionar o barbeiro que deseja</h3><br><br>
-    <div id="funcionarios"></div><br><br><br>
+    <div id="resultado"></div>
+    <h3>Clique no botão de concluir serviço antes de selecionar o barbeiro que deseja</h3>
+    <div id="funcionarios"></div>
     <button onclick="agendar()">Agendar</button>
     <div style="display: none;" id="confirmacao"></div>
   </main>
@@ -110,6 +110,7 @@
     <p>©Todos os direitos reservados a Fábrica do Corte</p>
   </footer>
 
+  <script src="../script.js"></script>
   <script>
     let sucesso = '';
     let idServico = [];
@@ -170,9 +171,9 @@
 
       function atualizarEventos() {
         calendar.getEvents().forEach(e => e.remove());
-        diasCadastrados.forEach(d => calendar.addEvent({ start: d, display: "background", backgroundColor: "#3aa551" }));
+        diasCadastrados.forEach(d => calendar.addEvent({ start: d, display: "background", backgroundColor: "#d38400" }));
         if (diaSelecionado) {
-          calendar.addEvent({ start: diaSelecionado, title: 'Selecionado', textColor: '#000', display: "block", backgroundColor: "#007BFF" });
+          calendar.addEvent({ start: diaSelecionado, title: 'Selecionado', textColor: '#ffff', display: "block", backgroundColor: "#000" });
         }
       }
 
@@ -202,7 +203,7 @@
       const respostaServico = await fetch("../php/exibirServico.php");
       const dadosServico = await respostaServico.json();
 
-      
+
       let precoTotal = 0;
 
       // Criação dos elementos principais do "carrinho"
@@ -321,7 +322,7 @@
               nome.innerText = f.nome;
               foto.src = f.foto;
               botao.innerText = 'Selecionar barbeiro';
-              botao.addEventListener('click', ()=>{
+              botao.addEventListener('click', () => {
                 idFuncionario = f.id_funcionario;
                 div.classList = 'funcionarioSelecionado';
                 alert(`Funcionário ${f.nome} selecionado`);
@@ -343,89 +344,89 @@
       });
 
     });
-   function agendar() {
-  if(idFuncionario > 0){
+    function agendar() {
+      if (idFuncionario > 0) {
 
-    let confirmacao = document.getElementById('confirmacao');
-    confirmacao.style.display = 'block';
-    confirmacao.innerHTML = '';
-  
-    // Cria os elementos
-    const caixa = document.createElement('div');
-    const texto = document.createElement('p');
-    const alerta = document.createElement('h3');
-    const concluir = document.createElement('button');
-    const cancelar = document.createElement('button');
-    const fechar = document.createElement('button');
-  
-    // Define textos
-    alerta.innerText = 'Tem certeza que deseja realizar o agendamento?';
-    texto.innerText = 'Clique em "Agendar" se tem certeza. Caso não queira, clique em "Cancelar".';
-    concluir.innerText = 'Agendar';
-    cancelar.innerText = 'Cancelar';
-    fechar.innerText = 'Fechar';
-  
-    // Adiciona classes (opcional, para estilizar)
-    caixa.classList.add('caixa-confirmacao');
-    concluir.classList.add('btn-concluir');
-    cancelar.classList.add('btn-cancelar');
-  
-    // Adiciona elementos dentro da caixa
-    caixa.appendChild(alerta);
-    caixa.appendChild(texto);
-    caixa.appendChild(concluir);
-    caixa.appendChild(cancelar);
-    caixa.appendChild(fechar);
-  
-    // Adiciona a caixa dentro da div de confirmação
-    confirmacao.appendChild(caixa);
-  
-    // Eventos
-    concluir.addEventListener('click', () => {
-      concluirAgendamento(); // sua função
-      confirmacao.style.display = 'none';
-    });
-  
-    cancelar.addEventListener('click', () => {
-      confirmacao.style.display = 'none';
-    });
-  
-    fechar.addEventListener('click', () => {
-      confirmacao.style.display = 'none';
-    });
-  }else{
-    alert('Preencha os outros campos antes de agendar')
-  }
-  }
+        let confirmacao = document.getElementById('confirmacao');
+        confirmacao.style.display = 'block';
+        confirmacao.innerHTML = '';
 
-    async function concluirAgendamento(){
-       if(sucesso == 'sucesso'){
-         //Agendamento        
+        // Cria os elementos
+        const caixa = document.createElement('div');
+        const texto = document.createElement('p');
+        const alerta = document.createElement('h3');
+        const concluir = document.createElement('button');
+        const cancelar = document.createElement('button');
+        const fechar = document.createElement('button');
+
+        // Define textos
+        alerta.innerText = 'Tem certeza que deseja realizar o agendamento?';
+        texto.innerText = 'Clique em "Agendar" se tem certeza. Caso não queira, clique em "Cancelar".';
+        concluir.innerText = 'Agendar';
+        cancelar.innerText = 'Cancelar';
+        fechar.innerText = 'Fechar';
+
+        // Adiciona classes (opcional, para estilizar)
+        caixa.classList.add('caixa-confirmacao');
+        concluir.classList.add('btn-concluir');
+        cancelar.classList.add('btn-cancelar');
+
+        // Adiciona elementos dentro da caixa
+        caixa.appendChild(alerta);
+        caixa.appendChild(texto);
+        caixa.appendChild(concluir);
+        caixa.appendChild(cancelar);
+        caixa.appendChild(fechar);
+
+        // Adiciona a caixa dentro da div de confirmação
+        confirmacao.appendChild(caixa);
+
+        // Eventos
+        concluir.addEventListener('click', () => {
+          concluirAgendamento(); // sua função
+          confirmacao.style.display = 'none';
+        });
+
+        cancelar.addEventListener('click', () => {
+          confirmacao.style.display = 'none';
+        });
+
+        fechar.addEventListener('click', () => {
+          confirmacao.style.display = 'none';
+        });
+      } else {
+        alert('Preencha os outros campos antes de agendar')
+      }
+    }
+
+    async function concluirAgendamento() {
+      if (sucesso == 'sucesso') {
+        //Agendamento        
         const idsAgendamento = {
-            id_servico: idServico,         // array de serviços
-            id_funcionario: idFuncionario,  
-            id_disponibilidade: idDisponibilidade
-           
-          };
+          id_servico: idServico,         // array de serviços
+          id_funcionario: idFuncionario,
+          id_disponibilidade: idDisponibilidade
+
+        };
 
 
 
-         const respostaAgendamento = await fetch('../php/agendamento.php', {
+        const respostaAgendamento = await fetch('../php/agendamento.php', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(idsAgendamento)
         });
-         const dadosAgendamento = await respostaAgendamento.text();
-         console.log(dadosAgendamento)
+        const dadosAgendamento = await respostaAgendamento.text();
+        console.log(dadosAgendamento)
         alert(dadosAgendamento)
-        if(dadosAgendamento == 'Agendamento realizado com sucesso'){
-          window.location.href="agendamentoSalvo.html"
-        }else{
+        if (dadosAgendamento == 'Agendamento realizado com sucesso') {
+          window.location.href = "agendamentoSalvo.html"
+        } else {
           location.reload();
         }
-        }else{
-         alert('Você pulou alguma etapa do agendamento!')
-       }
+      } else {
+        alert('Você pulou alguma etapa do agendamento!')
+      }
     }
   </script>
 </body>
