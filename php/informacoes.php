@@ -2,7 +2,6 @@
 require_once "config.php";
 session_start();
 header('Content-Type: application/json');
-
 // Verifica sessão
 if (!isset($_SESSION['id']) || !isset($_SESSION['tipo'])) {
     echo json_encode(["erro" => "Usuário não autenticado"]);
@@ -13,8 +12,8 @@ $id = $_SESSION['id'];
 $tipo = $_SESSION['tipo'];
 
 try {
-    if ($tipo === 'Cliente') {
-        $stmt = $pdo->prepare("SELECT * FROM cliente WHERE id = :id");
+    if ($tipo == 'Cliente') {
+        $stmt = $pdo->prepare("SELECT * FROM cliente WHERE id_cliente = :id");
         $stmt->execute(['id' => $id]);
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 

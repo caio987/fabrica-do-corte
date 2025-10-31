@@ -53,27 +53,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             link.innerHTML = links;
         } else if (dados.tipo == 'Cliente') {
             let links = `
-                        <a href="#" class="link ativo">Informações da conta</a>
-                        <a href="#" class="link">Agendamento</a>
+                        <a href="infoContaCliente.html" class="link ativo">Informações da conta</a>
+                        <a href="agendamentoSalvo.html" class="link">Agendamento</a>
                     `;
             let html = `
                 <div class="margem">
                     <label for="">Nome:</label>
-                    <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="nomeUser"><br>
+                    <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="${dados.dados.nome}"><br>
                 </div>
                 <div class="margem">
                     <label for="">Sobrenome:</label>
-                    <input style="width: 70%; margin: 0 0px 0 0; display: inline;" type="text" disabled value="sobrenomeUser"><br>
+                    <input style="width: 70%; margin: 0 0px 0 0; display: inline;" type="text" disabled value="${dados.dados.sobrenome}"><br>
                 </div>
                 <div class="margem">
                     <label for="">E-mail:</label>
-                    <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="emailUser"><br>
+                    <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="${dados.dados.email}"><br>
                 </div>
                 <button id="button" type="button" onclick="sair()">Sair da conta</button>
             </div>
                     `;
             caixa.innerHTML = html;
             link.innerHTML = links;
+        }else{
+            console.log('Erro')
+            console.log(dados.tipo)
         }
 
     } catch (error) {

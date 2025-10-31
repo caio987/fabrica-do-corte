@@ -6,6 +6,18 @@
     <title>Document</title>
 </head>
 <body>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque fugiat eligendi, omnis sapiente officia sequi minus praesentium cumque consequuntur odio nulla aliquid quis non magni libero, accusamus dolore animi. Quis.
+    <div style="margin-top: 15px; display: flex; justify-content: space-evenly; flex-wrap: wrap;" id="link"></div>
+    <div style="max-width: 500px; text-align: center; padding: 0 10px;" id="caixa">
+
+        </div>
+     <script>
+        const link = document.getElementById('link');
+        let links = `
+                <a href="#" class="link ativo">Informações da conta</a>
+                <a href="#" class="link">Agendamento</a>
+                <a href="gerenciaEstabelecimento.html" class="link">Estabelecimento</a>
+                    `;
+        link.innerHTML = links;
+     </script>
 </body>
 </html>
