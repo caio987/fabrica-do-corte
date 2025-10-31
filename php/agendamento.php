@@ -2,10 +2,14 @@
     require_once 'config.php';
     session_start();
     $input = json_decode(file_get_contents('php://input'), true);
-    $idTipo = $_SESSION['tipo'];
+    if (isset($_SESSION['tipo'])) {
+            $idTipo = $_SESSION['tipo'];
+    }
     //ids    
     //id_cliente
-    $idCliente = $_SESSION['id'];
+    if (isset($_SESSION['id'])) {
+        $idCliente = $_SESSION['id'];
+    }
     //id_funcionario
     $idFuncionario = $input['id_funcionario'];
     //id_disponibilidade
@@ -13,11 +17,21 @@
     //id_servico
     $idServico = $input['id_servico'];
 
-         if ($_SESSION['tipo'] == 'Cliente') {
+         if (isset( $_SESSION['tipo'])) {
              try {
-                $consulta = $pdo->prepare("INSERT INTO agendamento id_cliente, id_funcionario, id_disponibilidade VALUES (:id_cliente, :id_funcionario, :id_disponibilidade)");
-             } catch (\Throwable $th) {
-                //throw $th;
+                if ($_SESSION['tipo'] == 'Cliente') {
+                    $consulta = $pdo->prepare("INSERT INTO agendamento (id_cliente, id_funcionario, id_disponibilidade) VALUES (:id_cliente, :id_funcionario, :id_disponibilidade)");
+                    $consulta->bindParam(":id_cliente", $idCliente);
+                    $consulta->bindParam(":id_funcionario", $idFuncionario);
+                    $consulta->bindParam(":id_disponibilidade", $idDisponibilidade);
+                    $consulta->execute();
+                    echo 'Agendamento realizado com sucesso';
+                    
+                }else{
+                    echo 'Um estabelecimento não pode realizar um agendamento';
+                }
+             } catch (PDOException $e) {
+                echo 'ERRO: '. $e->getMessage();
              }
              
              
@@ -27,7 +41,7 @@
      
              //id_agendamento
     }else{
-        echo 'TEste';
+        echo 'Nenhum usuário logado';
 
     }
 ?>

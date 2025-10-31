@@ -62,9 +62,17 @@
     .caixaServico button {
       margin-left: 10px;
     }
-
-    #funcionarios div {
-      margin-bottom: 10px;
+    .funcionarioSelecionado{
+      border: solid color #d68400;
+    }
+    .funcionarioSelecionado img{
+      width: 150px;
+    }
+    #confirmacao{
+      width: 300px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
     }
   </style>
 </head>
@@ -89,9 +97,12 @@
     <div id="horarios"></div><br><br><br>
     <h3>Selecione os serviços que deseja</h3><br><br>
     <div id="servicos"></div><br><br>
+    <h3>Informações sobre o(s) serviço(s) escolhido(s)</h3><br>
     <div id="resultado"></div><br><br>
+    <h3>Clique no botão de concluir serviço para selecionar o barbeiro que deseja</h3><br><br>
     <div id="funcionarios"></div><br><br><br>
     <button onclick="agendar()">Agendar</button>
+    <div style="display: none;" id="confirmacao"></div>
   </main>
 
   <footer class="">
@@ -165,7 +176,6 @@
       }
 
       async function mostarHorario() {
-        console.log('Dia selecionado: ', diaSelecionado)
         horarios.innerHTML = "";
         if (!diaSelecionado) return;
         const respostaHorario = await fetch('../php/exibirHorario.php', {
@@ -175,7 +185,6 @@
         });
         const dadosHorario = await respostaHorario.json();
         dadosHorario.forEach(e => {
-          console.log('Horário disponível: ', e.horario);
           let horario = document.createElement("button");
           horario.innerText = e.horario;
           horario.classList = 'horario';
@@ -183,7 +192,6 @@
             document.querySelectorAll('.horario').forEach(btn => btn.classList.remove('selecionado'));
             horario.classList.add('selecionado');
             horarioSelecionado = e.horario;
-            console.log('Horário selecionado: ', horarioSelecionado);
           })
           horarios.appendChild(horario);
         });
@@ -262,18 +270,11 @@
 
             // Remove o elemento visualmente
             listaServicos.removeChild(item);
-
-            console.log(`Serviço removido: ${e.nome_servico}`);
-            console.log('Serviços restantes:', idServico);
           });
 
           item.appendChild(nome);
           item.appendChild(remover);
           listaServicos.appendChild(item);
-
-          console.log('Serviço adicionado:', e.nome_servico);
-          console.log('Serviços no carrinho:', idServico);
-          console.log('Preço total:', precoTotal);
         });
 
         caixaServico.appendChild(servico);
@@ -321,7 +322,8 @@
               botao.innerText = 'Selecionar barbeiro';
               botao.addEventListener('click', ()=>{
                 idFuncionario = f.id_funcionario;
-                console.log(idFuncionario)
+                div.classList = 'funcionarioSelecionado';
+                alert(`Funcionário ${f.nome} selecionado`);
               })
               div.innerHTML = ''
               div.appendChild(nome);
@@ -337,30 +339,24 @@
           console.error('Erro ao buscar funcionários:', err);
           funcionarios.innerHTML = "<p>Erro ao buscar funcionários.</p>";
         }
-
-        console.log('Serviços adicionados:', idServico);
-        console.log('Preço total:', precoTotal);
       });
 
     });
-    function selecionar(){
-      alert('funciona')
-    }
-    async function agendar(){
-       if(sucesso == 'sucesso'){
-         //Agendamento
- 
-         //id_cliente - certo
-         //id_funcionario 
-         //idFuncionario
-         //id_disponibilidade - certo
- 
-         //Agendamento_servico
- 
-         //id_agendamento
-         //id_servico - certo
+    function agendar(){
+      let confirmacao = document.getElementById('confirmacao');
+      confirmacao.style = 'display:block;'
+      const caixa = document.createElement('div');
+      const texto = document.createElement('p');
+      const alerta = document.createElement('h3');
+      const agendar = document.createElement('button');
+      const cancelar = document.createElement('button');
+      alerta.innerText = 'Tem ceteza que deseja realizar o agendamento?'
+      p.innerText = 'Clique em agendar se tem certeza. Caso não queira concluir o agendamento clique e cancelar';
 
-        
+    }
+    async function concluirAgendamento(){
+       if(sucesso == 'sucesso'){
+         //Agendamento        
         const idsAgendamento = {
             id_servico: idServico,         // array de serviços
             id_funcionario: idFuncionario,  
@@ -376,7 +372,6 @@
           body: JSON.stringify(idsAgendamento)
         });
          const dadosAgendamento = await respostaAgendamento.text();
-         console.log('Isso é algo ',idServico)
          console.log(dadosAgendamento)
         }else{
          alert('Você pulou alguma etapa do agendamento!')
