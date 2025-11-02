@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (dados.tipo == 'Proprietário') {
             let links = `
                 <a href="#" class="link ativo">Informações da conta</a>
-                <a href="#" class="link">Agendamento</a>
+                <a href="agendamentoSalvo.html" class="link">Agendamento</a>
                 <a href="gerenciaEstabelecimento.html" class="link">Estabelecimento</a>
                     `;
             let html = `

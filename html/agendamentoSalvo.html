@@ -10,14 +10,81 @@
     <div style="max-width: 500px; text-align: center; padding: 0 10px;" id="caixa">
 
         </div>
+        <h2>Seus agendamentos</h2>
+        <div id="agendamento"></div>
+        <hr>
      <script>
         const link = document.getElementById('link');
+        const agendamento = document.getElementById('agendamento');
         let links = `
-                <a href="#" class="link ativo">Informações da conta</a>
+                <a href="infoContaCliente.html" class="link ativo">Informações da conta</a>
                 <a href="#" class="link">Agendamento</a>
-                <a href="gerenciaEstabelecimento.html" class="link">Estabelecimento</a>
                     `;
         link.innerHTML = links;
+        document.addEventListener('DOMContentLoaded',async ()=>{
+            const resposta = await fetch('../php/agendamentoSalvo.php');
+            const dados = await resposta.json();
+            let total = 0
+            console.log(dados)
+            dados.forEach(e => {
+                if (e.tipo === 'Cliente') {
+                const foto = document.createElement('img')
+                const nome = document.createElement('p');
+                const local = document.createElement('p');
+                const fotoBarbeiro = document.createElement('img')
+                const barbeiro = document.createElement('p')
+                const totalPagar = document.createElement('p')
+                foto.src=e.foto
+                nome.innerText = e.estabelecimento
+                local.innerText = e.localizacao
+                fotoBarbeiro.src = e.foto_barbeiro
+                barbeiro.innerText = e.funcionario
+                agendamento.appendChild(foto)
+                agendamento.appendChild(nome)
+                agendamento.appendChild(local)
+                agendamento.appendChild(fotoBarbeiro)
+                agendamento.appendChild(barbeiro)
+                e.servicos.forEach(s => {
+                    total += parseFloat(s.preco)
+                    const servico = document.createElement('p')
+                    servico.innerText = s.nome_servico
+                    console.log(s.nome_servico)
+                    const preco = document.createElement('p')                                    
+                    preco.innerText = s.preco
+                    agendamento.appendChild(servico)
+                    agendamento.appendChild(preco)
+                });
+                totalPagar.innerText = total
+                agendamento.appendChild(totalPagar)
+                
+                
+            }else if (e.tipo === 'Proprietário') {
+                const nome = document.createElement('p');
+                const fotoBarbeiro = document.createElement('img')
+                const barbeiro = document.createElement('p')
+                const totalPagar = document.createElement('p')
+                nome.innerText = e.cliente
+                fotoBarbeiro.src = e.foto_barbeiro
+                barbeiro.innerText = e.funcionario
+                agendamento.appendChild(nome)
+                agendamento.appendChild(fotoBarbeiro)
+                agendamento.appendChild(barbeiro)
+                e.servicos.forEach(s => {
+                    total += parseFloat(s.preco)
+                    const servico = document.createElement('p')
+                    servico.innerText = s.nome_servico
+                    console.log(s.nome_servico)
+                    const preco = document.createElement('p')                                    
+                    preco.innerText = s.preco
+                    agendamento.appendChild(servico)
+                    agendamento.appendChild(preco)
+                });
+                totalPagar.innerText = total
+                agendamento.appendChild(totalPagar)
+                
+                
+            }
+            });        })
      </script>
 </body>
 </html>

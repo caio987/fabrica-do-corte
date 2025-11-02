@@ -110,8 +110,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       mostrarHorarios(dataStr);
     }
   });
-
+  
   calendar.render();
+  atualizarEventos();
 
   function atualizarEventos() {
     calendar.getEvents().forEach(e => e.remove());
