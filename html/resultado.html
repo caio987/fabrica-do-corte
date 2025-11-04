@@ -3,48 +3,29 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estabelecimentos</title>
     <link rel="stylesheet" href="../style.css">
-    <title>Busca</title>
     <style>
-        main form {
-            max-width: 80%;
-        }
-
         main #caixaEstabelecimento .caixaBarbearia {
             width: 90%;
-        }
-
-        @media (max-width: 767px) {
-            .footerFixo {
-                position: relative;
-                margin-top: 10px;
-            }
         }
     </style>
 </head>
 
 <body>
-    <header>
+    <header style="margin-bottom: 15px;">
         <nav>
-            <ul></ul>
+            <ul>
+                <!-- <li><a href="#" class="links">Conta</a></li> -->
+            </ul>
         </nav>
     </header>
-
     <main>
-        <form action="../php/busca.php" method="post" style="border: none; width: 80%;">
-            <div id="caixapesquisa" style="width: 80%;">
-                <input type="text" id="barraDePesquisa" name="busca">
-                <button type="submit" style="background-color: transparent; border: none; cursor: pointer;">
-                    <img src="../img/icons/lupa.png" alt="botao pra pesquisar" style="z-index: 1;">
-                </button>
-            </div>
-        </form>
+        <a href="busca.html" class="link" style="margin: 20px;">← Voltar</a>
         <div id="caixaEstabelecimento"></div>
     </main>
-
-    <footer class="footerFixo">
+    <footer class="">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>©Todos os direitos reservados a Fábrica do Corte</p>
     </footer>
@@ -55,18 +36,16 @@
             const container = document.getElementById('caixaEstabelecimento');
 
             try {
-                const resposta = await fetch('../php/exibir2.php');
+                const resposta = await fetch('../php/exibir.php');
                 const dados = await resposta.json();
 
-                console.log("Retorno do PHP:", dados);
-
-                if (!Array.isArray(dados) || dados.length === 0) {
+                if (!dados || dados.length === 0) {
                     container.innerHTML = '<p>Nenhum estabelecimento encontrado.</p>';
                     return;
                 }
 
                 dados.forEach(e => {
-                    // cria a caixa invisível antes do onclick
+                    // caixa invisível criada antes do onclick
                     const caixaInvisivel = document.createElement("div");
                     caixaInvisivel.classList.add("caixaInvisivel");
 
@@ -92,7 +71,6 @@
                     let id = e.id_estabelecimento;
                     nome.href = `estabelecimento.html?id=${id}`;
 
-
                     const avaliacao = document.createElement("div");
                     avaliacao.classList.add("avaliacao");
                     const nota = document.createElement("img");
@@ -109,6 +87,7 @@
                     const contato = document.createElement("p");
                     contato.classList.add("contato");
                     contato.innerText = "Contato: " + (e.telefone_estabelecimento || "Não informado");
+
 
                     const div1 = document.createElement("div");
                     const texto1 = document.createElement("p");
@@ -138,6 +117,7 @@
                     const salvarBarbearia = document.createElement("button");
                     salvarBarbearia.classList.add("salvarBarbearia");
                     salvarBarbearia.innerText = "Salvar Barbearia";
+                    
                     salvarBarbearia.addEventListener('click',async ()=>{
                         let id = e.id_estabelecimento;
                         const resposta = await fetch("../php/salvar.php",{
@@ -148,7 +128,6 @@
                         const dados = await resposta.text();
                         alert(dados);
                     });
-
                     // montagem
                     caixaInformacoes.appendChild(nome);
                     caixaInformacoes.appendChild(avaliacao);
@@ -170,7 +149,7 @@
                 });
 
             } catch (error) {
-                console.error('Erro ao pegar os dados do banco: ', error);
+                console.error('Erro ao pegar os dados da sessão', error);
                 container.innerHTML = '<p>Ocorreu um erro ao carregar os estabelecimentos.</p>';
             }
         });

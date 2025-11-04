@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <link rel="stylesheet" href="../style.css">
+  <title>Agendamento com Botões de Horário</title>
+  <style>
+    main {
+      text-align: center;
+    }
+
+    #calendar {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #000000;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgb(0, 0, 0);
+    }
+
+    #horarios {
+      display: none;
+      margin-top: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .hora-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #F5A623;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 16px;
+    }
+
+    .hora-btn:hover {
+      background-color: #f5a523d2;
+    }
+
+    .hora-btn.selecionada {
+      background-color: #575656;
+      color: white;
+    }
+
+    #caixaFuncionario {
+      display: flex;
+      width: 80%;
+    }
+
+    .funcionario {
+      width: 140px;
+      height: 200px;
+      align-content: center;
+      background-color: rgb(73 73 73);
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 20px;
+    }
+
+    .funcionario img {
+      width: 70%;
+      margin-top: 20px;
+    }
+
+    :root {
+      --fc-bg-event-opacity: 1;
+    }
+
+    #formFuncionario select {
+      width: 80%;
+      padding: 6px;
+      margin-bottom: 10px;
+      border-bottom: 1.7px solid #C4974F;
+      outline: none;
+      color: #C4974F;
+      background-color: #000000;
+      font-size: 1em;
+    }
+
+    #formFuncionario input[type="file"] {
+      border: none;
+      padding: 6px 0;
+      color: #b88738;
+    }
+
+    #formFuncionario h4 {
+      margin-top: 15px;
+      color: #daa248;
+      font-weight: normal;
+    }
+
+    #diasHorariosContainer {
+      background: #201F1F;
+      padding: 10px;
+      border-radius: 8px;
+      max-height: 200px;
+      width: 70%;
+      margin: auto;
+      overflow-y: auto;
+      border: 1px solid #C4974F;
+      color: #C4974F;
+    }
+
+    #diasHorariosContainer {
+      background: #201F1F;
+      padding: 15px 10px;
+      border-radius: 10px;
+      max-height: 220px;
+      width: 80%;
+      margin: 15px auto;
+      overflow-y: auto;
+      border: 1px solid #C4974F;
+      color: #C4974F;
+      box-shadow: 0 0 10px rgba(196, 151, 79, 0.2);
+      scrollbar-width: thin;
+      scrollbar-color: #C4974F #1b1b1b;
+    }
+
+    /* Barrinha de rolagem mais bonita */
+    #diasHorariosContainer::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #diasHorariosContainer::-webkit-scrollbar-track {
+      background: #1b1b1b;
+      border-radius: 10px;
+    }
+
+    #diasHorariosContainer::-webkit-scrollbar-thumb {
+      background-color: #C4974F;
+      border-radius: 10px;
+    }
+
+    /* Cada linha de dia e horário */
+    #diasHorariosContainer div {
+      display: flex;
+      align-items: center;
+      word-wrap: none;
+      justify-content: space-between;
+      background-color: #151615;
+      border: 1px solid #2d2d2d;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 8px 0;
+      transition: 0.3s;
+    }
+
+    #diasHorariosContainer div:hover {
+      background-color: #292929;
+      border-color: #C4974F;
+    }
+
+    /* Label e input dentro de cada linha */
+    #diasHorariosContainer label {
+      flex: 1;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+    }
+
+    #diasHorariosContainer input {
+      flex: 1;
+      text-align: end;
+    }
+
+    /* Quando o usuário passa o mouse ou foca */
+    #diasHorariosContainer input:focus {
+      border-bottom: 1px solid #F5A623;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <!-- <li><a href="../#" class="links">Conta</a></li> -->
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2 style="margin: 10px;">Escolha a data e o horário</h2>
+
+    <div id="calendar" style="opacity: 1;"></div>
+    <div id="horarios"></div>
+    <button class="buttonBonito" onclick="enviarDisponibilidade()">Enviar Datas e Horários</button>
+
+    <input type="text" placeholder="Coloque aqui o nome do corte" name="corte" required id="corte">
+    <input type="number" placeholder="Preço R$0,00" name="preco" required id="preco">
+    <button class="buttonBonito" onclick="adicionar()">Adicionar</button>
+
+    <div id="caixa"></div>
+    <button class="buttonBonito" onclick="cadastroServico()">Cadastrar novos serviços</button>
+
+    <div id="caixaFuncionario">
+      <div id="funcionario" class="funcionario" onclick="adFuncionario()">
+        <img src="../img/icons/+.png" alt="">
+      </div>
+    </div>
+
+    <div id="formFuncionario" style="display: none; margin-bottom: 15px;">
+      <form enctype="multipart/form-data" style="width: 500px;">
+        <h2>Cadastro de Funcionário</h2>
+
+        <div style="display: flex; justify-content: space-around; align-items: center; width: 80%; margin: 0 auto 40px; border-bottom: 1px solid #C4974F;">
+          <label for="foto">Foto do barbeiro </label>
+
+          <input type="file" accept="image/*" name="foto" id="foto" style="display: none;">
+          <span id="foto-nome" class="spanArquivo">Nenhum arquivo
+            selecionado</span>
+        </div>
+        
+
+        <input type="text" placeholder="Nome:" name="nome" required><br>
+
+        <label for="selectServico1">Corte 1:</label>
+        <select id="selectServico1" name="selectServico1"></select><br>
+
+        <label for="selectServico2">Corte 2:</label>
+        <select id="selectServico2" name="selectServico2"></select><br>
+
+        <label for="selectServico3">Corte 3:</label>
+        <select id="selectServico3" name="selectServico3"></select><br>
+
+        <h4>Dias e horários disponíveis:</h4>
+        <div id="diasHorariosContainer">Carregando...</div>
+
+        <button class="buttonBonito" type="button" onclick="enviarFuncionario()">Cadastrar Funcionário</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="">
+    <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
+    <p>©Todos os direitos reservados a Fábrica do Corte</p>
+  </footer>
+
+  <script src="../gerenciamento.js"></script>
+  <script src="../script.js"></script>
+</body>
+
+</html>

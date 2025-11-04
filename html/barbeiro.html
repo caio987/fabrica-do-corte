@@ -15,7 +15,6 @@
 
         .labelArquivo,
         .spanArquivo {
-
             cursor: pointer;
             padding: 8px 5px;
         }
@@ -28,12 +27,21 @@
         main #etapa1 input {
             margin: 54px auto;
         }
-        main #etapa2 input {
+
+        main #etapa2 input,
+        textarea {
             margin: 32px auto 20px;
         }
 
         main form {
             max-width: 500px;
+        }
+
+        @media (max-width: 767px) {
+            .footerFixo {
+                position: relative;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
@@ -67,26 +75,26 @@
                 </div>
 
                 <div class="invisivel" id="etapa2">
-                    <input style="" placeholder="Nome do Estabelecimento:" class="caixaInput" type="text"
+                    <input placeholder="Nome do Estabelecimento:" class="caixaInput" type="text"
                         name="nome_estabelecimento" id="nome_estabelecimento">
 
-                    <input style="" placeholder="Localização:" type="text" class="caixaInput" name="localizacao"
+                    <input placeholder="Localização:" type="text" class="caixaInput" name="localizacao"
                         id="localizacao"><br>
                     <!-- </div> -->
 
                     <!-- <label style="" for="imagem" id="botaoArquivo">Selecionar foto do estabelecimento</label> -->
                     <!-- FOTO do Estabelecimento -->
-                    <div style="text-align: start; width: 80%; margin: 0 auto 40px; border-bottom: 1px solid #e3a849;">
+                    <div style="text-align: start; width: 80%; margin: 0 auto 40px; border-bottom: 1px solid #C4974F;">
                         <label for="foto" class="labelArquivo">
                             Foto do estabelecimento
                         </label>
                         <input type="file" id="foto" name="foto" accept="image/*" required style="display: none;">
-                        <span id="foto-nome" class="spanArquivo">Nenhum arquivo
+                        <span id="foto-nome" class="spanArquivo" style="font-size: .8em;">Nenhum arquivo
                             selecionado</span>
                     </div>
 
                     <!-- LOGO do Estabelecimento -->
-                    <div style="text-align: start; width: 80%; margin: 0 auto 10px; border-bottom: 1px solid #e3a849;">
+                    <div style="width: 80%; margin: 0 auto 10px; border-bottom: 1px solid #C4974F;">
                         <label for="logo" class="labelArquivo">
                             Logo do estabelecimento
                         </label>
@@ -94,7 +102,8 @@
                         <span id="logo-nome" class="spanArquivo">Nenhum arquivo
                             selecionado</span>
                     </div>
-
+                    <textarea name="apresentacao" id="apresentacao"
+                        placeholder="Escreva aqui uma breve apresentação de seu estabelecimento" required></textarea>
                 </div>
 
                 <div style="display: flex;">
@@ -102,14 +111,14 @@
                     <button id="botao3" style="display: none;" type="button" onclick="voltar()">Voltar</button>
                     <button id="botao2" style="display: none;" type="submit">Enviar</button>
                 </div>
-                <p>Já possuí um cadastro? <a href="login.html">Clique aqui</a> para logar</p>
+                <p>Já possui um cadastro? <a href="login.html">Clique aqui</a> para logar</p>
             </fieldset>
         </form>
     </main>
 
     <footer class="footerFixo">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+        <p>©Todos os direitos reservados a Fábrica do Corte</p>
     </footer>
 
     <script src="../script.js"></script>

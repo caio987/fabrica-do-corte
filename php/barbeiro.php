@@ -14,6 +14,7 @@
             $nome_estabelecimento = filter_var($_POST['nome_estabelecimento'], FILTER_SANITIZE_SPECIAL_CHARS);
             $telefone = filter_var($_POST['telefone'], FILTER_SANITIZE_SPECIAL_CHARS);
             $localizacao = filter_var($_POST['localizacao'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $apresentacao = filter_var($_POST['apresentacao'], FILTER_SANITIZE_SPECIAL_CHARS);
             $foto = '';//Caso não coloque nenhuma imagem
             $logo = '';//Caso coloque nenhuma imagem
             //Verifica se a imagem existe
@@ -41,7 +42,7 @@
                 if ($email) {
                    
                     //Inserir no banco de dados
-                    $inserir = $pdo->prepare("INSERT INTO estabelecimento (nome_proprietario,email_proprietario,senha_proprietario,nome_estabelecimento,telefone_estabelecimento,localizacao,foto_estabelecimento,logo_barbearia) VALUES (:nome,:email,:senha,:nome_estabelecimento,:telefone,:localizacao,:foto,:logo)");
+                    $inserir = $pdo->prepare("INSERT INTO estabelecimento (nome_proprietario,email_proprietario,senha_proprietario,nome_estabelecimento,telefone_estabelecimento,localizacao,foto_estabelecimento,logo_barbearia,apresentacao) VALUES (:nome,:email,:senha,:nome_estabelecimento,:telefone,:localizacao,:foto,:logo,:apresentacao)");
                     $inserir->bindParam(':nome', $nome);
                     $inserir->bindParam(':email', $email);
                     $inserir->bindParam(':senha', $senha);
@@ -50,6 +51,7 @@
                     $inserir->bindParam(':localizacao', $localizacao);
                     $inserir->bindParam(':foto', $foto);
                     $inserir->bindParam(':logo', $logo);
+                    $inserir->bindParam(':apresentacao', $apresentacao);
                     $inserir->execute();
                      //Tratamento de mensagem de cadastro realizado
                     $mensagem = 'Cadastro Realizado';

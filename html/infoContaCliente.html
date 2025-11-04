@@ -9,8 +9,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Cadastro</title>
     <style>
-        .ativo{
+        .ativo {
             text-decoration: underline;
+        }
+
+        #caixa img {
+            width: 200px;
+        }
+
+        footer {
+            margin-top: 100px;
         }
     </style>
 </head>
@@ -25,39 +33,21 @@
     </header>
 
     <main>
-        <div style="margin-top: 15px; display: flex; justify-content: space-evenly;">
-            <a href="#" class="link ativo">Informações da conta</a>
-            <a href="#" class="link">Agendamento</a>
-        </div>
 
-        <div style="max-width: 500px;" id="caixa">
-            <div class="margem">
-                <label for="">Nome:</label>
-                <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="nomeUser"><br>
-            </div>
-            <div class="margem">
-                <label for="">Sobrenome:</label>
-                <input style="width: 63%; margin: 0 0px 0 0; display: inline;" type="text" disabled value="sobrenomeUser"><br>
-            </div>
-            <div class="margem">
-                <label for="">E-mail:</label>
-                <input style="width: 70%; margin: 0; display: inline;" type="text" disabled value="emailUser"><br>
-            </div>
-            <button id="button" type="button" onclick="sair()">Sair da conta</button>
+        <div style="margin-top: 15px; display: flex; justify-content: space-evenly; flex-wrap: wrap;" id="link"></div>
+
+        <div style="max-width: 500px; text-align: center; padding: 0 10px;" id="caixa">
+
         </div>
     </main>
 
-    <footer class="footerFixo">
+    <footer class="">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+        <p>©Todos os direitos reservados a Fábrica do Corte</p>
     </footer>
 
     <script src="../script.js"></script>
-    <script>
-        function sair(){
-            window.location.href="../php/sair.php?";
-        }
-    </script>
+    <script src="../minhaConta.js"></script>
 </body>
 
 </html>
