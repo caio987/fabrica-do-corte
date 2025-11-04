@@ -117,7 +117,17 @@
                     const salvarBarbearia = document.createElement("button");
                     salvarBarbearia.classList.add("salvarBarbearia");
                     salvarBarbearia.innerText = "Salvar Barbearia";
-
+                    
+                    salvarBarbearia.addEventListener('click',async ()=>{
+                        let id = e.id_estabelecimento;
+                        const resposta = await fetch("../php/salvar.php",{
+                            method: "POST",
+                            headers:{"Content-Type":"application/json"},
+                            body: JSON.stringify({id})
+                        })
+                        const dados = await resposta.text();
+                        alert(dados);
+                    });
                     // montagem
                     caixaInformacoes.appendChild(nome);
                     caixaInformacoes.appendChild(avaliacao);
