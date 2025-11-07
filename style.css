@@ -294,7 +294,8 @@ main .caixaGeral .avaliacao img {
     max-width: 110px;
 }
 
-main .caixaGeral button {
+main .caixaGeral button,
+main .caixaServico button {
     background-color: #C4974F;
     color: white;
     width: 60%;
@@ -775,9 +776,10 @@ main #caixa .margem {
         font-size: .8em;
     }
 
-    main .seta{
+    main .seta {
         margin: 0;
     }
+
     /* CSS MOBILE CADASTROS */
     main .alinhamento .caixas {
         width: 110px;
@@ -801,7 +803,7 @@ main #caixa .margem {
     }
 
     /* CSS MOBILE INFO CONTA CLIENTE  */
-    main #link{
+    main #link {
         font-size: .8em;
     }
 }

@@ -11,6 +11,9 @@
     body{
       text-align: center;
     }
+    main h2, main h3{
+      margin: 15px;
+    }
     main #dias {
       max-width: 900px;
       margin: 20px auto;
@@ -22,19 +25,20 @@
 
     main #horarios {
       width: 50%;
-      margin: auto;
+      margin: 25px auto;
       flex-wrap: wrap;
       display: flex;
       justify-content: space-evenly;
     }
 
     main .horario {
+      margin: 5px;
       padding: 10px 16px;
       border: none;
       border-radius: 8px;
       background-color: #F5A623;
       cursor: pointer;
-      transition: 0main .2s;
+      transition: .2s;
       font-size: 16px;
     }
 
@@ -48,12 +52,18 @@
     }
 
     main .caixaServico {
+      margin: 20px;
       display: flex;
       justify-content: center;
+      align-items: center;
     }
 
     main .caixaServico button {
       margin-left: 10px;
+      width: 100px;
+    }
+    main .caixaServico button:hover{
+      width: 120px;
     }
 
     main .funcionarioSelecionado {
@@ -87,8 +97,8 @@
   </header>
 
   <main>
-    <h1 id="nome_estabelecimento"></h1>
-    <p id="apresentacao" style=""></p>
+    <h1 id="nome_estabelecimento" style="margin: 15px;"></h1>
+    <p id="apresentacao" style="width: 70%; margin: 15px auto;"></p>
     <hr>
     <h2>Preencha os espaços para realizar o agendamento</h2>
     <h3>Selecione o dia que deseja</h3>
@@ -100,7 +110,7 @@
     <div id="resultado"></div>
     <h3>Clique no botão de concluir serviço antes de selecionar o barbeiro que deseja</h3>
     <div id="funcionarios"></div>
-    <button onclick="agendar()">Agendar</button>
+    <button onclick="agendar()" class="buttonBonito">Agendar</button>
     <div style="display: none;" id="confirmacao"></div>
   </main>
 
@@ -217,6 +227,7 @@
 
       preco.innerText = "Preço total a pagar: R$ 0,00";
       concluir.innerText = "Concluir";
+      concluir.classList.add("buttonBonito")
       resultado.appendChild(carrinho);
 
       dadosServico.forEach(e => {
@@ -243,10 +254,7 @@
 
           // Cria item visível no carrinho
           const item = document.createElement('div');
-          item.style.display = "flex";
-          item.style.alignItems = "center";
-          item.style.justifyContent = "space-between";
-          item.style.marginBottom = "5px";
+          item.classList.add("caixaServico")
 
           const nome = document.createElement('span');
           nome.innerText = e.nome_servico;
@@ -362,6 +370,7 @@
         alerta.innerText = 'Tem certeza que deseja realizar o agendamento?';
         texto.innerText = 'Clique em "Agendar" se tem certeza. Caso não queira, clique em "Cancelar".';
         concluir.innerText = 'Agendar';
+        //concluir.classList.add("buttonBonito")
         cancelar.innerText = 'Cancelar';
         fechar.innerText = 'Fechar';
 
