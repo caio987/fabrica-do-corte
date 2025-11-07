@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="../style.css">
     <title>Busca</title>
     <style>
+        main {
+            height: 85vh;
+        }
+
         main form {
             max-width: 80%;
         }
@@ -44,7 +48,7 @@
         <div id="caixaEstabelecimento"></div>
     </main>
 
-    <footer class="footerFixo">
+    <footer class="footerFixo" id="footer">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>©Todos os direitos reservados a Fábrica do Corte</p>
     </footer>
@@ -73,10 +77,6 @@
                     const caixaGeral = document.createElement("div");
                     caixaGeral.classList.add("caixaGeral");
 
-                    caixaGeral.onclick = () => {
-                        caixaGeral.classList.toggle("active");
-                        caixaInvisivel.classList.toggle("active");
-                    };
 
                     const caixa = document.createElement("div");
                     caixa.classList.add("caixaBarbearia");
@@ -135,15 +135,21 @@
                     seta.src = "../img/icons/seta.png";
                     seta.classList.add("seta");
 
+                    seta.onclick = () => {
+                        caixaGeral.classList.toggle("active");
+                        caixaInvisivel.classList.toggle("active");
+                        // document.getElementById('footer').classList.toggle("footerFixo")
+                    };
+
                     const salvarBarbearia = document.createElement("button");
                     salvarBarbearia.classList.add("salvarBarbearia");
                     salvarBarbearia.innerText = "Salvar Barbearia";
-                    salvarBarbearia.addEventListener('click',async ()=>{
+                    salvarBarbearia.addEventListener('click', async () => {
                         let id = e.id_estabelecimento;
-                        const resposta = await fetch("../php/salvar.php",{
+                        const resposta = await fetch("../php/salvar.php", {
                             method: "POST",
-                            headers:{"Content-Type":"application/json"},
-                            body: JSON.stringify({id})
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ id })
                         })
                         const dados = await resposta.text();
                         alert(dados);

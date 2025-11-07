@@ -6,7 +6,7 @@
         $id = $input['id'] ?? null;
         $_SESSION['id_agendamento'] = $id;
         try {
-            $consulta = $pdo->prepare("SELECT id_estabelecimento, nome_proprietario, nome_estabelecimento, telefone_estabelecimento,localizacao, logo_barbearia, foto_estabelecimento, apresentacao FROM estabelecimento WHERE id_estabelecimento = :id");
+            $consulta = $pdo->prepare("SELECT id_estabelecimento, nome_proprietario, nome_estabelecimento, telefone_estabelecimento,localizacao, logo_barbearia, foto_estabelecimento, apresentacao, telefone_estabelecimento FROM estabelecimento WHERE id_estabelecimento = :id");
             $consulta->bindParam(":id", $id);
             $consulta->execute();
             $estabelecimento = $consulta->fetch(PDO::FETCH_ASSOC);

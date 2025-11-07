@@ -8,7 +8,7 @@
 
         try {
             $consulta = $pdo->query("SELECT * FROM estabelecimentos_salvos WHERE id_cliente = $id_cliente AND  id_estabelecimento = $id_estabelecimento");
-            if ($consulta) {
+                  if ($consulta->rowCount() > 0) {
                 echo "Estabelecimento já salvo";
                 exit;   
             }

@@ -8,12 +8,15 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
   <link rel="stylesheet" href="../style.css">
   <style>
-    body{
+    body {
       text-align: center;
     }
-    main h2, main h3{
+
+    main h2,
+    main h3 {
       margin: 15px;
     }
+
     main #dias {
       max-width: 900px;
       margin: 20px auto;
@@ -62,7 +65,8 @@
       margin-left: 10px;
       width: 100px;
     }
-    main .caixaServico button:hover{
+
+    main .caixaServico button:hover {
       width: 120px;
     }
 
@@ -98,6 +102,10 @@
 
   <main>
     <h1 id="nome_estabelecimento" style="margin: 15px;"></h1>
+    <div class="alinhamento" style="">
+      <p id="localizacao"></p>
+      <p id="contato"></p>
+    </div>
     <p id="apresentacao" style="width: 70%; margin: 15px auto;"></p>
     <hr>
     <h2>Preencha os espaços para realizar o agendamento</h2>
@@ -128,16 +136,19 @@
     document.addEventListener("DOMContentLoaded", async () => {
       const nome_estabelecimento = document.getElementById('nome_estabelecimento');
       const apresentacao = document.getElementById('apresentacao');
+      const localizacao = document.getElementById("localizacao");
+      const contato = document.getElementById("contato");
+       
       const horarios = document.getElementById('horarios');
       const servicos = document.getElementById('servicos');
       const resultado = document.getElementById('resultado');
       const funcionarios = document.getElementById('funcionarios');
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
-
+      
       let diaSelecionado = null;
       let horarioSelecionado = null;
-
+      
       // Busca dados do estabelecimento
       const respostaEstabelecimento = await fetch("../php/estabelecimento.php", {
         method: "POST",
@@ -147,12 +158,14 @@
       const dadosEtabelecimento = await respostaEstabelecimento.json();
       nome_estabelecimento.textContent = dadosEtabelecimento.nome_estabelecimento;
       apresentacao.textContent = dadosEtabelecimento.apresentacao;
-
+      localizacao.textContent = "Localização:" + dadosEtabelecimento.localizacao;
+      contato.textContent = "Contato:" + dadosEtabelecimento.telefone_estabelecimento;
+      
       // Busca dias disponíveis
       const respostaDisponibilidade = await fetch("../php/exibirDia.php");
       const dadosDisponibilidade = await respostaDisponibilidade.json();
       const diasCadastrados = dadosDisponibilidade.map(e => e.dia);
-
+      
       // Inicializa calendário
       const calendarEl = document.getElementById("dias");
       const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -177,7 +190,7 @@
       });
       calendar.render();
       atualizarEventos();
-
+      
       function atualizarEventos() {
         calendar.getEvents().forEach(e => e.remove());
         diasCadastrados.forEach(d => calendar.addEvent({ start: d, display: "background", backgroundColor: "#d38400" }));
@@ -185,7 +198,7 @@
           calendar.addEvent({ start: diaSelecionado, title: 'Selecionado', textColor: '#ffff', display: "block", backgroundColor: "#000" });
         }
       }
-
+      
       async function mostarHorario() {
         horarios.innerHTML = "";
         if (!diaSelecionado) return;
@@ -207,34 +220,34 @@
           horarios.appendChild(horario);
         });
       }
-
+      
       // Serviços
       const respostaServico = await fetch("../php/exibirServico.php");
       const dadosServico = await respostaServico.json();
-
-
+      
+      
       let precoTotal = 0;
-
+      
       // Criação dos elementos principais do "carrinho"
       const carrinho = document.createElement('div');
       const preco = document.createElement('p');
       const listaServicos = document.createElement('div'); // ← agora é uma lista, não só texto
       const concluir = document.createElement('button');
-
+      
       carrinho.appendChild(preco);
       carrinho.appendChild(listaServicos);
       carrinho.appendChild(concluir);
-
+      
       preco.innerText = "Preço total a pagar: R$ 0,00";
       concluir.innerText = "Concluir";
       concluir.classList.add("buttonBonito")
       resultado.appendChild(carrinho);
-
+      
       dadosServico.forEach(e => {
         const caixaServico = document.createElement('div');
         const servico = document.createElement('p');
         const adicionar = document.createElement('button');
-
+        
         caixaServico.classList = 'caixaServico';
         servico.innerText = `${e.nome_servico} - R$ ${e.preco}`;
         adicionar.classList = 'adicionar';

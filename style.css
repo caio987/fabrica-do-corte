@@ -81,7 +81,7 @@ main .link:hover {
 }
 
 .footerFixo {
-    width: 99%;
+    width: 100%;
     position: fixed;
     bottom: 0;
 }
@@ -109,7 +109,6 @@ footer p {
     margin-top: 10px;
     color: #C4974F;
 }
-
 /* CSS geral ↑↑↑↑↑↑*/
 
 /* CSS index/home ↓↓↓↓↓↓*/
@@ -584,6 +583,9 @@ main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
 
 main #caixaEstabelecimento .active {
     flex-wrap: wrap;
+}
+main #caixaGeral:hover .active{
+    scale: 1;
 }
 
 main #caixaEstabelecimento .active .seta {

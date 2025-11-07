@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const dados = await resposta.json();
         if (dados.tipo == 'Proprietário') {
             let links = `
-                <a href="#" class="link ativo">Informações da conta</a>
+                <a href="infoContaCliente.html" class="link ativo">Informações da conta</a>
                 <a href="agendamentoSalvo.html" class="link">Agendamento</a>
                 <a href="gerenciaEstabelecimento.html" class="link">Estabelecimento</a>
                     `;
