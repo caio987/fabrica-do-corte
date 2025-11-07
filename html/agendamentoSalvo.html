@@ -1,28 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página do Cliente</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        main #caixaEstabelecimento .caixaGeral {
+            padding: 15px;
+        }
+
+        main .caixaGeral:hover {
+            scale: 1;
+        }
+
+        main .caixaGeral .nomeEstabelecimento {
+            margin-left: 0px;
+        }
+
+        main #caixaEstabelecimento .caixaGeral .caixaInformacoes {
+            width: 60%;
+            text-align: unset;
+        }
+    </style>
 </head>
+
 <body>
-    <div style="margin-top: 15px; display: flex; justify-content: space-evenly; flex-wrap: wrap;" id="link"></div>
-    
-    <div style="max-width: 500px; text-align: center; padding: 0 10px;" id="caixa"></div>
+    <header>
+        <nav>
+            <ul>
+                <!-- <li><a href="../#" class="links">Conta</a></li> -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div style="margin-top: 15px; display: flex; justify-content: space-evenly; flex-wrap: wrap;" id="link"></div>
 
-    <h2>Seus agendamentos</h2>
-    <div id="agendamento"></div>
-    <hr>
-    <br><br>
+        <h2>Seus agendamentos</h2>
+        <div id="agendamento"></div>
+        <hr>
 
-    <h3>Estabelecimentos Salvos</h3>
-    <div id="estabelecimentos"></div>
-
+        <h3>Estabelecimentos Salvos</h3>
+        <div id="caixaEstabelecimento"></div>
+    </main>
+    <footer class="footerFixo">
+        <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
+        <p>©Todos os direitos reservados a Fábrica do Corte</p>
+    </footer>
+    <script src="../"></script>
     <script>
         const link = document.getElementById('link');
         const agendamento = document.getElementById('agendamento');
-        const estabelecimentos = document.getElementById('estabelecimentos');
+        const estabelecimentos = document.getElementById('caixaEstabelecimento');
 
         // Menu superior
         let links = `
@@ -45,6 +75,8 @@
                     const foto = document.createElement('img');
                     const nome = document.createElement('p');
                     const local = document.createElement('p');
+                    const horario = document.createElement('p');
+                    const dia = document.createElement('p');
                     const fotoBarbeiro = document.createElement('img');
                     const barbeiro = document.createElement('p');
                     const totalPagar = document.createElement('p');
@@ -52,12 +84,16 @@
                     foto.src = e.foto;
                     nome.innerText = e.estabelecimento;
                     local.innerText = e.localizacao;
+                    horario.innerText = e.horario;
+                    dia.innerText = e.dia;
                     fotoBarbeiro.src = e.foto_barbeiro;
                     barbeiro.innerText = e.funcionario;
 
                     agendamento.appendChild(foto);
                     agendamento.appendChild(nome);
                     agendamento.appendChild(local);
+                    agendamento.appendChild(horario);
+                    agendamento.appendChild(dia);
                     agendamento.appendChild(fotoBarbeiro);
                     agendamento.appendChild(barbeiro);
 
@@ -108,104 +144,37 @@
             const dadosEstabelecimento = await respostaEstabelecimento.json();
 
             dadosEstabelecimento.forEach(e => {
-                const caixaInvisivel = document.createElement("div");
-                caixaInvisivel.classList.add("caixaInvisivel");
-
                 const caixaGeral = document.createElement("div");
                 caixaGeral.classList.add("caixaGeral");
 
-                caixaGeral.onclick = () => {
-                    caixaGeral.classList.toggle("active");
-                    caixaInvisivel.classList.toggle("active");
-                };
-
-                const caixa = document.createElement("div");
-                caixa.classList.add("caixaBarbearia");
-
-                const foto = document.createElement("img");
-                foto.classList.add("fotoBarbearia");
-                foto.src = e.foto_estabelecimento || "../img/default-logo.png";
-                foto.alt = e.nome_estabelecimento || "Estabelecimento";
+                const fotoExtra = document.createElement("img");
+                fotoExtra.src = e.foto_estabelecimento || "../img/default-foto.png";
+                fotoExtra.alt = "Foto do local";
+                fotoExtra.classList.add("fotoBarbearia");
 
                 const nome = document.createElement("a");
                 nome.classList.add("nomeEstabelecimento");
                 nome.innerText = e.nome_estabelecimento || "Sem nome";
                 nome.href = `estabelecimento.html?id=${e.id_estabelecimento}`;
 
-                const avaliacao = document.createElement("div");
-                avaliacao.classList.add("avaliacao");
                 const nota = document.createElement("img");
+                nota.style.display = "block";
+                nota.style.margin = "4px auto";
                 nota.src = "../img/icons/avaliacao.png";
-                avaliacao.appendChild(nota);
 
-                const caixaInformacoes = document.createElement("div");
-                caixaInformacoes.classList.add("caixaInformacoes");
+                const excluir = document.createElement("button");
+                excluir.innerText = "Excluir";
+                excluir.classList.add("buttonBonito");
 
-                const localizacao = document.createElement("p");
-                localizacao.classList.add("localizacao");
-                localizacao.innerText = "Localização: " + (e.localizacao || "Não informada");
-
-                const contato = document.createElement("p");
-                contato.classList.add("contato");
-                contato.innerText = "Contato: " + (e.telefone_estabelecimento || "Não informado");
-
-                const div1 = document.createElement("div");
-                const texto1 = document.createElement("p");
-                texto1.innerHTML = "Foto de nossa barbearia";
-
-                const fotoExtra = document.createElement("img");
-                fotoExtra.src = e.foto_estabelecimento || "../img/default-foto.png";
-                fotoExtra.alt = "Foto do local";
-                fotoExtra.classList.add("fotoBarbearia");
-                div1.appendChild(texto1);
-                div1.appendChild(fotoExtra);
-
-                const div2 = document.createElement("div");
-                const texto2 = document.createElement("p");
-                texto2.innerHTML = "Um pouco sobre nossos serviços";
-
-                const sinopse = document.createElement("p");
-                sinopse.classList.add("sinopse");
-                sinopse.innerText = e.apresentacao || "Sem descrição disponível.";
-                div2.appendChild(texto2);
-                div2.appendChild(sinopse);
-
-                const seta = document.createElement("img");
-                seta.src = "../img/icons/seta.png";
-                seta.classList.add("seta");
-
-                const salvarBarbearia = document.createElement("button");
-                salvarBarbearia.classList.add("salvarBarbearia");
-                salvarBarbearia.innerText = "Salvar Barbearia";
-
-                salvarBarbearia.addEventListener('click', async () => {
-                    let id = e.id_estabelecimento;
-                    const resposta = await fetch("../php/salvar.php", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ id_estabelecimento: id })
-                    });
-
-                    const dados = await resposta.json();
-                    alert(dados.mensagem || "Operação concluída!");
-                });
+                const caixa = document.createElement("div");
+                caixa.classList.add("caixaInformacoes")
 
                 // Montagem dos elementos
-                caixaInformacoes.appendChild(nome);
-                caixaInformacoes.appendChild(avaliacao);
-                caixaInformacoes.appendChild(localizacao);
-                caixaInformacoes.appendChild(contato);
-
-                caixaInvisivel.appendChild(div1);
-                caixaInvisivel.appendChild(div2);
-
-                caixa.appendChild(foto);
-                caixa.appendChild(caixaInformacoes);
-                caixa.appendChild(seta);
-
+                caixaGeral.appendChild(fotoExtra);
+                caixa.appendChild(nome);
+                caixa.appendChild(nota);
+                caixa.appendChild(excluir);
                 caixaGeral.appendChild(caixa);
-                caixaGeral.appendChild(caixaInvisivel);
-                caixaGeral.appendChild(salvarBarbearia);
 
                 estabelecimentos.appendChild(caixaGeral);
             });
@@ -213,4 +182,5 @@
     </script>
     <script src="../script.js"></script>
 </body>
+
 </html>

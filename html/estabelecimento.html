@@ -17,6 +17,13 @@
       margin: 15px;
     }
 
+    main .ps {
+      width: 70%;
+      margin: 15px auto;
+      text-align: left;
+      color: #fff;
+    }
+
     main #dias {
       max-width: 900px;
       margin: 20px auto;
@@ -56,6 +63,7 @@
 
     main .caixaServico {
       margin: 20px;
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -78,15 +86,57 @@
       width: 150px;
     }
 
-    main #confirmacao {
-      width: 300px;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-    }
-
     .fc .fc-bg-event {
       opacity: 1;
+    }
+
+    main #caixaBlur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(6px);
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+      align-content: center;
+    }
+
+    main .caixa-confirmacao {
+      margin: auto;
+      width: 400px;
+      background-color: #000;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    main #funcionarios {
+      display: flex;
+      justify-content: space-around;
+      width: 60%;
+      margin: auto;
+    }
+
+    main .caixaFuncionario {
+      border: solid;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    main .caixaFuncionario img {
+      width: 130px;
+      height: 130px;
+    }
+    main .caixaFuncionario p{
+      color: white;
+    }
+
+    :root{
+      .fc .fc-daygrid-day-number { color: white;}
     }
   </style>
 </head>
@@ -102,14 +152,12 @@
 
   <main>
     <h1 id="nome_estabelecimento" style="margin: 15px;"></h1>
-    <div class="alinhamento" style="">
-      <p id="localizacao"></p>
-      <p id="contato"></p>
-    </div>
-    <p id="apresentacao" style="width: 70%; margin: 15px auto;"></p>
+    <p class="ps" id="apresentacao"></p>
+    <p class="ps" id="localizacao"></p>
+    <p class="ps" id="contato"></p>
     <hr>
     <h2>Preencha os espaços para realizar o agendamento</h2>
-    <h3>Selecione o dia que deseja</h3>
+    <h3 style="color: white;">Selecione o dia que deseja</h3>
     <div id="dias"></div>
     <div id="horarios"></div>
     <h3>Selecione os serviços que deseja</h3>
@@ -138,17 +186,17 @@
       const apresentacao = document.getElementById('apresentacao');
       const localizacao = document.getElementById("localizacao");
       const contato = document.getElementById("contato");
-       
+
       const horarios = document.getElementById('horarios');
       const servicos = document.getElementById('servicos');
       const resultado = document.getElementById('resultado');
       const funcionarios = document.getElementById('funcionarios');
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
-      
+
       let diaSelecionado = null;
       let horarioSelecionado = null;
-      
+
       // Busca dados do estabelecimento
       const respostaEstabelecimento = await fetch("../php/estabelecimento.php", {
         method: "POST",
@@ -160,12 +208,12 @@
       apresentacao.textContent = dadosEtabelecimento.apresentacao;
       localizacao.textContent = "Localização:" + dadosEtabelecimento.localizacao;
       contato.textContent = "Contato:" + dadosEtabelecimento.telefone_estabelecimento;
-      
+
       // Busca dias disponíveis
       const respostaDisponibilidade = await fetch("../php/exibirDia.php");
       const dadosDisponibilidade = await respostaDisponibilidade.json();
       const diasCadastrados = dadosDisponibilidade.map(e => e.dia);
-      
+
       // Inicializa calendário
       const calendarEl = document.getElementById("dias");
       const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -190,7 +238,7 @@
       });
       calendar.render();
       atualizarEventos();
-      
+
       function atualizarEventos() {
         calendar.getEvents().forEach(e => e.remove());
         diasCadastrados.forEach(d => calendar.addEvent({ start: d, display: "background", backgroundColor: "#d38400" }));
@@ -198,7 +246,7 @@
           calendar.addEvent({ start: diaSelecionado, title: 'Selecionado', textColor: '#ffff', display: "block", backgroundColor: "#000" });
         }
       }
-      
+
       async function mostarHorario() {
         horarios.innerHTML = "";
         if (!diaSelecionado) return;
@@ -220,34 +268,35 @@
           horarios.appendChild(horario);
         });
       }
-      
+
       // Serviços
       const respostaServico = await fetch("../php/exibirServico.php");
       const dadosServico = await respostaServico.json();
-      
-      
+
+
       let precoTotal = 0;
-      
+
       // Criação dos elementos principais do "carrinho"
       const carrinho = document.createElement('div');
       const preco = document.createElement('p');
       const listaServicos = document.createElement('div'); // ← agora é uma lista, não só texto
       const concluir = document.createElement('button');
-      
+
       carrinho.appendChild(preco);
       carrinho.appendChild(listaServicos);
       carrinho.appendChild(concluir);
-      
+
       preco.innerText = "Preço total a pagar: R$ 0,00";
+      preco.style.color = "white"
       concluir.innerText = "Concluir";
       concluir.classList.add("buttonBonito")
       resultado.appendChild(carrinho);
-      
+
       dadosServico.forEach(e => {
         const caixaServico = document.createElement('div');
         const servico = document.createElement('p');
         const adicionar = document.createElement('button');
-        
+
         caixaServico.classList = 'caixaServico';
         servico.innerText = `${e.nome_servico} - R$ ${e.preco}`;
         adicionar.classList = 'adicionar';
@@ -336,6 +385,8 @@
             sucesso = 'sucesso'
             resultadoPHP.data.forEach(f => {
               const div = document.createElement('div');
+              div.classList.add("caixaFuncionario")
+
               const nome = document.createElement('p');
               const foto = document.createElement('img');
               const botao = document.createElement('button');
@@ -364,9 +415,9 @@
       });
 
     });
+
     function agendar() {
       if (idFuncionario > 0) {
-
         let confirmacao = document.getElementById('confirmacao');
         confirmacao.style.display = 'block';
         confirmacao.innerHTML = '';
@@ -376,39 +427,39 @@
         const texto = document.createElement('p');
         const alerta = document.createElement('h3');
         const concluir = document.createElement('button');
-        const cancelar = document.createElement('button');
         const fechar = document.createElement('button');
+
+        concluir.id = "buttonBonito"
+        concluir.style.margin = "30px 20px 10px"
+        fechar.id = "buttonBonito2"
 
         // Define textos
         alerta.innerText = 'Tem certeza que deseja realizar o agendamento?';
         texto.innerText = 'Clique em "Agendar" se tem certeza. Caso não queira, clique em "Cancelar".';
         concluir.innerText = 'Agendar';
         //concluir.classList.add("buttonBonito")
-        cancelar.innerText = 'Cancelar';
-        fechar.innerText = 'Fechar';
+        fechar.innerText = 'Cancelar';
 
         // Adiciona classes (opcional, para estilizar)
         caixa.classList.add('caixa-confirmacao');
         concluir.classList.add('btn-concluir');
-        cancelar.classList.add('btn-cancelar');
+
+        const caixaBlur = document.createElement("div")
+        caixaBlur.id = "caixaBlur"
 
         // Adiciona elementos dentro da caixa
         caixa.appendChild(alerta);
         caixa.appendChild(texto);
         caixa.appendChild(concluir);
-        caixa.appendChild(cancelar);
         caixa.appendChild(fechar);
+        caixaBlur.appendChild(caixa);
 
         // Adiciona a caixa dentro da div de confirmação
-        confirmacao.appendChild(caixa);
+        confirmacao.appendChild(caixaBlur);
 
         // Eventos
         concluir.addEventListener('click', () => {
           concluirAgendamento(); // sua função
-          confirmacao.style.display = 'none';
-        });
-
-        cancelar.addEventListener('click', () => {
           confirmacao.style.display = 'none';
         });
 
@@ -427,10 +478,7 @@
           id_servico: idServico,         // array de serviços
           id_funcionario: idFuncionario,
           id_disponibilidade: idDisponibilidade
-
         };
-
-
 
         const respostaAgendamento = await fetch('../php/agendamento.php', {
           method: "POST",

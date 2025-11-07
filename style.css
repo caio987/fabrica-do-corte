@@ -294,7 +294,8 @@ main .caixaGeral .avaliacao img {
 }
 
 main .caixaGeral button,
-main .caixaServico button {
+main .caixaServico button,
+main .caixaFuncionario button {
     background-color: #C4974F;
     color: white;
     width: 60%;
@@ -489,7 +490,9 @@ main form #botaoArquivo:hover {
 
 main form fieldset button,
 main div #button,
-main .buttonBonito {
+main .buttonBonito,
+main #buttonBonito,
+main #buttonBonito2 {
     cursor: pointer;
     font-weight: bold;
     margin: 30px auto 10px;
