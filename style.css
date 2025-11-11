@@ -295,7 +295,8 @@ main .caixaGeral .avaliacao img {
 
 main .caixaGeral button,
 main .caixaServico button,
-main .caixaFuncionario button {
+main .caixaFuncionario button,
+main .funcionarioSelecionado button {
     background-color: #C4974F;
     color: white;
     width: 60%;
@@ -550,7 +551,8 @@ main #caixaEstabelecimento {
     margin: auto;
 }
 
-main #caixaEstabelecimento .caixaGeral {
+main #caixaEstabelecimento .caixaGeral,
+main #agendamento .caixaGeral{
     display: flex;
     align-items: center;
     justify-content: center;

@@ -49,8 +49,9 @@
       background-color: #F5A623;
       cursor: pointer;
       transition: .2s;
-      font-size: 16px;
+      font-size: 1em;
     }
+
 
     main .horario:hover {
       background-color: #f5a523d2;
@@ -79,7 +80,7 @@
     }
 
     main .funcionarioSelecionado {
-      border: solid color #d68400;
+      border: solid #d68400;
     }
 
     main .funcionarioSelecionado img {
@@ -120,23 +121,101 @@
       margin: auto;
     }
 
-    main .caixaFuncionario {
+    main .caixaFuncionario,
+    main .funcionarioSelecionado {
       border: solid;
+      border-radius: 6px;
+      padding: 12px 0px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    
-    main .caixaFuncionario img {
+
+    main .funcionarioSelecionado {
+      border-color: #cf8000;
+    }
+
+    main .caixaFuncionario img,
+    main .funcionarioSelecionado img {
       width: 130px;
       height: 130px;
+      margin: 10px;
     }
-    main .caixaFuncionario p{
+
+    main .caixaFuncionario p,
+    main .funcionarioSelecionado p {
       color: white;
     }
 
-    :root{
-      .fc .fc-daygrid-day-number { color: white;}
+    main .caixaFuncionario button,
+    main .funcionarioSelecionado button {
+      width: 85%;
+    }
+
+    main .funcionarioSelecionado button {
+      background-color: #cf8000;
+    }
+
+    @media (max-width: 767px) {
+
+      main h2,
+      main h3 {
+        font-size: 1em;
+      }
+
+      main .ps {
+        width: 85%;
+        font-size: .8em;
+      }
+
+      /* */
+      .fc {
+        font-size: .8em;
+      }
+
+      main #horarios {
+        width: 90%;
+      }
+
+      main .horario {
+        margin: 7px;
+        padding: 9px 0px;
+        width: 60px;
+        font-size: 0.8em;
+      }
+
+      main .caixaFuncionario p,
+      main .funcionarioSelecionado p {
+        font-size: .8em;
+      }
+
+      main .caixaFuncionario button,
+      main .funcionarioSelecionado button {
+        width: 90%;
+        font-size: 0.6em;
+      }
+
+      main .caixaFuncionario img,
+      main .funcionarioSelecionado img {
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+      }
+
+      main .caixa-confirmacao {
+        font-size: .8em;
+        width: 310px;
+      }
+
+      main .caixa-confirmacao button {
+        margin: 0px;
+      }
+    }
+
+    :root {
+      .fc .fc-daygrid-day-number {
+        color: white;
+      }
     }
   </style>
 </head>
