@@ -106,6 +106,12 @@
     </footer>
 
     <script src="../script.js "></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async ()=>{
+            const resposta = await fetch('../php/exibirCard.php');
+            const dados = await resposta.json();
+        })
+    </script>
 </body>
 
 </html>

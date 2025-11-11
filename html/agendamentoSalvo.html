@@ -165,6 +165,12 @@
                 const excluir = document.createElement("button");
                 excluir.innerText = "Excluir";
                 excluir.classList.add("buttonBonito");
+                excluir.addEventListener('click', async ()=>{
+                   const resposta = await fetch(`../php/excluirEstabelecimentoSalvo.php?id=${e.id_estabelecimento_salvo}`);
+                   const dados = await resposta.text();
+                   alert(dados)
+                   location.reload();
+                })
 
                 const caixa = document.createElement("div");
                 caixa.classList.add("caixaInformacoes")
