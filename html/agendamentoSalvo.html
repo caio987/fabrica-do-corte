@@ -1,3 +1,4 @@
+,
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -15,14 +16,18 @@
             scale: 1;
         }
 
-        main .caixaGeral .nomeEstabelecimento {
-            margin-left: 0px;
+        main .caixaInformacoes p {
+            margin: 4px 10px;
+            font-size: 1.2em;
+            color: #fff;
+        }
+        main .caixaInvisivel div{
+            width: 60%;
+        }
+        main .caixaInvisivel p{
+            margin: 10px;
         }
 
-        main #caixaEstabelecimento .caixaGeral .caixaInformacoes {
-            width: 60%;
-            text-align: unset;
-        }
     </style>
 </head>
 
@@ -77,23 +82,30 @@
 
                     const foto = document.createElement('img');
                     foto.src = e.foto;
+                    foto.classList.add("fotoBarbearia")
 
-                    const nome = document.createElement('p');
+                    const nome = document.createElement('h2');
+                    nome.classList.add("nomeEstabelecimento")
                     nome.innerText = e.estabelecimento;
 
                     const local = document.createElement('p');
-                    local.innerText = e.localizacao;
+                    local.innerText = "Localização: " + e.localizacao;
 
                     const horario = document.createElement('p');
-                    horario.innerText = e.horario;
+                    horario.innerText = "Horário: " + e.horario;
 
                     const dia = document.createElement('p');
-                    dia.innerText = e.dia;
+                    dia.innerText = "Data: " + e.dia;
 
                     const barbeiro = document.createElement('p');
-                    barbeiro.innerText = e.funcionario;
-
+                    barbeiro.innerText = "Barbeiro escolhido: " + e.funcionario;
+                    
+                    // algu = document.createElement('p')
+                    // algu.innerHTML = "Foto do(a) barbeiro(a)"
+                    
                     const fotoBarbeiro = document.createElement('img');
+                    fotoBarbeiro.style.width = "150px"
+                    fotoBarbeiro.style.height = "150px"
                     fotoBarbeiro.src = e.foto_barbeiro;
 
                     const totalPagar = document.createElement('p');
@@ -107,16 +119,26 @@
 
                     const caixaInformacoes = document.createElement("div");
                     caixaInformacoes.classList.add("caixaInformacoes")
-                    
+
                     const caixaInvisivel = document.createElement("div");
                     caixaInvisivel.classList.add("caixaInvisivel")
-                    
+
                     const div = document.createElement("div");
 
                     const seta = document.createElement("img");
                     seta.src = "../img/icons/seta.png";
                     seta.classList.add("seta");
-                    
+
+                    seta.onclick = () => {
+                        caixaGeral.classList.toggle("active");
+                        caixaInvisivel.classList.toggle("active");
+                        // document.getElementById('footer').classList.toggle("footerFixo")
+                    };
+
+                    algo = document.createElement('p')
+                    algo.innerHTML = "Corte(s) selecionado(s)"
+
+                    div.appendChild(algo)
                     e.servicos.forEach(s => {
                         total += parseFloat(s.preco);
                         const servico = document.createElement('p');
@@ -124,19 +146,15 @@
                         const preco = document.createElement('p');
                         preco.innerText = s.preco;
 
-                        algo = document.createElement('p')
-                        algo.innerHTML = "Corte(s) selecionado(s)"
-                        
-                        div.appendChild(algo)
                         div.appendChild(servico);
                     });
 
                     totalPagar.innerText = "Total a pagar: R$ " + total.toFixed(2);
-                    
+
                     caixaInformacoes.appendChild(nome);
-                    caixaInformacoes.appendChild(local);
-                    caixaInformacoes.appendChild(horario);
                     caixaInformacoes.appendChild(dia);
+                    caixaInformacoes.appendChild(horario);
+                    caixaInformacoes.appendChild(local);
                     caixaInformacoes.appendChild(barbeiro);
 
                     caixaBarbearia.appendChild(foto);
@@ -146,6 +164,7 @@
                     div.appendChild(totalPagar)
                     div.appendChild(totalPagar);
                     div.appendChild(cancelar)
+                    // caixaInvisivel.appendChild(algu)
                     caixaInvisivel.appendChild(fotoBarbeiro)
                     caixaInvisivel.appendChild(div)
 
@@ -197,6 +216,7 @@
 
                 const nome = document.createElement("a");
                 nome.classList.add("nomeEstabelecimento");
+                nome.style.margin = "0px"
                 nome.innerText = e.nome_estabelecimento || "Sem nome";
                 nome.href = `estabelecimento.html?id=${e.id_estabelecimento}`;
 
@@ -208,15 +228,16 @@
                 const excluir = document.createElement("button");
                 excluir.innerText = "Excluir";
                 excluir.classList.add("buttonBonito");
-                excluir.addEventListener('click', async ()=>{
-                   const resposta = await fetch(`../php/excluirEstabelecimentoSalvo.php?id=${e.id_estabelecimento_salvo}`);
-                   const dados = await resposta.text();
-                   alert(dados)
-                   location.reload();
+                excluir.addEventListener('click', async () => {
+                    const resposta = await fetch(`../php/excluirEstabelecimentoSalvo.php?id=${e.id_estabelecimento_salvo}`);
+                    const dados = await resposta.text();
+                    alert(dados)
+                    location.reload();
                 })
 
                 const caixa = document.createElement("div");
                 caixa.classList.add("caixaInformacoes")
+                caixa.style.textAlign = "center"
 
                 // Montagem dos elementos
                 caixaGeral.appendChild(fotoExtra);

@@ -20,7 +20,7 @@
     </style>
 </head>
 
-<body onload="lojas(1)">
+<body>
     <header>
         <nav>
             <ul>
@@ -107,10 +107,31 @@
 
     <script src="../script.js "></script>
     <script>
-        document.addEventListener('DOMContentLoaded', async ()=>{
-            const resposta = await fetch('../php/exibirCard.php');
-            const dados = await resposta.json();
-        })
+document.addEventListener('DOMContentLoaded', async () => {
+    const resposta = await fetch('../php/exibirCard.php');
+    const barbearias = await resposta.json();
+
+    barbearias.forEach((loja) => {
+        const caixaGeral = document.createElement("div");
+        caixaGeral.classList.add("caixaGeral");
+
+        const foto = document.createElement("img");
+        foto.classList.add("fotoBarbearia");
+
+        // usa a logo que o PHP já converteu
+        foto.src = loja.logo_barbearia
+
+        const nome = document.createElement("p");
+        nome.classList.add("nomeEstabelecimento");
+        nome.innerText = loja.nome_estabelecimento;
+
+        caixaGeral.appendChild(foto);
+        caixaGeral.appendChild(nome);
+
+        carrossel.appendChild(caixaGeral);
+    });
+});
+
     </script>
 </body>
 

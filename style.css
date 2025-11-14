@@ -109,6 +109,7 @@ footer p {
     margin-top: 10px;
     color: #C4974F;
 }
+
 /* CSS geral ↑↑↑↑↑↑*/
 
 /* CSS index/home ↓↓↓↓↓↓*/
@@ -545,14 +546,15 @@ main #caixapesquisa #barraDePesquisa {
     width: 100%;
 }
 
-main #caixaEstabelecimento {
+main #caixaEstabelecimento,
+main #agendamento {
     /* border: solid; */
     width: 85%;
     margin: auto;
 }
 
 main #caixaEstabelecimento .caixaGeral,
-main #agendamento .caixaGeral{
+main #agendamento .caixaGeral {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -561,24 +563,30 @@ main #agendamento .caixaGeral{
     width: 60%;
 }
 
-main #caixaEstabelecimento .caixaGeral .caixaBarbearia {
+main #caixaEstabelecimento .caixaGeral .caixaBarbearia,
+main #agendamento .caixaGeral .caixaBarbearia {
+    width: 100%;
+    padding: 10px;
     display: flex;
     align-items: center;
 }
 
-main #caixaEstabelecimento .caixaGeral .fotoBarbearia {
+main #caixaEstabelecimento .caixaGeral .fotoBarbearia,
+main #agendamento .caixaGeral .fotoBarbearia {
     width: 200px;
     height: 130px;
 }
 
-main #caixaEstabelecimento .caixaGeral .caixaInformacoes {
+main #caixaEstabelecimento .caixaGeral .caixaInformacoes,
+main #agendamento .caixaGeral .caixaInformacoes {
     width: 70%;
     text-align: start;
     /* height: 150px; */
     /* border: solid; */
 }
 
-main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
+main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento,
+main #agendamento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
     /* margin: 0; */
     font-size: 2em;
     font-weight: bold;
@@ -586,23 +594,28 @@ main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
     color: #C4974F;
 }
 
-main #caixaEstabelecimento .active {
+main #caixaEstabelecimento .active,
+main #agendamento .active {
     flex-wrap: wrap;
 }
-main #caixaGeral:hover .active{
+
+main #caixaGeral:hover .active {
     scale: 1;
 }
 
-main #caixaEstabelecimento .active .seta {
+main #caixaEstabelecimento .active .seta,
+main #agendamento .active .seta {
     rotate: 90deg;
 }
 
 main #caixaEstabelecimento .caixaInvisivel,
+main #agendamento .caixaInvisivel,
 main #caixaEstabelecimento .salvarBarbearia {
     display: none;
 }
 
-main #caixaEstabelecimento .active .caixaInvisivel {
+main #caixaEstabelecimento .active .caixaInvisivel,
+main #agendamento .active .caixaInvisivel {
     width: 100%;
     margin: 20px;
     display: flex;
@@ -758,7 +771,8 @@ main #caixa .margem {
         scale: 1.05;
     }
 
-    main #caixaEstabelecimento .caixaGeral .fotoBarbearia {
+    main #caixaEstabelecimento .caixaGeral .fotoBarbearia,
+    main #agendamento .caixaGeral .fotoBarbearia {
         width: 68px;
         height: 68px;
     }
