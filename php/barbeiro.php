@@ -55,12 +55,12 @@
                     $inserir->execute();
                      //Tratamento de mensagem de cadastro realizado
                     $mensagem = 'Cadastro Realizado';
-                    header("location: ../html/login.html?mensagem=".urlencode($mensagem));  
+                    header("location: ../html/login.html?mensagem=".urlencode($mensagem). "&tipo=sucesso");  
                     exit;
                 }else{
                      //Tratamento de erro caso o email seja inválido
                 $mensagem = 'Email invalido';
-                header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem). "&tipo=erro");  
                 }
                 exit;
 
@@ -68,12 +68,12 @@
                 //Mandar mensagem de erro que o usuário ta cadastrado
                 if ($e->getCode() == 23000) {
                     $mensagem = 'ERRO: Este E-mail ou Endereço já está cadastrado';
-                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));
+                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem). "&tipo=erro");
                       
                 }else {
                     //Mandar mensagem de erro genérica
                     $mensagem = 'ERRO '. $e->getMessage();
-                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));  
+                    header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem). "&tipo=erro");  
                 }
                 exit;
             }
@@ -83,7 +83,7 @@
         }else{
             //Mandar mensagem d erro caso as senhas sejam diferentes
             $mensagem = "Senha e confirar senha estão diferentes";
-            header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem));
+            header("location: ../html/barbeiro.html?mensagem=".urlencode($mensagem). "&tipo=erro");
             exit;
         }
         

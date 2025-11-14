@@ -23,28 +23,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $inserir->execute();
                 //Tratamento de mensagem de cadastro realizado
                 $mensagem = 'Cadastro realizado com sucesso';
-                header("location: ../html/login.html?mensagem=".urlencode($mensagem));
+                header("location: ../html/login.html?mensagem=".urlencode($mensagem). "&tipo=sucesso");
             }else{
                 //Tratamento de erro caso o E-mail seja inválido
                 $mensagem = "Email Invalido";
-                header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
+                header("location: ../html/cliente.html?mensagem=".urlencode($mensagem). "&tipo=erro");
            }
         }else{
             //Tratamento de erro caso as senhas sejam diferentes
             $mensagem = 'Senha e confirmar senha estão diferentes';
-            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
+            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem). "&tipo=erro");
             exit;
         }
     } catch (PDOException $e) {
         //Mandar mensagem de erro que o usuário já esta cadastrado
         if($e->getCode() == 23000){
             $mensagem = "Este E-mail já está cadastrado";
-            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
+            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem) ."&tipo=erro");
                      
         }else{
             //Mensagem de erro genérica
             $mensagem = 'ERRO '. $e->getMessage();
-            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem));
+            header("location: ../html/cliente.html?mensagem=".urlencode($mensagem).  "&tipo=erro");
             
         }
         exit;

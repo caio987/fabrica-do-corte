@@ -87,7 +87,7 @@ main .link:hover {
 }
 
 footer {
-    border: 1px solid #C4974F;
+    /* border: 1px solid #C4974F; */
     border-left: 0;
     border-right: 0;
 }
@@ -110,6 +110,25 @@ footer p {
     color: #C4974F;
 }
 
+/* CSS DO ALERT */
+.mensagem {
+    padding: 15px;
+    color: #fff;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    animation: fadeIn 0.3s ease;
+}
+
+.mensagem.sucesso {
+    background-color: #28a745; /* verde */
+}
+
+.mensagem.erro {
+    background-color: #dc3545; /* vermelho */
+}
 /* CSS geral ↑↑↑↑↑↑*/
 
 /* CSS index/home ↓↓↓↓↓↓*/
@@ -181,12 +200,11 @@ footer p {
 }
 
 main .titulos {
-    margin: 20px;
+    margin: 70px;
     font-size: 2.5em;
     text-align: center;
     font-family: "Inter";
     font-style: italic;
-    font-weight: 100;
 }
 
 /* main img {
@@ -208,7 +226,7 @@ main .seta:hover {
 main .alinhamento,
 main #cardsQuemSomos {
     width: 70%;
-    margin: 15px auto;
+    margin: 60px auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -252,7 +270,7 @@ main .caixaGeral {
 }
 
 main .caixaGeral:hover {
-    scale: 1.1;
+    /* scale: 1.1; */
 }
 
 main .caixaGeral .fotoBarbearia {
@@ -294,6 +312,7 @@ main .caixaGeral .nomeEstabelecimento {
 
 main .caixaGeral .avaliacao img {
     max-width: 110px;
+    margin-left: -35px;
 }
 
 main .caixaGeral button,
@@ -604,9 +623,6 @@ main #agendamento .active {
     flex-wrap: wrap;
 }
 
-main #caixaGeral:hover .active {
-    scale: 1;
-}
 
 main #caixaEstabelecimento .active .seta,
 main #agendamento .active .seta {
@@ -625,6 +641,7 @@ main #agendamento .active .caixaInvisivel {
     margin: 20px;
     display: flex;
     justify-content: space-around;
+    flex-wrap: nowrap;
 }
 
 main #caixaEstabelecimento .active .salvarBarbearia {
@@ -707,6 +724,7 @@ main .funcionario .buttonBonito {
     width: 115px;
     height: 115px;
     margin: 10px;
+    border-radius: 10px;
 }
 
 :root {

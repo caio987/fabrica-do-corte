@@ -9,7 +9,7 @@
     <title>Busca</title>
     <style>
         main {
-            height: 85vh;
+            /*height: 85vh;*/
         }
 
         main form {
@@ -19,13 +19,15 @@
         main #caixaEstabelecimento .caixaBarbearia {
             width: 90%;
         }
+        main .caixaGeral button{
+            width: 40%;
+        }
+        main .caixaGeral button:hover{
+            width: 50%;
+        }
 
         @media (max-width: 767px) {
-            .footerFixo {
-                position: relative;
-                margin-top: -110px;
-            }
-            main{
+            main {
                 /*height: 75.5vh;*/
             }
         }
@@ -51,7 +53,7 @@
         <div id="caixaEstabelecimento"></div>
     </main>
 
-    <footer class="footerFixo" id="footer">
+    <footer class="" id="footer">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>©Todos os direitos reservados a Fábrica do Corte</p>
     </footer>
@@ -95,7 +97,6 @@
                     let id = e.id_estabelecimento;
                     nome.href = `estabelecimento.html?id=${id}`;
 
-
                     const avaliacao = document.createElement("div");
                     avaliacao.classList.add("avaliacao");
                     const nota = document.createElement("img");
@@ -114,22 +115,31 @@
                     contato.innerText = "Contato: " + (e.telefone_estabelecimento || "Não informado");
 
                     const div1 = document.createElement("div");
-                    const texto1 = document.createElement("p");
-                    texto1.innerHTML = "Foto de nossa barbearia"
-
+                    div1.style.width = "50%"
+                    div1.style.display = "flex"
+                    div1.style.flexDirection = "column"
+                    const texto1 = document.createElement("strong");
+                    texto1.innerHTML = "Foto de nossa barbearia:"
+                    
                     const fotoExtra = document.createElement("img");
                     fotoExtra.src = e.foto || "../img/default-foto.png";
                     fotoExtra.alt = "Foto do local";
                     fotoExtra.classList.add("fotoBarbearia");
+                    fotoExtra.style.margin = "8px auto"
                     div1.appendChild(texto1)
                     div1.appendChild(fotoExtra)
 
                     const div2 = document.createElement("div");
-                    const texto2 = document.createElement("p");
-                    texto2.innerHTML = "Um pouco sobre nossos serviços"
-
+                    div2.style.width = "50%"
+                    div2.style.textAlign = "start"
+                    const texto2 = document.createElement("strong");
+                    texto2.innerHTML = "Um pouco sobre nossos serviços:"
+                    
                     const sinopse = document.createElement("p");
                     sinopse.classList.add("sinopse");
+                    sinopse.style.marginTop = "8px"
+                    sinopse.style.height = "200px"
+                    sinopse.style.overflow = "hidden"
                     sinopse.innerText = e.apresentacao || "Sem descrição disponível.";
                     div2.appendChild(texto2)
                     div2.appendChild(sinopse)
@@ -141,8 +151,6 @@
                     seta.onclick = () => {
                         caixaGeral.classList.toggle("active");
                         caixaInvisivel.classList.toggle("active");
-                        document.getElementById("footer").classList.toggle("footerFixo")
-                        // document.getElementById('footer').classList.toggle("footerFixo")
                     };
 
                     const salvarBarbearia = document.createElement("button");
