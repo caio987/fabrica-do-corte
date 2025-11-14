@@ -30,7 +30,7 @@
       background: #000000;
       padding: 15px;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgb(0, 0, 0);
+      box-shadow: 0 2px 10px #cf8000;
     }
 
     main #horarios {
@@ -155,68 +155,6 @@
     main .funcionarioSelecionado button {
       background-color: #cf8000;
     }
-
-    @media (max-width: 767px) {
-
-      main h2,
-      main h3 {
-        font-size: 1em;
-      }
-
-      main .ps {
-        width: 85%;
-        font-size: .8em;
-      }
-
-      /* */
-      .fc {
-        font-size: .8em;
-      }
-
-      main #horarios {
-        width: 90%;
-      }
-
-      main .horario {
-        margin: 7px;
-        padding: 9px 0px;
-        width: 60px;
-        font-size: 0.8em;
-      }
-
-      main .caixaFuncionario p,
-      main .funcionarioSelecionado p {
-        font-size: .8em;
-      }
-
-      main .caixaFuncionario button,
-      main .funcionarioSelecionado button {
-        width: 90%;
-        font-size: 0.6em;
-      }
-
-      main .caixaFuncionario img,
-      main .funcionarioSelecionado img {
-        width: 100px;
-        height: 100px;
-        margin: 10px;
-      }
-
-      main .caixa-confirmacao {
-        font-size: .8em;
-        width: 310px;
-      }
-
-      main .caixa-confirmacao button {
-        margin: 0px;
-      }
-    }
-
-    :root {
-      .fc .fc-daygrid-day-number {
-        color: white;
-      }
-    }
   </style>
 </head>
 
@@ -285,8 +223,8 @@
       const dadosEtabelecimento = await respostaEstabelecimento.json();
       nome_estabelecimento.textContent = dadosEtabelecimento.nome_estabelecimento;
       apresentacao.textContent = dadosEtabelecimento.apresentacao;
-      localizacao.textContent = "Localização:" + dadosEtabelecimento.localizacao;
-      contato.textContent = "Contato:" + dadosEtabelecimento.telefone_estabelecimento;
+      localizacao.textContent = "Localização: " + dadosEtabelecimento.localizacao;
+      contato.textContent = "Contato: " + dadosEtabelecimento.telefone_estabelecimento;
 
       // Busca dias disponíveis
       const respostaDisponibilidade = await fetch("../php/exibirDia.php");

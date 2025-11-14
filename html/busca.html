@@ -23,10 +23,10 @@
         @media (max-width: 767px) {
             .footerFixo {
                 position: relative;
-                margin-top: 10px;
+                margin-top: -110px;
             }
             main{
-                height: 75.5vh;
+                /*height: 75.5vh;*/
             }
         }
     </style>
@@ -141,6 +141,7 @@
                     seta.onclick = () => {
                         caixaGeral.classList.toggle("active");
                         caixaInvisivel.classList.toggle("active");
+                        document.getElementById("footer").classList.toggle("footerFixo")
                         // document.getElementById('footer').classList.toggle("footerFixo")
                     };
 

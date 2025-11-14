@@ -20,9 +20,9 @@ body {
 
 header,
 footer {
-    background-color: black;
-    border-top: solid #C4974F;
-    border-bottom: solid #C4974F;
+    background-color: #1e242b;
+    /* border-top: solid #C4974F;
+    border-bottom: solid #C4974F; */
     padding: 5px;
     text-align: center;
 }
@@ -242,8 +242,9 @@ main .caixaGeral {
     width: fit-content;
     padding: 10px;
     text-align: center;
-    background-color: #201F1F;
-    border: solid #C4974F;
+    background-color: #222222;
+    box-shadow: 0px 6px 15px #ad700e;
+    border: .5px  solid #ad700e;
     border-radius: 20px;
     margin: 20px;
     transition: .5s;
@@ -256,6 +257,7 @@ main .caixaGeral:hover {
 
 main .caixaGeral .fotoBarbearia {
     max-width: 203px;
+    border-radius: 15px;
 }
 
 main .nomeEstabelecimento {
@@ -529,9 +531,12 @@ main #caixapesquisa {
     width: 50%;
     box-shadow: 0px 6px 15px #ad700e;
     border-radius: 20px;
+        background-color: #232323;
     margin: 25px auto;
+    margin-bottom: 80px;
     display: flex;
     padding: 6px;
+    
 }
 
 main #caixapesquisa img {
@@ -632,10 +637,212 @@ main #caixa .margem {
 }
 
 /* CSS Gerencia Estabelecimento */
+:root {
+    .fc .fc-daygrid-day-number {
+        color: white;
+    }
+}
 
+/* CSS DO GERENCIA ESTABELECIMENTO */
+#calendar {
+    max-width: 900px;
+    margin: 20px auto;
+    background: #000000;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgb(0, 0, 0);
+}
+
+#horarios {
+    display: none;
+    margin-top: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.hora-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #F5A623;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 16px;
+}
+
+.hora-btn:hover {
+    background-color: #f5a523d2;
+}
+
+.hora-btn.selecionada {
+    background-color: #575656;
+    color: white;
+}
+
+#caixaFuncionario {
+    display: flex;
+    width: 80%;
+}
+
+.funcionario {
+    width: 140px;
+    height: 200px;
+    align-content: center;
+    background-color: rgb(73 73 73);
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 20px;
+}
+
+main .funcionario .buttonBonito {
+    margin: 0px;
+}
+
+.funcionario img {
+    width: 115px;
+    height: 115px;
+    margin: 10px;
+}
+
+:root {
+    --fc-bg-event-opacity: 1;
+}
+
+#formFuncionario select {
+    width: 80%;
+    padding: 6px;
+    margin-bottom: 10px;
+    border-bottom: 1.7px solid #C4974F;
+    outline: none;
+    color: #C4974F;
+    background-color: #000000;
+    font-size: 1em;
+}
+
+#formFuncionario input[type="file"] {
+    border: none;
+    padding: 6px 0;
+    color: #b88738;
+}
+
+#formFuncionario h4 {
+    margin-top: 15px;
+    color: #daa248;
+    font-weight: normal;
+}
+
+#diasHorariosContainer {
+    background: #201F1F;
+    padding: 10px;
+    border-radius: 8px;
+    max-height: 200px;
+    width: 70%;
+    margin: auto;
+    overflow-y: auto;
+    border: 1px solid #C4974F;
+    color: #C4974F;
+}
+
+#diasHorariosContainer {
+    background: #201F1F;
+    padding: 15px 10px;
+    border-radius: 10px;
+    max-height: 220px;
+    width: 80%;
+    margin: 15px auto;
+    overflow-y: auto;
+    border: 1px solid #C4974F;
+    color: #C4974F;
+    box-shadow: 0 0 10px rgba(196, 151, 79, 0.2);
+    scrollbar-width: thin;
+    scrollbar-color: #C4974F #1b1b1b;
+}
+
+/* Barrinha de rolagem mais bonita */
+#diasHorariosContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+#diasHorariosContainer::-webkit-scrollbar-track {
+    background: #1b1b1b;
+    border-radius: 10px;
+}
+
+#diasHorariosContainer::-webkit-scrollbar-thumb {
+    background-color: #C4974F;
+    border-radius: 10px;
+}
+
+/* Cada linha de dia e horário */
+#diasHorariosContainer div {
+    display: flex;
+    align-items: center;
+    word-wrap: none;
+    justify-content: space-between;
+    background-color: #151615;
+    border: 1px solid #2d2d2d;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 8px 0;
+    transition: 0.3s;
+}
+
+#diasHorariosContainer div:hover {
+    background-color: #292929;
+    border-color: #C4974F;
+}
+
+/* Label e input dentro de cada linha */
+#diasHorariosContainer label {
+    flex: 1;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+#diasHorariosContainer input {
+    flex: 1;
+    text-align: end;
+}
+
+/* Quando o usuário passa o mouse ou foca */
+#diasHorariosContainer input:focus {
+    border-bottom: 1px solid #F5A623;
+}
 
 @media (max-width: 767px) {
+    /* textos que só precisavam deixar a fonte menor */
+    main .caixaGeral .localizacao,
+    main .caixaGeral .contato,
 
+    main form fieldset p,
+    main input,
+
+    .labelArquivo,
+    .spanArquivo main #link,
+
+    #link a,
+
+    main .caixaFuncionario p,
+    main .caixaServico p,
+    main #resultado p,
+    main .ps,
+    main .funcionarioSelecionado p,
+    .fc .fc-daygrid-day-number,
+    .fc,
+    main .funcionario p {
+        font-size: .8em;
+    }
+
+    main form fieldset button:hover, main div #button:hover, main .buttonBonito:hover{
+        font-size: 1em;
+        padding: 7px 20px;
+    }
     /* CSS MOBILE INDEX */
     header {
         width: 100%;
@@ -723,6 +930,7 @@ main #caixa .margem {
     main .caixaGeral p span,
     main .caixaGeral p,
     main #quemSomos p {
+        width: 80%;
         font-size: .8em;
         margin: 2px auto;
     }
@@ -758,7 +966,7 @@ main #caixa .margem {
 
     main .caixaGeral .sinopse,
     main #quemSomos .alinhamento p {
-        width: 90%;
+        width: 100%;
         font-size: .8em;
     }
 
@@ -768,7 +976,7 @@ main #caixa .margem {
     }
 
     main #caixaEstabelecimento .caixaGeral:hover {
-        scale: 1.05;
+        scale: 1;
     }
 
     main #caixaEstabelecimento .caixaGeral .fotoBarbearia,
@@ -784,17 +992,6 @@ main #caixa .margem {
 
     main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
         font-size: 1.2em;
-    }
-
-    main .caixaGeral .localizacao,
-    main .caixaGeral .contato,
-
-    main form fieldset p,
-    main input,
-
-    .labelArquivo,
-    .spanArquivo {
-        font-size: .8em;
     }
 
     main .seta {
@@ -823,8 +1020,67 @@ main #caixa .margem {
         width: 80%;
     }
 
-    /* CSS MOBILE INFO CONTA CLIENTE  */
-    main #link {
+    /* CSS MOBILE ESTABELECIMENTO  */
+    main h2,
+    main form h2,
+    main h3 {
+        font-size: 1em;
+    }
+
+    main .ps {
+        width: 85%;
+    }
+
+    main .buttonBonito,
+    main #caixa #button {
+        font-size: .72em;
+        padding: 8px 25px;
+    }
+
+    main #horarios {
+        width: 95%;
+    }
+
+    main .horario {
+        margin: 7px;
+        padding: 9px 0px;
+        width: 60px;
+        font-size: 0.8em;
+    }
+
+    .hora-btn {
+        padding: 6px 15px;
         font-size: .8em;
+    }
+
+    main .caixaFuncionario button,
+    main .funcionarioSelecionado button {
+        width: 90%;
+        font-size: 0.6em;
+    }
+
+    main .caixaFuncionario img,
+    main .funcionarioSelecionado img {
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+    }
+
+    main .caixa-confirmacao {
+        width: 310px;
+    }
+
+    main .caixa-confirmacao button {
+        margin: 0px;
+    }
+
+    main .funcionario img {
+        width: 90px;
+        height: 115px;
+    }
+
+    main #funcionario img {
+        width: 90px;
+        height: 90px;
     }
 }

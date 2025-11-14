@@ -8,13 +8,35 @@
     <link rel="stylesheet" href="../style.css">
     <title>Home</title>
     <style>
+        main .caixaGeral {
+            padding: 25px 0;
+        }
+
+        main .caixaGeral .nomeEstabelecimento {
+            text-align: center;
+            margin: 10px;
+        }
+
+        main .caixaGeral .fotoBarbearia,
+        main .caixaGeral button {
+            width: 80%;
+            border-radius: 15px;
+        }
+
+        main .caixaGeral button {
+            border-radius: 5px;
+        }
+
         @media (max-width: 767px) {
-            main .caixaGeral .fotoBarbearia {
-                max-width: 85px;
+            main .caixaGeral .fotoBarbearia,
+            main .caixaGeral button {
+                width: 70%;
+                font-size: .66em;
             }
 
             main .caixaGeral {
                 margin: 8px;
+                width: 45%;
             }
         }
     </style>
@@ -105,34 +127,43 @@
         <p>©Todos os direitos reservados a Fábrica do Corte</p>
     </footer>
 
-    <script src="../script.js "></script>
     <script>
-document.addEventListener('DOMContentLoaded', async () => {
-    const resposta = await fetch('../php/exibirCard.php');
-    const barbearias = await resposta.json();
+        document.addEventListener('DOMContentLoaded', async () => {
+            const resposta = await fetch('../php/exibirCard.php');
+            const barbearias = await resposta.json();
 
-    barbearias.forEach((loja) => {
-        const caixaGeral = document.createElement("div");
-        caixaGeral.classList.add("caixaGeral");
+            barbearias.forEach((loja) => {
+                const caixaGeral = document.createElement("div");
+                caixaGeral.classList.add("caixaGeral");
+                console.log(loja.logo)
 
-        const foto = document.createElement("img");
-        foto.classList.add("fotoBarbearia");
+                const foto = document.createElement("img");
+                foto.classList.add("fotoBarbearia");
 
-        // usa a logo que o PHP já converteu
-        foto.src = loja.logo_barbearia
+                // usa a logo que o PHP já converteu
+                foto.src = loja.logo
 
-        const nome = document.createElement("p");
-        nome.classList.add("nomeEstabelecimento");
-        nome.innerText = loja.nome_estabelecimento;
+                const nome = document.createElement("p");
+                nome.classList.add("nomeEstabelecimento");
+                nome.innerText = loja.nome_estabelecimento;
+                const botao = document.createElement('button')
+                botao.innerText = 'Ver Preços'
+                botao.addEventListener('click', () => {
+                    let id = loja.id_estabelecimento;
+                    window.location.href = `estabelecimento.html?id=${id}`;
 
-        caixaGeral.appendChild(foto);
-        caixaGeral.appendChild(nome);
+                })
 
-        carrossel.appendChild(caixaGeral);
-    });
-});
+                caixaGeral.appendChild(foto);
+                caixaGeral.appendChild(nome);
+                caixaGeral.appendChild(botao);
+
+                carrossel.appendChild(caixaGeral);
+            });
+        });
 
     </script>
+    <script src="../script.js "></script>
 </body>
 
 </html>

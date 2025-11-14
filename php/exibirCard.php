@@ -8,9 +8,9 @@ try {
 
     foreach ($linhas as $row) {
         if (!empty($row['logo_barbearia'])) {
-            $row['logo'] = 'data:image/png;base64,' . base64_encode($row['logo_barbearia']);
+           $row['logo'] = str_replace('type:','data:',$row['logo_barbearia']);
         } else {
-            $row['logo'] = null;
+            $row['logo'] = [];
         }
 
         unset($row['logo_barbearia']);
