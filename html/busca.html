@@ -19,10 +19,12 @@
         main #caixaEstabelecimento .caixaBarbearia {
             width: 90%;
         }
-        main .caixaGeral button{
+
+        main .caixaGeral button {
             width: 40%;
         }
-        main .caixaGeral button:hover{
+
+        main .caixaGeral button:hover {
             width: 50%;
         }
 
@@ -43,7 +45,7 @@
 
     <main>
         <form action="../php/busca.php" method="post" style="border: none; width: 80%;">
-            <div id="caixapesquisa" style="width: 80%;">
+            <div id="caixapesquisa" style="width: 56%; height: 35px;">
                 <input type="text" id="barraDePesquisa" name="busca">
                 <button type="submit" style="background-color: transparent; border: none; cursor: pointer;">
                     <img src="../img/icons/lupa.png" alt="botao pra pesquisar" style="z-index: 1;">
@@ -82,7 +84,6 @@
                     const caixaGeral = document.createElement("div");
                     caixaGeral.classList.add("caixaGeral");
 
-
                     const caixa = document.createElement("div");
                     caixa.classList.add("caixaBarbearia");
 
@@ -108,24 +109,30 @@
 
                     const localizacao = document.createElement("p");
                     localizacao.classList.add("localizacao");
-                    localizacao.innerText = "Localização: " + (e.localizacao || "Não informada");
-
+                    localizacao.innerHTML = `<span style="color:#C4974F;">Localização:</span> <span style="color:#ffffff;">${e.localizacao || "Não informada"}</span>`;
+                    
+                    /*localizacao.innerText = <p style="color:#C4974F;"> </p> + (e.localizacao || "Não informada");*/
+                    
                     const contato = document.createElement("p");
                     contato.classList.add("contato");
-                    contato.innerText = "Contato: " + (e.telefone_estabelecimento || "Não informado");
+                    contato.innerHTML = `<span style="color:#C4974F;">Contato:</span> <span style="color:#ffffff;">${e.telefone_estabelecimento || "Não informada"}</span>`;
 
                     const div1 = document.createElement("div");
                     div1.style.width = "50%"
                     div1.style.display = "flex"
+                    div1.style.alignItems = "center"
+                    div1.style.justifyContent = "center"
                     div1.style.flexDirection = "column"
                     const texto1 = document.createElement("strong");
-                    texto1.innerHTML = "Foto de nossa barbearia:"
-                    
+                    texto1.style.marginBottom = "8px";
+                    texto1.innerHTML = "Foto de nossa barbearia:";
+
                     const fotoExtra = document.createElement("img");
                     fotoExtra.src = e.foto || "../img/default-foto.png";
                     fotoExtra.alt = "Foto do local";
                     fotoExtra.classList.add("fotoBarbearia");
-                    fotoExtra.style.margin = "8px auto"
+                    fotoExtra.style.width = "200px"
+                    fotoExtra.style.height = "145px"
                     div1.appendChild(texto1)
                     div1.appendChild(fotoExtra)
 
@@ -134,7 +141,7 @@
                     div2.style.textAlign = "start"
                     const texto2 = document.createElement("strong");
                     texto2.innerHTML = "Um pouco sobre nossos serviços:"
-                    
+
                     const sinopse = document.createElement("p");
                     sinopse.classList.add("sinopse");
                     sinopse.style.marginTop = "8px"
