@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
   <link rel="stylesheet" href="../style.css">
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>Agendamento com Botões de Horário</title>
   <style>
     main {
@@ -41,19 +42,22 @@
   </header>
 
   <main>
-    <h2 style="margin: 10px;">Escolha a data e o horário</h2>
+    <h2 style="margin: 10px;">Escolha a data e o horário que serão inseridos no calendário</h2>
+    <p>Lembre de apertar o botão de enviar Datas e Horários para concluir as alterações</p>
 
     <div id="calendar" style="opacity: 1;"></div>
     <div id="horarios"></div>
     <button class="buttonBonito" onclick="enviarDisponibilidade()">Enviar Datas e Horários</button>
-
+    <h2>Insira novos serviços aqui</h2>
     <input type="text" placeholder="Coloque aqui o nome do corte" name="corte" required id="corte">
     <input type="number" placeholder="Preço R$0,00" name="preco" required id="preco">
     <button class="buttonBonito" onclick="adicionar()">Adicionar</button>
+    <h3>Serviços já adicionados </h3>
+    <p>(Caso adicione alum serviço os itens serão substituidos de acordo com o serviço adicionado)</p>
 
     <div id="caixa"></div>
     <button class="buttonBonito" onclick="cadastroServico()">Cadastrar novos serviços</button>
-
+    <h2>Gerenciamento de funcionários</h2>
     <div id="caixaFuncionario">
       <div id="funcionario" class="funcionario" onclick="adFuncionario()">
         <img src="../img/icons/+.png" alt="">

@@ -65,19 +65,49 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function adicionar() {
-  if (servico.includes(document.getElementById('corte').value)) {
-    alert('corte já está adicionado')
-  }else{
-    caixa.innerHTML = '';
-     servico.push(document.getElementById('corte').value);
-    preco.push(document.getElementById('preco').value);
-    servico.forEach((item,i) => {
-      caixa.innerHTML += `<input type="text" name="servico" value="${item}"><input type="text" name="preco" value="${preco[i]}"><br>`;
+  const corteValue = document.getElementById('corte').value;
+  const precoValue = document.getElementById('preco').value;
+
+  // Verifica se o serviço já está cadastrado ou se algum campo está vazio
+  if (servico.includes(corteValue) || corteValue === '' || precoValue === '') {
+    Swal.fire({
+      title: "ERRO",
+      text: "Usuário já cadastrado ou campo(s) sem valor",
+      icon: "error",  // Corrigido para usar o valor "error"
+      confirmButtonText: "OK"
     });
+  } else {
+    caixa.innerHTML = '';  // Limpa a área 'caixa' antes de adicionar novos itens
 
+    // Adiciona o novo serviço e preço
+    servico.push(corteValue);
+    preco.push(precoValue);
+
+    // Cria o HTML dinamicamente para a lista atualizada
+    servico.forEach((item, i) => {
+      // Cria o campo de input para o serviço
+      const serviceInput = document.createElement('input');
+      serviceInput.type = 'text';
+      serviceInput.name = 'servico';
+      serviceInput.value = item;
+
+      // Cria o campo de input para o preço
+      const priceInput = document.createElement('input');
+      priceInput.type = 'text';
+      priceInput.name = 'preco';
+      priceInput.value = preco[i];
+
+      // Cria a quebra de linha
+      const lineBreak = document.createElement('br');
+
+      // Adiciona os inputs e a quebra de linha na 'caixa'
+      caixa.appendChild(serviceInput);
+      caixa.appendChild(priceInput);
+      caixa.appendChild(lineBreak);
+    });
   }
-
 }
+
 
 document.addEventListener('DOMContentLoaded', async function() {
   const hoje = new Date();
