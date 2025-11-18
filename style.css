@@ -123,12 +123,15 @@ footer p {
 }
 
 .mensagem.sucesso {
-    background-color: #28a745; /* verde */
+    background-color: #28a745;
+    /* verde */
 }
 
 .mensagem.erro {
-    background-color: #dc3545; /* vermelho */
+    background-color: #dc3545;
+    /* vermelho */
 }
+
 /* CSS geral ↑↑↑↑↑↑*/
 
 /* CSS index/home ↓↓↓↓↓↓*/
@@ -214,8 +217,8 @@ main .titulos {
 main .seta {
     transition: .5s;
     cursor: pointer;
-    width: 30px;
-    height: 40px;
+    width: 35px;
+    height: 45px;
     margin: 15px;
 }
 
@@ -262,7 +265,7 @@ main .caixaGeral {
     text-align: center;
     background-color: #222222;
     box-shadow: 0px 6px 15px #ad700e;
-    border: .5px  solid #ad700e;
+    border: .5px solid #ad700e;
     border-radius: 20px;
     margin: 20px;
     transition: .5s;
@@ -287,7 +290,7 @@ main .caixaGeral .contato,
 main .caixaGeral .sinopse,
 main #quemSomos p {
     color: white;
-    font-size: 1.2em;
+    font-size: 1.07em;
 }
 
 main .caixaGeral p span {
@@ -308,11 +311,12 @@ main .caixaGeral .contato,
 main .caixaGeral .nomeEstabelecimento {
     text-align: left;
     margin-left: 25px;
+    padding: 2px;
 }
 
 main .caixaGeral .avaliacao img {
-    max-width: 110px;
-    margin-left: -35px;
+    max-width: 100px;
+    margin-left: -48px;
 }
 
 main .caixaGeral button,
@@ -470,7 +474,7 @@ main textarea,
 main select {
     width: 80%;
     outline: none;
-    color: #b88738;
+    color: #fff;
     padding: 4px;
     display: block;
     margin: 13px auto;
@@ -547,19 +551,20 @@ main form fieldset p a {
 
 /* CSS busca de barbearias */
 main #caixapesquisa {
-    width: 50%;
+    /* width: 50%; */
     box-shadow: 0px 6px 15px #ad700e;
-    border-radius: 20px;
-        background-color: #232323;
+    border-radius: 17px;
+    background-color: #272727;
     margin: 25px auto;
     margin-bottom: 80px;
     display: flex;
+    align-items: center;
     padding: 6px;
-    
+
 }
 
 main #caixapesquisa img {
-    width: 40px;
+    width: 30px;
     rotate: 270deg;
 }
 
@@ -584,7 +589,7 @@ main #agendamento .caixaGeral {
     justify-content: center;
     padding: 5px;
     margin: 20px auto;
-    width: 60%;
+    width: 53%;
 }
 
 main #caixaEstabelecimento .caixaGeral .caixaBarbearia,
@@ -597,8 +602,8 @@ main #agendamento .caixaGeral .caixaBarbearia {
 
 main #caixaEstabelecimento .caixaGeral .fotoBarbearia,
 main #agendamento .caixaGeral .fotoBarbearia {
-    width: 200px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
 }
 
 main #caixaEstabelecimento .caixaGeral .caixaInformacoes,
@@ -612,7 +617,7 @@ main #agendamento .caixaGeral .caixaInformacoes {
 main #caixaEstabelecimento .caixaGeral .caixaInformacoes .nomeEstabelecimento,
 main #agendamento .caixaGeral .caixaInformacoes .nomeEstabelecimento {
     /* margin: 0; */
-    font-size: 2em;
+    font-size: 1.7em;
     font-weight: bold;
     text-decoration: none;
     color: #C4974F;
@@ -667,7 +672,7 @@ main #caixa .margem {
     background: #000000;
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgb(0, 0, 0);
+    box-shadow: 0 2px 10px #f5a623;
 }
 
 #horarios {
@@ -712,6 +717,7 @@ main #caixa .margem {
     align-content: center;
     background-color: rgb(73 73 73);
     border-radius: 10px;
+    border: solid   ;
     cursor: pointer;
     margin: 20px;
 }
@@ -857,10 +863,13 @@ main .funcionario .buttonBonito {
         font-size: .8em;
     }
 
-    main form fieldset button:hover, main div #button:hover, main .buttonBonito:hover{
+    main form fieldset button:hover,
+    main div #button:hover,
+    main .buttonBonito:hover {
         font-size: 1em;
         padding: 7px 20px;
     }
+
     /* CSS MOBILE INDEX */
     header {
         width: 100%;

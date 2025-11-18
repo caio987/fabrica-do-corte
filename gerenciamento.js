@@ -5,7 +5,7 @@ let preco = [];
 const caixa = document.getElementById('caixa');
 const formFuncionario = document.getElementById('formFuncionario');
 
-async function adFuncionario(){
+async function adFuncionario() {
   formFuncionario.style.display = 'block';
   try {
     const resposta = await fetch("../php/servicoInformacao.php");
@@ -33,7 +33,7 @@ async function adFuncionario(){
       container.appendChild(div);
     });
 
-  } catch(e) {
+  } catch (e) {
     console.error('Erro ao carregar dados:', e);
     document.getElementById('diasHorariosContainer').innerHTML = 'Erro ao carregar!';
   }
@@ -45,15 +45,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const resposta = await fetch('../php/informacaoEstabelecimento.php');
     const dados = await resposta.json();
     dados.forEach(item => {
-      caixa.innerHTML += `<input type="text" name="servico" value="${item.nome_servico}"><input type="text" name="preco" value="${item.preco}"><br>`;
+      caixa.innerHTML += `<input type="text" name="servico" value="${item.nome_servico}" disabled><input type="text" name="preco" value="${item.preco}" disabled><br>`;
     });
     const resposta_funcionatrio = await fetch('../php/funcionario.php');
     const dados_funcionario = await resposta_funcionatrio.json();
     dados_funcionario.forEach(item => {
-        funcionarios.innerHTML += /*html*/`
+      funcionarios.innerHTML += /*html*/`
             <div class="funcionario">
-                <p>${item.nome}</p>
-                <img src=${item.foto} alt=${item.nome}>
+              <img src=${item.foto} alt=${item.nome}>
+              <p>${item.nome}</p>
             </div>
         `
     })
@@ -67,19 +67,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 function adicionar() {
   if (servico.includes(document.getElementById('corte').value)) {
     alert('corte já está adicionado')
-  }else{
+  } else {
     caixa.innerHTML = '';
-     servico.push(document.getElementById('corte').value);
+    servico.push(document.getElementById('corte').value);
     preco.push(document.getElementById('preco').value);
-    servico.forEach((item,i) => {
-      caixa.innerHTML += `<input type="text" name="servico" value="${item}"><input type="text" name="preco" value="${preco[i]}"><br>`;
+    servico.forEach((item, i) => {
+      caixa.innerHTML += `<input type="text" name="servico" value="${item}" disabled><input type="text" name="preco" value="${preco[i]}" disabled><br>`;
     });
 
   }
 
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
   const calendarEl = document.getElementById('calendar');
@@ -96,28 +96,28 @@ document.addEventListener('DOMContentLoaded', async function() {
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     locale: 'pt-br',
-    validRange: function(nowDate) {
+    validRange: function (nowDate) {
       const maxDate = new Date(nowDate);
       maxDate.setMonth(maxDate.getMonth() + 3);
       return { start: nowDate, end: maxDate };
     },
-    dateClick: function(info) {
+    dateClick: function (info) {
       const dataStr = info.dateStr;
       if (datasBloqueadas.includes(dataStr)) { alert('Essa data já está cadastrada'); return; }
-      if (datasSelecionadas.includes(dataStr)) { datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1); } 
+      if (datasSelecionadas.includes(dataStr)) { datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1); }
       else { datasSelecionadas.push(dataStr); }
       atualizarEventos();
       mostrarHorarios(dataStr);
     }
   });
-  
+
   calendar.render();
   atualizarEventos();
 
   function atualizarEventos() {
     calendar.getEvents().forEach(e => e.remove());
-    datasSelecionadas.forEach(d => calendar.addEvent({title:"Selecionado", start:d, display:'background', backgroundColor:'#444743'}));
-    datasBloqueadas.forEach(d => calendar.addEvent({title:"Indisponível", start:d, display:'background', backgroundColor:'#512d2d'}));
+    datasSelecionadas.forEach(d => calendar.addEvent({ title: "Selecionado", start: d, display: 'background', backgroundColor: '#444743' }));
+    datasBloqueadas.forEach(d => calendar.addEvent({ title: "Indisponível", start: d, display: 'background', backgroundColor: '#512d2d' }));
   }
 
   function mostrarHorarios(dataStr) {
@@ -127,15 +127,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     const startHour = 8;
     const endHour = 20;
     const intervalo = 30;
-    for(let h=startHour; h<endHour; h++){
-      for(let m=0; m<60; m+=intervalo){
-        const horaStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    for (let h = startHour; h < endHour; h++) {
+      for (let m = 0; m < 60; m += intervalo) {
+        const horaStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
         const btn = document.createElement('button');
         btn.textContent = horaStr;
         btn.classList.add('hora-btn');
-        btn.addEventListener('click',()=>{
-          if(horariosSelecionados.includes(horaStr)){
-            horariosSelecionados.splice(horariosSelecionados.indexOf(horaStr),1);
+        btn.addEventListener('click', () => {
+          if (horariosSelecionados.includes(horaStr)) {
+            horariosSelecionados.splice(horariosSelecionados.indexOf(horaStr), 1);
             btn.classList.remove('selecionada');
           } else {
             horariosSelecionados.push(horaStr);
@@ -178,54 +178,54 @@ async function enviarDisponibilidade() {
 }
 
 async function cadastroServico() {
-     // 2️⃣ Envia serviços e preços ao PHP
-    const resp2 = await fetch("../php/servico.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        servico: servico,
-        preco: preco
-      })
-    });
+  // 2️⃣ Envia serviços e preços ao PHP
+  const resp2 = await fetch("../php/servico.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      servico: servico,
+      preco: preco
+    })
+  });
 
-    const texto2 = await resp2.text();
-    console.log("💈 Retorno de servico.php:", texto2);
-    alert("Serviço cadastrado");
-     location.reload();
+  const texto2 = await resp2.text();
+  console.log("💈 Retorno de servico.php:", texto2);
+  alert("Serviço cadastrado");
+  location.reload();
 
 }
 
 
 async function enviarFuncionario() {
-    const form = document.querySelector('#formFuncionario form');
-    const nome = form.nome.value;
-    const foto = form.foto.files[0];
-    const servicosSelecionados = [form.selectServico1.value, form.selectServico2.value, form.selectServico3.value].filter(v => v !== "");
-    const checkboxes = Array.from(form.querySelectorAll('input[name="diasHorarios[]"]:checked'));
-    const diasHorariosSelecionados = checkboxes.map(cb => cb.value); // IDs corretos
+  const form = document.querySelector('#formFuncionario form');
+  const nome = form.nome.value;
+  const foto = form.foto.files[0];
+  const servicosSelecionados = [form.selectServico1.value, form.selectServico2.value, form.selectServico3.value].filter(v => v !== "");
+  const checkboxes = Array.from(form.querySelectorAll('input[name="diasHorarios[]"]:checked'));
+  const diasHorariosSelecionados = checkboxes.map(cb => cb.value); // IDs corretos
 
-    const formData = new FormData();
-    formData.append('nome', nome);
-    formData.append('foto', foto);
-    formData.append('servicos', JSON.stringify(servicosSelecionados));
-    formData.append('diasHorarios', JSON.stringify(diasHorariosSelecionados));
-    formData.append('horariosSelecionados', JSON.stringify(horariosSelecionados));
+  const formData = new FormData();
+  formData.append('nome', nome);
+  formData.append('foto', foto);
+  formData.append('servicos', JSON.stringify(servicosSelecionados));
+  formData.append('diasHorarios', JSON.stringify(diasHorariosSelecionados));
+  formData.append('horariosSelecionados', JSON.stringify(horariosSelecionados));
 
-    try {
-        const resposta = await fetch('../php/cadastrarFuncionario.php', { method:'POST', body:formData });
-        const resultado = await resposta.text();
+  try {
+    const resposta = await fetch('../php/cadastrarFuncionario.php', { method: 'POST', body: formData });
+    const resultado = await resposta.text();
 
-        // Exibe no console
-        console.log('Retorno do PHP:\n', resultado);
-        console.log('Nome do funcionário:', nome);
-        console.log('Serviços selecionados:', servicosSelecionados);
-        console.log('Dias/Horários selecionados (IDs):', diasHorariosSelecionados);
-        console.log('Horários do calendário selecionados:', horariosSelecionados);
+    // Exibe no console
+    console.log('Retorno do PHP:\n', resultado);
+    console.log('Nome do funcionário:', nome);
+    console.log('Serviços selecionados:', servicosSelecionados);
+    console.log('Dias/Horários selecionados (IDs):', diasHorariosSelecionados);
+    console.log('Horários do calendário selecionados:', horariosSelecionados);
 
-        form.reset();
-        formFuncionario.style.display = 'none';
-         location.reload();
-    } catch (erro) {
-        console.error('Erro ao cadastrar funcionário:', erro);
-    }
+    form.reset();
+    formFuncionario.style.display = 'none';
+    location.reload();
+  } catch (erro) {
+    console.error('Erro ao cadastrar funcionário:', erro);
+  }
 }

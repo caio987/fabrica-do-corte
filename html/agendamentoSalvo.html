@@ -82,23 +82,25 @@
 
                     const foto = document.createElement('img');
                     foto.src = e.foto;
+                    foto.style.width = "200px"
+                    foto.style.height = "145px"
                     foto.classList.add("fotoBarbearia")
 
                     const nome = document.createElement('h2');
                     nome.classList.add("nomeEstabelecimento")
-                    nome.innerText = e.estabelecimento;
+                    nome.innerHTML = e.estabelecimento;
 
                     const local = document.createElement('p');
-                    local.innerText = "Localização: " + e.localizacao;
+                    local.innerHTML = `<span style="color:#C4974F;">localização:</span> <span style="color:#ffffff;">${e.localizacao || "Não informada"}</span>`;
 
                     const horario = document.createElement('p');
-                    horario.innerText = "Horário: " + e.horario;
+                    horario.innerHTML = `<span style="color:#C4974F;">Horário:</span> <span style="color:#ffffff;">${e.horario || "Não informada"}</span>`;
 
                     const dia = document.createElement('p');
-                    dia.innerText = "Data: " + e.dia;
+                    dia.innerHTML = `<span style="color:#C4974F;">Dia: </span> <span style="color:#ffffff;">${e.dia || "Não informada"}</span>`;
 
                     const barbeiro = document.createElement('p');
-                    barbeiro.innerText = "Barbeiro escolhido: " + e.funcionario;
+                    barbeiro.innerHTML = `<span style="color:#C4974F;">Barbeiro escolhido: </span> <span style="color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
                     
                     // algu = document.createElement('p')
                     // algu.innerHTML = "Foto do(a) barbeiro(a)"

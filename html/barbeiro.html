@@ -18,7 +18,7 @@
             cursor: pointer;
             padding: 8px 5px;
         }
-
+        
         .spanArquivo {
             font-size: .7em;
             padding: 9px 0px;
@@ -66,7 +66,7 @@
 
                     <input type="email" placeholder="E-mail profissional:" class="caixaInput" name="email" id="email">
 
-                    <input type="number" placeholder="Telefone:" class="caixaInput" name="telefone" id="telefone">
+                    <input type="tel" maxlength="15" onkeyup="handlePhone(event)" placeholder="Telefone: DDD:" class="caixaInput" name="telefone" id="telefone">
 
                     <input type="password" placeholder="Senha:" class="caixaInput" name="senha" id="senha">
 
@@ -133,6 +133,20 @@
             const nome = this.files.length ? this.files[0].name : 'Nenhum arquivo selecionado';
             document.getElementById('logo-nome').textContent = nome;
         });
+
+        const handlePhone = (event) => {
+            let input = event.target
+            input.value = phoneMask(input.value)
+        }
+
+        const phoneMask = (value) => {
+            if (!value) return ""
+            value = value.replace(/\D/g, '')
+            value = value.replace(/(\d{2})(\d)/, "($1) $2")
+            //Faz o hí 
+            value = value.replace(/(\d)(\d{4})$/, "$1-$2")
+            return value
+        }
     </script>
 </body>
 
