@@ -6,8 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agendamento</title>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="../style.css">
   <style>
+    /* ALERTAS BONITOS */
+    div:where(.swal2-container) div:where(.swal2-popup) {
+      background: #1e242b;
+    }
+
+    div:where(.swal2-container) div:where(.swal2-popup) {
+      color: #C4974F;
+    }
+
     body {
       text-align: center;
     }
@@ -245,7 +255,12 @@
         dateClick: function (info) {
           const dataStr = info.dateStr;
           if (!diasCadastrados.includes(dataStr)) {
-            alert("Este dia não está disponível para agendamento.");
+            Swal.fire({
+              title: "Algo deu errado",
+              text: "Este dia não está disponível para agendamento",
+              icon: "error",
+              confirmButtonText: "OK"
+            });
             return;
           }
           diaSelecionado = diaSelecionado === dataStr ? null : dataStr;
@@ -322,7 +337,12 @@
         // Quando clicar em adicionar
         adicionar.addEventListener('click', () => {
           if (idServico.includes(e.id_servico)) {
-            alert('Você já adicionou esse serviço');
+            Swal.fire({
+              title: "Algo deu errado",
+              text: "Você já adicionou esse serviço",
+              icon: "error",
+              confirmButtonText: "OK"
+            });
             return;
           }
 
@@ -374,12 +394,36 @@
       // Concluir e exibir funcionários
       concluir.addEventListener('click', async () => {
         if (idServico.length === 0) {
-          alert('Selecione no mínimo 1 serviço');
+          Swal.fire({
+            title: "Algo deu errado",
+            text: "Selecione no mínimo 1 serviço",
+            icon: "error",
+            confirmButtonText: "OK"
+          });
           return;
         }
-        alert('Serviços concluídos!');
-        if (!diaSelecionado) { alert('Selecione um dia!'); return; }
-        if (!horarioSelecionado) { alert('Selecione um horário!'); return; }
+        Swal.fire({
+          title: "Tudo certo",
+          text: "Serviços concluídos!",
+          icon: "sucess",
+          confirmButtonText: "OK"
+        });
+        if (!diaSelecionado) {
+          Swal.fire({
+            title: "Algo deu errado",
+            text: "Selecione um dia!",
+            icon: "error",
+            confirmButtonText: "OK"
+          }); return;
+        }
+        if (!horarioSelecionado) {
+          Swal.fire({
+            title: "Algo deu errado",
+            text: "Selecione um horário!",
+            icon: "error",
+            confirmButtonText: "OK"
+          }); return;
+        }
 
         // Envia dados para PHP
         const dadosParaPHP = {
@@ -413,7 +457,12 @@
               botao.addEventListener('click', () => {
                 idFuncionario = f.id_funcionario;
                 div.classList = 'funcionarioSelecionado';
-                alert(`Funcionário ${f.nome} selecionado`);
+                Swal.fire({
+                  title: "Tudo certo",
+                  text: `Funcionário ${f.nome} selecionado`,
+                  icon: "sucess",
+                  confirmButtonText: "OK"
+                });
               })
               div.innerHTML = ''
               div.appendChild(nome);
@@ -484,7 +533,12 @@
           confirmacao.style.display = 'none';
         });
       } else {
-        alert('Preencha os outros campos antes de agendar')
+        Swal.fire({
+          title: "Algo deu errado",
+          text: "Preencha os outros campos antes de agendar",
+          icon: "error",
+          confirmButtonText: "OK"
+        });
       }
     }
 
@@ -504,6 +558,12 @@
         });
         const dadosAgendamento = await respostaAgendamento.text();
         console.log(dadosAgendamento)
+        // Swal.fire({
+        //     title: tipo === "sucesso" ? "Tudo certo!" : "Ops...",
+        //     text: dadosAgendamento,
+        //     icon: tipo === "sucesso" ? "success" : "error",
+        //     confirmButtonText: "OK"
+        // });
         alert(dadosAgendamento)
         if (dadosAgendamento == 'Agendamento realizado com sucesso') {
           window.location.href = "agendamentoSalvo.html"
@@ -511,7 +571,12 @@
           location.reload();
         }
       } else {
-        alert('Você pulou alguma etapa do agendamento!')
+        Swal.fire({
+          title: "Algo deu errado",
+          text: "Você pulou alguma etapa do agendamento!",
+          icon: "error",
+          confirmButtonText: "OK"
+        });
       }
     }
   </script>

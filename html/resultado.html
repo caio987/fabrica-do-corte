@@ -6,7 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estabelecimentos</title>
     <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* ALERTAS BONITOS */
+        div:where(.swal2-container) div:where(.swal2-popup) {
+            background: #1e242b;
+        }
+
+        div:where(.swal2-container) div:where(.swal2-popup) {
+            color: #C4974F;
+        }
+
         main {
             height: 85vh;
         }
@@ -139,6 +149,12 @@
                             body: JSON.stringify({ id })
                         })
                         const dados = await resposta.text();
+                        // Swal.fire({
+                        //     title: tipo === "sucesso" ? "Tudo certo!" : "Ops...",
+                        //     text: dados,
+                        //     icon: tipo === "sucesso" ? "success" : "error",
+                        //     confirmButtonText: "OK"
+                        // });
                         alert(dados);
                     });
                     // montagem

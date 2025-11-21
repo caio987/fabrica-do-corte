@@ -7,7 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
     <title>Busca</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* ALERTAS BONITOS */
+        div:where(.swal2-container) div:where(.swal2-popup) {
+            background: #1e242b;
+        }
+
+        div:where(.swal2-container) div:where(.swal2-popup) {
+            color: #C4974F;
+        }
+
         main {
             /*height: 85vh;*/
         }
@@ -110,9 +120,9 @@
                     const localizacao = document.createElement("p");
                     localizacao.classList.add("localizacao");
                     localizacao.innerHTML = `<span style="color:#C4974F;">Localização:</span> <span style="color:#ffffff;">${e.localizacao || "Não informada"}</span>`;
-                    
+
                     /*localizacao.innerText = <p style="color:#C4974F;"> </p> + (e.localizacao || "Não informada");*/
-                    
+
                     const contato = document.createElement("p");
                     contato.classList.add("contato");
                     contato.innerHTML = `<span style="color:#C4974F;">Contato:</span> <span style="color:#ffffff;">${e.telefone_estabelecimento || "Não informada"}</span>`;
@@ -171,7 +181,13 @@
                             body: JSON.stringify({ id })
                         })
                         const dados = await resposta.text();
-                        alert(dados);
+                        Swal.fire({
+                            title: "sucesso",
+                            text: dados,
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                        // alert(dados);
                     });
 
                     // montagem

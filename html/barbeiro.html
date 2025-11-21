@@ -9,6 +9,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Cadastro</title>
     <style>
+        /* ALERTAS BONITOS */
+        div:where(.swal2-container) div:where(.swal2-popup) {
+            background: #1e242b;
+        }
+
+        div:where(.swal2-container) div:where(.swal2-popup) {
+            color: #C4974F;
+        }
+
         .labelArquivo {
             color: #db9a32d6;
         }
@@ -18,7 +27,7 @@
             cursor: pointer;
             padding: 8px 5px;
         }
-        
+
         .spanArquivo {
             font-size: .7em;
             padding: 9px 0px;
@@ -66,7 +75,8 @@
 
                     <input type="email" placeholder="E-mail profissional:" class="caixaInput" name="email" id="email">
 
-                    <input type="tel" maxlength="15" onkeyup="handlePhone(event)" placeholder="Telefone: DDD:" class="caixaInput" name="telefone" id="telefone">
+                    <input type="tel" maxlength="15" onkeyup="handlePhone(event)" placeholder="Telefone: DDD:"
+                        class="caixaInput" name="telefone" id="telefone">
 
                     <input type="password" placeholder="Senha:" class="caixaInput" name="senha" id="senha">
 

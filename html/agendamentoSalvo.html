@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -21,13 +20,14 @@
             font-size: 1.2em;
             color: #fff;
         }
-        main .caixaInvisivel div{
+
+        main .caixaInvisivel div {
             width: 60%;
         }
-        main .caixaInvisivel p{
+
+        main .caixaInvisivel p {
             margin: 10px;
         }
-
     </style>
 </head>
 
@@ -44,10 +44,10 @@
 
         <h2>Seus agendamentos</h2>
         <div id="agendamento"></div>
-        <hr>
+        <hr class="some">
 
-        <h3>Estabelecimentos Salvos</h3>
-        <div id="caixaEstabelecimento"></div>
+        <h3 class="some">Estabelecimentos Salvos</h3>
+        <div class="some" id="caixaEstabelecimento"></div>
     </main>
     <footer class="footerFixo">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
@@ -101,10 +101,10 @@
 
                     const barbeiro = document.createElement('p');
                     barbeiro.innerHTML = `<span style="color:#C4974F;">Barbeiro escolhido: </span> <span style="color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
-                    
+
                     // algu = document.createElement('p')
                     // algu.innerHTML = "Foto do(a) barbeiro(a)"
-                    
+
                     const fotoBarbeiro = document.createElement('img');
                     fotoBarbeiro.style.width = "150px"
                     fotoBarbeiro.style.height = "150px"
@@ -175,81 +175,78 @@
                     agendamento.appendChild(caixaGeral)
 
                 } else if (e.tipo === 'Proprietário') {
-                    const nome = document.createElement('p');
-                    const fotoBarbeiro = document.createElement('img');
+                    const caixaGeral = document.createElement("div");
+                    caixaGeral.classList.add("caixaGeral");
+                    caixaGeral.style.width = "40%"
+
+                    const nome = document.createElement('h2');
+                    nome.classList.add("nomeEstabelecimento")
+                    nome.innerHTML = e.estabelecimento;
+
+                    const horario = document.createElement('p');
+                    horario.innerHTML = `<span style="color:#C4974F;">Horário:</span> <span style="color:#ffffff;">${e.horario || "Não informada"}</span>`;
+
+                    const dia = document.createElement('p');
+                    dia.innerHTML = `<span style="color:#C4974F;">Dia: </span> <span style="color:#ffffff;">${e.dia || "Não informada"}</span>`;
+
                     const barbeiro = document.createElement('p');
+                    barbeiro.innerHTML = `<span style="font-size: 1.2em; color:#C4974F;">Barbeiro escolhido: </span> <span style="font-size: 1.2em; color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
+
+                    const fotoBarbeiro = document.createElement('img');
+                    fotoBarbeiro.style.width = "150px"
+                    fotoBarbeiro.style.height = "150px"
+                    fotoBarbeiro.style.margin = "10px 0"
+                    fotoBarbeiro.src = e.foto_barbeiro;
+
                     const totalPagar = document.createElement('p');
 
-                    nome.innerText = e.cliente;
-                    fotoBarbeiro.src = e.foto_barbeiro;
-                    barbeiro.innerText = e.funcionario;
+                    const caixaBarbearia = document.createElement("div");
+                    caixaBarbearia.classList.add("caixaBarbearia")
 
-                    agendamento.appendChild(nome);
-                    agendamento.appendChild(fotoBarbeiro);
-                    agendamento.appendChild(barbeiro);
+                    const caixaInformacoes = document.createElement("div");
+                    caixaInformacoes.style.width = "50%";
+                    caixaInformacoes.classList.add("caixaInformacoes")
 
+                    const div = document.createElement("div");
+                    div.style.width = "50%";
+
+                    algo = document.createElement('p')
+                    algo.style.color = "#C4974F"
+                    algo.innerHTML = "Corte(s) selecionado(s):"
+
+                    caixaInformacoes.appendChild(algo)
                     e.servicos.forEach(s => {
                         total += parseFloat(s.preco);
                         const servico = document.createElement('p');
                         servico.innerText = s.nome_servico;
                         const preco = document.createElement('p');
                         preco.innerText = s.preco;
-                        agendamento.appendChild(servico);
-                        agendamento.appendChild(preco);
+
+                        caixaInformacoes.appendChild(servico);
                     });
 
-                    totalPagar.innerText = "Total a receber: R$ " + total.toFixed(2);
-                    agendamento.appendChild(totalPagar);
+                    totalPagar.innerHTML = `<span style="color:#C4974F;">Preço total: </span> <span style="color:#ffffff;">R$${total.toFixed(2)}</span>`;
+
+                    div.appendChild(barbeiro);
+                    div.appendChild(fotoBarbeiro);
+
+                    caixaInformacoes.appendChild(dia);
+                    caixaInformacoes.appendChild(horario);
+                    caixaInformacoes.appendChild(totalPagar);
+
+                    caixaBarbearia.appendChild(div);
+                    caixaBarbearia.appendChild(caixaInformacoes)
+
+                    caixaGeral.appendChild(caixaBarbearia);
+                    agendamento.appendChild(caixaGeral)
+
                 }
-            });
-
+            })
             // ==================== ESTABELECIMENTOS SALVOS ====================
-            const respostaEstabelecimento = await fetch("../php/exibirEstabelecimentosSalvos.php");
-            const dadosEstabelecimento = await respostaEstabelecimento.json();
-
-            dadosEstabelecimento.forEach(e => {
-                const caixaGeral = document.createElement("div");
-                caixaGeral.classList.add("caixaGeral");
-
-                const fotoExtra = document.createElement("img");
-                fotoExtra.src = e.foto_estabelecimento || "../img/default-foto.png";
-                fotoExtra.alt = "Foto do local";
-                fotoExtra.classList.add("fotoBarbearia");
-
-                const nome = document.createElement("a");
-                nome.classList.add("nomeEstabelecimento");
-                nome.style.margin = "0px"
-                nome.innerText = e.nome_estabelecimento || "Sem nome";
-                nome.href = `estabelecimento.html?id=${e.id_estabelecimento}`;
-
-                const nota = document.createElement("img");
-                nota.style.display = "block";
-                nota.style.margin = "4px auto";
-                nota.src = "../img/icons/avaliacao.png";
-
-                const excluir = document.createElement("button");
-                excluir.innerText = "Excluir";
-                excluir.classList.add("buttonBonito");
-                excluir.addEventListener('click', async () => {
-                    const resposta = await fetch(`../php/excluirEstabelecimentoSalvo.php?id=${e.id_estabelecimento_salvo}`);
-                    const dados = await resposta.text();
-                    alert(dados)
-                    location.reload();
-                })
-
-                const caixa = document.createElement("div");
-                caixa.classList.add("caixaInformacoes")
-                caixa.style.textAlign = "center"
-
-                // Montagem dos elementos
-                caixaGeral.appendChild(fotoExtra);
-                caixa.appendChild(nome);
-                caixa.appendChild(nota);
-                caixa.appendChild(excluir);
-                caixaGeral.appendChild(caixa);
-
-                estabelecimentos.appendChild(caixaGeral);
-            });
+            const some = document.getElementsByClassName("some")
+            for (let i = 0; i < 3; i++) {
+                some[i].style.display = "none";
+            }
         });
     </script>
     <script src="../script.js"></script>
