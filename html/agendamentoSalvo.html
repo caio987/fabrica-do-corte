@@ -28,6 +28,61 @@
         main .caixaInvisivel p {
             margin: 10px;
         }
+
+        main #agendamento .caixaGeral .fotoBarbearia {
+            width: 200px;
+            height: 145px;
+        }
+
+        main .fotoBarbeiro {
+            width: 150px;
+            height: 150px;
+            margin: 10px 0px;
+            border-radius: 10px;
+        }
+
+        @media(max-width:767px) {
+
+            main .caixaGeral,
+            main #agendamento .caixaGeral {
+                font-size: .8em;
+                width: 100%;
+            }
+
+            main .caixaGeral p {
+                width: 100%;
+            }
+
+            main .caixaInformacoes p {
+                margin: 4px 13px;
+                font-size: .9em;
+            }
+
+            main .caixaGeral p span {
+                font-size: .9em;
+            }
+
+            main #agendamento .caixaGeral .fotoBarbearia {
+                width: 130px;
+                height: 100px;
+            }
+
+            main .caixaGeral button {
+                width: 75%;
+                margin-left: 30px;
+            }
+
+            main .caixaGeral button:hover {
+                width: 80%;
+                font-size: .8em;
+                padding: 6px;
+            }
+
+            main .fotoBarbeiro {
+                width: 100px;
+                height: 100px;
+            }
+        }
     </style>
 </head>
 
@@ -82,8 +137,6 @@
 
                     const foto = document.createElement('img');
                     foto.src = e.foto;
-                    foto.style.width = "200px"
-                    foto.style.height = "145px"
                     foto.classList.add("fotoBarbearia")
 
                     const nome = document.createElement('h2');
@@ -106,8 +159,7 @@
                     // algu.innerHTML = "Foto do(a) barbeiro(a)"
 
                     const fotoBarbeiro = document.createElement('img');
-                    fotoBarbeiro.style.width = "150px"
-                    fotoBarbeiro.style.height = "150px"
+                    fotoBarbeiro.classList.add("fotoBarbeiro")
                     fotoBarbeiro.src = e.foto_barbeiro;
 
                     const totalPagar = document.createElement('p');
@@ -177,7 +229,6 @@
                 } else if (e.tipo === 'Proprietário') {
                     const caixaGeral = document.createElement("div");
                     caixaGeral.classList.add("caixaGeral");
-                    caixaGeral.style.width = "40%"
 
                     const nome = document.createElement('h2');
                     nome.classList.add("nomeEstabelecimento")
@@ -193,9 +244,7 @@
                     barbeiro.innerHTML = `<span style="font-size: 1.2em; color:#C4974F;">Barbeiro escolhido: </span> <span style="font-size: 1.2em; color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
 
                     const fotoBarbeiro = document.createElement('img');
-                    fotoBarbeiro.style.width = "150px"
-                    fotoBarbeiro.style.height = "150px"
-                    fotoBarbeiro.style.margin = "10px 0"
+                    fotoBarbeiro.classList.add("fotoBarbeiro")
                     fotoBarbeiro.src = e.foto_barbeiro;
 
                     const totalPagar = document.createElement('p');

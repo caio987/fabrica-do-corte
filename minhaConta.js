@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 <div class="margem">
                     <label for="">Sobrenome:</label>
-                    <input style="width: 70%; margin: 0 0px 0 0; display: inline;" type="text" disabled value="${dados.dados.sobrenome}"><br>
+                    <input id="inputEspecificoProMobile" style="margin: 0 0px 0 0; display: inline;" type="text" disabled value="${dados.dados.sobrenome}"><br>
                 </div>
                 <div class="margem">
                     <label for="">E-mail:</label>

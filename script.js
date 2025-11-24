@@ -42,7 +42,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         </div>
     </nav>
       <ul class="navMobile">
-      <li><a href="index.html"><img src="../img/logo.png" alt=""></a></li>
+      <li><a href="index.html"><img src="../img/logo.png" alt="" style="margin: 24px 0 -18px;"></a></li>
       <hr>
       <li><a href="busca.html" class="links">Barbearias</a></li>
       <hr>

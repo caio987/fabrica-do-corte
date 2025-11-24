@@ -39,8 +39,14 @@
         }
 
         @media (max-width: 767px) {
-            main {
-                /*height: 75.5vh;*/
+            main .caixaGeral .sinopse {
+                width: 180%;
+                margin-left: -40px;
+            }
+
+            main .alinhamento {
+                justify-content: space-around;
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -55,7 +61,7 @@
 
     <main>
         <form action="../php/busca.php" method="post" style="border: none; width: 80%;">
-            <div id="caixapesquisa" style="width: 56%; height: 35px;">
+            <div id="caixapesquisa" style="">
                 <input type="text" id="barraDePesquisa" name="busca">
                 <button type="submit" style="background-color: transparent; border: none; cursor: pointer;">
                     <img src="../img/icons/lupa.png" alt="botao pra pesquisar" style="z-index: 1;">
@@ -141,8 +147,9 @@
                     fotoExtra.src = e.foto || "../img/default-foto.png";
                     fotoExtra.alt = "Foto do local";
                     fotoExtra.classList.add("fotoBarbearia");
-                    fotoExtra.style.width = "200px"
-                    fotoExtra.style.height = "145px"
+                    fotoExtra.style.width = "203px"
+                    fotoExtra.style.height = "151px"
+                    fotoExtra.style.marginBottom = "20px"
                     div1.appendChild(texto1)
                     div1.appendChild(fotoExtra)
 

@@ -231,9 +231,7 @@ main #cardsQuemSomos {
     width: 70%;
     margin: 60px auto;
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 main #barbearias .alinhamento {
@@ -309,13 +307,13 @@ main .caixaGeral .localizacao,
 main .caixaGeral .contato,
 main .caixaGeral .nomeEstabelecimento {
     text-align: left;
-    margin-left: 25px;
+    margin-left: 15px;
     padding: 2px;
 }
 
 main .caixaGeral .avaliacao img {
     max-width: 100px;
-    margin-left: -48px;
+    margin-left: -60px;
 }
 
 main .caixaGeral button,
@@ -550,7 +548,8 @@ main form fieldset p a {
 
 /* CSS busca de barbearias */
 main #caixapesquisa {
-    /* width: 50%; */
+    width: 56%;
+    height: 35px;
     box-shadow: 0px 6px 15px #ad700e;
     border-radius: 17px;
     background-color: #272727;
@@ -716,7 +715,7 @@ main #caixa .margem {
     align-content: center;
     background-color: rgb(73 73 73);
     border-radius: 10px;
-    border: solid   ;
+    border: solid;
     cursor: pointer;
     margin: 20px;
 }
@@ -974,6 +973,7 @@ main .funcionario .buttonBonito {
 
     main .caixaGeral .avaliacao img {
         max-width: 50px;
+        margin-left: -30px;
     }
 
     main #cardsQuemSomos {
@@ -997,6 +997,10 @@ main .funcionario .buttonBonito {
     }
 
     /* CSS MOBILE BUSCA.HTML */
+    main #caixapesquisa {
+        width: 97%;
+    }
+
     main #caixaEstabelecimento .caixaGeral {
         width: auto;
     }
@@ -1011,6 +1015,12 @@ main .funcionario .buttonBonito {
         height: 68px;
     }
 
+    main #caixaEstabelecimento .active .caixaInvisivel {
+        flex-direction: column;
+        align-content: center;
+        flex-wrap: wrap;
+    }
+
     main #caixaEstabelecimento .caixaGeral .caixaInvisivel .fotoBarbearia {
         width: 275px;
         height: 90px;
@@ -1021,6 +1031,8 @@ main .funcionario .buttonBonito {
     }
 
     main .seta {
+        width: 20px;
+        height: 25px;
         margin: 0;
     }
 
@@ -1051,6 +1063,7 @@ main .funcionario .buttonBonito {
     main form h2,
     main h3 {
         font-size: 1em;
+        margin: 10px;
     }
 
     main .ps {
