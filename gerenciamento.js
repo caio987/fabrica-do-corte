@@ -40,6 +40,7 @@ async function adFuncionario() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  fetch("../php/datasExpiradas.php");
   try {
     const funcionarios = document.getElementById('caixaFuncionario');
     const resposta = await fetch('../php/informacaoEstabelecimento.php');
