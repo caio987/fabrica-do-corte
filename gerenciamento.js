@@ -11,7 +11,12 @@ async function adFuncionario() {
     const resposta = await fetch("../php/servicoInformacao.php");
     const dados = await resposta.json();
 
-    const selects = [document.getElementById('selectServico1'), document.getElementById('selectServico2'), document.getElementById('selectServico3')];
+    const selects = [
+      document.getElementById('selectServico1'),
+      document.getElementById('selectServico2'),
+      document.getElementById('selectServico3')
+    ];
+
     selects.forEach(select => {
       select.innerHTML = '<option value="">Selecione um corte</option>';
       dados.forEach(servico => {
@@ -36,6 +41,12 @@ async function adFuncionario() {
   } catch (e) {
     console.error('Erro ao carregar dados:', e);
     document.getElementById('diasHorariosContainer').innerHTML = 'Erro ao carregar!';
+    Swal.fire({
+      title: 'Erro',
+      text: 'Não foi possível carregar os serviços ou horários!',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
   }
 }
 
@@ -48,67 +59,112 @@ document.addEventListener('DOMContentLoaded', async () => {
     dados.forEach(item => {
       caixa.innerHTML += `<input type="text" name="servico" value="${item.nome_servico}" disabled><input type="text" name="preco" value="${item.preco}" disabled><br>`;
     });
-    const resposta_funcionatrio = await fetch('../php/funcionario.php');
-    const dados_funcionario = await resposta_funcionatrio.json();
+    const resposta_funcionario = await fetch('../php/funcionario.php');
+    const dados_funcionario = await resposta_funcionario.json();
     dados_funcionario.forEach(item => {
-      funcionarios.innerHTML += /*html*/`
-            <div class="funcionario">
-              <img src=${item.foto} alt=${item.nome}>
-              <p>${item.nome}</p>
-            </div>
-        `
-    })
+      const funcionario = document.createElement('div');
+      funcionario.className='funcionario'
+      const foto = document.createElement('img');
+      const nome = document.createElement('p');
+      const excluir = document.createElement('button');
+      excluir.textContent = 'Excluir';
+       excluir.style.backgroundColor = "#d9534f";
+          excluir.style.color = "white";
+          excluir.style.border = "none";
+          excluir.style.padding = "8px 14px";
+          excluir.style.borderRadius = "5px";
+          excluir.style.cursor = "pointer";
+        excluir.addEventListener('click', async () => {
+    try {
+        const resposta = await fetch(`../php/excluirBarbeiro.php?id=${item.id_funcionario}`);
+        const dados = await resposta.text();
+
+        if (dados.toLowerCase().includes('erro')) {
+            // Se a resposta contiver "erro", mostramos como erro
+            Swal.fire({
+                title: 'Erro',
+                text: dados,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        } else {
+            // Caso contrário, mostramos como sucesso
+            Swal.fire({
+                title: 'Sucesso',
+                text: dados,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // Opcional: recarregar a página ou remover o item da lista
+                location.reload();
+            });
+        }
+    } catch (erro) {
+        Swal.fire({
+            title: 'Erro',
+            text: 'Não foi possível conectar ao servidor!',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+        console.error('Erro ao excluir barbeiro:', erro);
+    }
+});
+
+      foto.src=item.foto;
+      nome.textContent = item.nome;
+      funcionarios.appendChild(funcionario);
+      funcionario.appendChild(foto);
+      funcionario.appendChild(nome);
+      funcionario.appendChild(excluir);
+      
+        ;
+    });
   } catch (erro) {
     console.error('Erro ao carregar dados:', erro);
+    Swal.fire({
+      title: 'Erro',
+      text: 'Não foi possível carregar os funcionários ou serviços!',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
   }
-
-
 });
 
 function adicionar() {
   const corteValue = document.getElementById('corte').value;
   const precoValue = document.getElementById('preco').value;
 
-  // Verifica se o serviço já está cadastrado ou se algum campo está vazio
   if (servico.includes(corteValue) || corteValue === '' || precoValue === '') {
     Swal.fire({
-      title: "ERRO",
-      text: "Usuário já cadastrado ou campo(s) sem valor",
-      icon: "error",  // Corrigido para usar o valor "error"
+      title: "Erro",
+      text: "Serviço já cadastrado ou campo(s) vazio(s)",
+      icon: "error",
       confirmButtonText: "OK"
     });
   } else {
-    caixa.innerHTML = '';  // Limpa a área 'caixa' antes de adicionar novos itens
-
-    // Adiciona o novo serviço e preço
+    caixa.innerHTML = '';
     servico.push(corteValue);
     preco.push(precoValue);
 
-    // Cria o HTML dinamicamente para a lista atualizada
     servico.forEach((item, i) => {
-      // Cria o campo de input para o serviço
       const serviceInput = document.createElement('input');
       serviceInput.type = 'text';
       serviceInput.name = 'servico';
       serviceInput.value = item;
 
-      // Cria o campo de input para o preço
       const priceInput = document.createElement('input');
       priceInput.type = 'text';
       priceInput.name = 'preco';
       priceInput.value = preco[i];
 
-      // Cria a quebra de linha
       const lineBreak = document.createElement('br');
 
-      // Adiciona os inputs e a quebra de linha na 'caixa'
       caixa.appendChild(serviceInput);
       caixa.appendChild(priceInput);
       caixa.appendChild(lineBreak);
     });
   }
 }
-
 
 document.addEventListener('DOMContentLoaded', async function() {
   const hoje = new Date();
@@ -122,6 +178,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     datasBloqueadas = await resposta.json();
   } catch (erro) {
     console.error('Erro ao carregar datas cadastradas:', erro);
+    Swal.fire({
+      title: 'Erro',
+      text: 'Não foi possível carregar as datas cadastradas!',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
   }
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -134,9 +196,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     },
     dateClick: function (info) {
       const dataStr = info.dateStr;
-      if (datasBloqueadas.includes(dataStr)) { alert('Essa data já está cadastrada'); return; }
-      if (datasSelecionadas.includes(dataStr)) { datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1); }
-      else { datasSelecionadas.push(dataStr); }
+      if (datasBloqueadas.includes(dataStr)) {
+        Swal.fire({
+          title: 'Indisponível',
+          text: 'Essa data já está cadastrada',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+      if (datasSelecionadas.includes(dataStr)) {
+        datasSelecionadas.splice(datasSelecionadas.indexOf(dataStr), 1);
+      } else {
+        datasSelecionadas.push(dataStr);
+      }
       atualizarEventos();
       mostrarHorarios(dataStr);
     }
@@ -180,52 +253,82 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 async function enviarDisponibilidade() {
-  // Verifica se há pelo menos uma data e um horário
   if (datasSelecionadas.length === 0 || horariosSelecionados.length === 0) {
-    alert("Selecione pelo menos uma data e um horário!");
+    Swal.fire({
+      title: 'Erro',
+      text: 'Selecione pelo menos uma data e um horário!',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
     return;
   }
 
   try {
-    // 1️⃣ Envia datas e horários ao PHP
     const resp1 = await fetch("../php/disponibilidade.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        datas: datasSelecionadas,
-        horarios: horariosSelecionados
-      })
+      body: JSON.stringify({ datas: datasSelecionadas, horarios: horariosSelecionados })
     });
 
     const texto1 = await resp1.text();
     console.log("📅 Retorno de disponibilidade.php:", texto1);
 
-    alert("Dados enviados com sucesso!");
-    location.reload();
+    Swal.fire({
+      title: 'Sucesso!',
+      text: 'Dados enviados com sucesso!',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    }).then(() => location.reload());
+
   } catch (erro) {
     console.error("Erro ao enviar dados:", erro);
-    alert("Erro ao enviar os dados. Verifique o console para mais detalhes.");
+    Swal.fire({
+      title: 'Erro',
+      text: 'Erro ao enviar os dados. Veja o console.',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
   }
 }
 
 async function cadastroServico() {
-  // 2️⃣ Envia serviços e preços ao PHP
-  const resp2 = await fetch("../php/servico.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      servico: servico,
-      preco: preco
-    })
-  });
+  if(servico.length === 0 || preco.length === 0){
+    Swal.fire({
+      title: 'Erro',
+      text: 'Nenhum serviço para cadastrar!',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+    return;
+  }
 
-  const texto2 = await resp2.text();
-  console.log("💈 Retorno de servico.php:", texto2);
-  alert("Serviço cadastrado");
-  location.reload();
+  try {
+    const resp2 = await fetch("../php/servico.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ servico, preco })
+    });
 
+    const texto2 = await resp2.text();
+    console.log("💈 Retorno de servico.php:", texto2);
+
+    Swal.fire({
+      title: 'Sucesso!',
+      text: 'Serviço cadastrado com sucesso!',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    }).then(() => location.reload());
+
+  } catch (erro) {
+    console.error("Erro ao cadastrar serviço:", erro);
+    Swal.fire({
+      title: 'Erro',
+      text: 'Não foi possível cadastrar o serviço. Veja o console.',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+  }
 }
-
 
 async function enviarFuncionario() {
   const form = document.querySelector('#formFuncionario form');
@@ -233,7 +336,17 @@ async function enviarFuncionario() {
   const foto = form.foto.files[0];
   const servicosSelecionados = [form.selectServico1.value, form.selectServico2.value, form.selectServico3.value].filter(v => v !== "");
   const checkboxes = Array.from(form.querySelectorAll('input[name="diasHorarios[]"]:checked'));
-  const diasHorariosSelecionados = checkboxes.map(cb => cb.value); // IDs corretos
+  const diasHorariosSelecionados = checkboxes.map(cb => cb.value);
+
+  if(!nome || !foto || servicosSelecionados.length === 0 || diasHorariosSelecionados.length === 0){
+    Swal.fire({
+      title: 'Erro',
+      text: 'Preencha todos os campos obrigatórios!',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+    return;
+  }
 
   const formData = new FormData();
   formData.append('nome', nome);
@@ -245,18 +358,26 @@ async function enviarFuncionario() {
   try {
     const resposta = await fetch('../php/cadastrarFuncionario.php', { method: 'POST', body: formData });
     const resultado = await resposta.text();
-
-    // Exibe no console
     console.log('Retorno do PHP:\n', resultado);
-    console.log('Nome do funcionário:', nome);
-    console.log('Serviços selecionados:', servicosSelecionados);
-    console.log('Dias/Horários selecionados (IDs):', diasHorariosSelecionados);
-    console.log('Horários do calendário selecionados:', horariosSelecionados);
 
-    form.reset();
-    formFuncionario.style.display = 'none';
-    location.reload();
+    Swal.fire({
+      title: 'Sucesso!',
+      text: 'Funcionário cadastrado com sucesso!',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      form.reset();
+      formFuncionario.style.display = 'none';
+      location.reload();
+    });
+
   } catch (erro) {
     console.error('Erro ao cadastrar funcionário:', erro);
+    Swal.fire({
+      title: 'Erro',
+      text: 'Não foi possível cadastrar o funcionário. Veja o console.',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
   }
 }

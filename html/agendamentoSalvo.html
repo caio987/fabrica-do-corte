@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página do Cliente</title>
     <link rel="stylesheet" href="../style.css">
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         main #caixaEstabelecimento .caixaGeral {
             padding: 15px;
@@ -89,11 +94,10 @@
 <body>
     <header>
         <nav>
-            <ul>
-                <!-- <li><a href="../#" class="links">Conta</a></li> -->
-            </ul>
+            <ul></ul>
         </nav>
     </header>
+
     <main>
         <div style="margin-top: 15px; display: flex; justify-content: space-evenly; flex-wrap: wrap;" id="link"></div>
 
@@ -101,50 +105,47 @@
         <div id="agendamento"></div>
         <hr class="some">
 
-        <h3 class="some">Estabelecimentos Salvos</h3>
+        <h3 id="estabelecimentoSalvo"></h3>
         <div class="some" id="caixaEstabelecimento"></div>
     </main>
+
     <footer class="footerFixo">
         <a href="#"><img src="../img/icons/github.png" alt=""><span>GitHub</span></a>
         <p>©Todos os direitos reservados a Fábrica do Corte</p>
     </footer>
-    <script src="../"></script>
+
     <script>
         const link = document.getElementById('link');
         const agendamento = document.getElementById('agendamento');
         const estabelecimentos = document.getElementById('caixaEstabelecimento');
 
-        // Menu superior
-        let links = `
+        link.innerHTML = `
             <a href="infoContaCliente.html" class="link ativo">Informações da conta</a>
             <a href="#" class="link">Agendamento</a>
         `;
-        link.innerHTML = links;
 
         document.addEventListener('DOMContentLoaded', async () => {
-
             // ==================== AGENDAMENTOS ====================
-            const respostaAgendamento = await fetch('../php/agendamentoSalvo.php');
-            const dadosAgendamento = await respostaAgendamento.json();
-            let total = 0;
+            try {
+                const respostaAgendamento = await fetch('../php/agendamentoSalvo.php');
+                const dadosAgendamento = await respostaAgendamento.json();
 
-            console.log(dadosAgendamento);
+                dadosAgendamento.forEach(e => {
+                    let total = 0;
 
-            dadosAgendamento.forEach(e => {
-                if (e.tipo === 'Cliente') {
                     const caixaGeral = document.createElement("div");
                     caixaGeral.classList.add("caixaGeral");
 
                     const foto = document.createElement('img');
                     foto.src = e.foto;
-                    foto.classList.add("fotoBarbearia")
+                    foto.classList.add("fotoBarbearia");
 
                     const nome = document.createElement('h2');
-                    nome.classList.add("nomeEstabelecimento")
+                    nome.classList.add("nomeEstabelecimento");
                     nome.innerHTML = e.estabelecimento;
 
                     const local = document.createElement('p');
-                    local.innerHTML = `<span style="color:#C4974F;">localização:</span> <span style="color:#ffffff;">${e.localizacao || "Não informada"}</span>`;
+                    local.innerHTML = `<span style="color:#C4974F;">Localização:</span> <span style="color:#ffffff;">${e.localizacao || "Não informada"}</span>`;
 
                     const horario = document.createElement('p');
                     horario.innerHTML = `<span style="color:#C4974F;">Horário:</span> <span style="color:#ffffff;">${e.horario || "Não informada"}</span>`;
@@ -155,11 +156,8 @@
                     const barbeiro = document.createElement('p');
                     barbeiro.innerHTML = `<span style="color:#C4974F;">Barbeiro escolhido: </span> <span style="color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
 
-                    // algu = document.createElement('p')
-                    // algu.innerHTML = "Foto do(a) barbeiro(a)"
-
                     const fotoBarbeiro = document.createElement('img');
-                    fotoBarbeiro.classList.add("fotoBarbeiro")
+                    fotoBarbeiro.classList.add("fotoBarbeiro");
                     fotoBarbeiro.src = e.foto_barbeiro;
 
                     const totalPagar = document.createElement('p');
@@ -168,14 +166,45 @@
                     cancelar.innerText = "Cancelar agendamento";
                     cancelar.classList.add("buttonBonito");
 
+                    cancelar.onclick = async () => {
+                        try {
+                            const resposta = await fetch(`../php/cancelarAgendamento.php?id=${e.id_agendamento}`);
+                            const dados = await resposta.text();
+
+                            if (dados.toLowerCase().includes('erro')) {
+                                Swal.fire({
+                                    title: 'Erro',
+                                    text: dados,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Sucesso',
+                                    text: dados,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => location.reload());
+                            }
+                        } catch (erro) {
+                            Swal.fire({
+                                title: 'Erro',
+                                text: 'Não foi possível conectar ao servidor!',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            console.error('Erro ao cancelar agendamento:', erro);
+                        }
+                    };
+
                     const caixaBarbearia = document.createElement("div");
-                    caixaBarbearia.classList.add("caixaBarbearia")
+                    caixaBarbearia.classList.add("caixaBarbearia");
 
                     const caixaInformacoes = document.createElement("div");
-                    caixaInformacoes.classList.add("caixaInformacoes")
+                    caixaInformacoes.classList.add("caixaInformacoes");
 
                     const caixaInvisivel = document.createElement("div");
-                    caixaInvisivel.classList.add("caixaInvisivel")
+                    caixaInvisivel.classList.add("caixaInvisivel");
 
                     const div = document.createElement("div");
 
@@ -186,20 +215,16 @@
                     seta.onclick = () => {
                         caixaGeral.classList.toggle("active");
                         caixaInvisivel.classList.toggle("active");
-                        // document.getElementById('footer').classList.toggle("footerFixo")
                     };
 
-                    algo = document.createElement('p')
-                    algo.innerHTML = "Corte(s) selecionado(s)"
+                    const algo = document.createElement('p');
+                    algo.innerHTML = "Corte(s) selecionado(s)";
+                    div.appendChild(algo);
 
-                    div.appendChild(algo)
                     e.servicos.forEach(s => {
                         total += parseFloat(s.preco);
                         const servico = document.createElement('p');
                         servico.innerText = s.nome_servico;
-                        const preco = document.createElement('p');
-                        preco.innerText = s.preco;
-
                         div.appendChild(servico);
                     });
 
@@ -212,93 +237,120 @@
                     caixaInformacoes.appendChild(barbeiro);
 
                     caixaBarbearia.appendChild(foto);
-                    caixaBarbearia.appendChild(caixaInformacoes)
+                    caixaBarbearia.appendChild(caixaInformacoes);
                     caixaBarbearia.appendChild(seta);
 
-                    div.appendChild(totalPagar)
                     div.appendChild(totalPagar);
-                    div.appendChild(cancelar)
-                    // caixaInvisivel.appendChild(algu)
-                    caixaInvisivel.appendChild(fotoBarbeiro)
-                    caixaInvisivel.appendChild(div)
+                    div.appendChild(cancelar);
+
+                    caixaInvisivel.appendChild(fotoBarbeiro);
+                    caixaInvisivel.appendChild(div);
 
                     caixaGeral.appendChild(caixaBarbearia);
                     caixaGeral.appendChild(caixaInvisivel);
-                    agendamento.appendChild(caixaGeral)
+                    agendamento.appendChild(caixaGeral);
+                });
+            } catch (erro) {
+                Swal.fire({
+                    title: 'Erro',
+                    text: 'Não foi possível carregar os agendamentos!',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                console.error('Erro ao carregar agendamentos:', erro);
+            }
 
-                } else if (e.tipo === 'Proprietário') {
-                    const caixaGeral = document.createElement("div");
-                    caixaGeral.classList.add("caixaGeral");
-
-                    const nome = document.createElement('h2');
-                    nome.classList.add("nomeEstabelecimento")
-                    nome.innerHTML = e.estabelecimento;
-
-                    const horario = document.createElement('p');
-                    horario.innerHTML = `<span style="color:#C4974F;">Horário:</span> <span style="color:#ffffff;">${e.horario || "Não informada"}</span>`;
-
-                    const dia = document.createElement('p');
-                    dia.innerHTML = `<span style="color:#C4974F;">Dia: </span> <span style="color:#ffffff;">${e.dia || "Não informada"}</span>`;
-
-                    const barbeiro = document.createElement('p');
-                    barbeiro.innerHTML = `<span style="font-size: 1.2em; color:#C4974F;">Barbeiro escolhido: </span> <span style="font-size: 1.2em; color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
-
-                    const fotoBarbeiro = document.createElement('img');
-                    fotoBarbeiro.classList.add("fotoBarbeiro")
-                    fotoBarbeiro.src = e.foto_barbeiro;
-
-                    const totalPagar = document.createElement('p');
-
-                    const caixaBarbearia = document.createElement("div");
-                    caixaBarbearia.classList.add("caixaBarbearia")
-
-                    const caixaInformacoes = document.createElement("div");
-                    caixaInformacoes.style.width = "50%";
-                    caixaInformacoes.classList.add("caixaInformacoes")
-
-                    const div = document.createElement("div");
-                    div.style.width = "50%";
-
-                    algo = document.createElement('p')
-                    algo.style.color = "#C4974F"
-                    algo.innerHTML = "Corte(s) selecionado(s):"
-
-                    caixaInformacoes.appendChild(algo)
-                    e.servicos.forEach(s => {
-                        total += parseFloat(s.preco);
-                        const servico = document.createElement('p');
-                        servico.innerText = s.nome_servico;
-                        const preco = document.createElement('p');
-                        preco.innerText = s.preco;
-
-                        caixaInformacoes.appendChild(servico);
-                    });
-
-                    totalPagar.innerHTML = `<span style="color:#C4974F;">Preço total: </span> <span style="color:#ffffff;">R$${total.toFixed(2)}</span>`;
-
-                    div.appendChild(barbeiro);
-                    div.appendChild(fotoBarbeiro);
-
-                    caixaInformacoes.appendChild(dia);
-                    caixaInformacoes.appendChild(horario);
-                    caixaInformacoes.appendChild(totalPagar);
-
-                    caixaBarbearia.appendChild(div);
-                    caixaBarbearia.appendChild(caixaInformacoes)
-
-                    caixaGeral.appendChild(caixaBarbearia);
-                    agendamento.appendChild(caixaGeral)
-
-                }
-            })
             // ==================== ESTABELECIMENTOS SALVOS ====================
-            const some = document.getElementsByClassName("some")
-            for (let i = 0; i < 3; i++) {
-                some[i].style.display = "none";
+            try {
+                const respostaInfo = await fetch("../php/informacoes.php");
+                const dadosInfo = await respostaInfo.json();
+
+                if (dadosInfo.tipo == 'Cliente') {
+                    const texto = document.getElementById('estabelecimentoSalvo');
+                    texto.innerHTML = 'Estabelecimentos Salvos';
+
+                    const respostaEstabelecimento = await fetch("../php/exibirEstabelecimentosSalvos.php");
+                    const dadosEstabelecimento = await respostaEstabelecimento.json();
+
+                    dadosEstabelecimento.forEach(e => {
+                        const caixaGeral = document.createElement("div");
+                        caixaGeral.classList.add("caixaGeral");
+
+                        const fotoExtra = document.createElement("img");
+                        fotoExtra.src = e.foto_estabelecimento || "../img/default-foto.png";
+                        fotoExtra.classList.add("fotoBarbearia");
+
+                        const nome = document.createElement("a");
+                        nome.classList.add("nomeEstabelecimento");
+                        nome.style.margin = "0px";
+                        nome.innerText = e.nome_estabelecimento || "Sem nome";
+                        nome.href = `estabelecimento.html?id=${e.id_estabelecimento}`;
+
+                        const nota = document.createElement("img");
+                        nota.style.display = "block";
+                        nota.style.margin = "4px auto";
+                        nota.src = "../img/icons/avaliacao.png";
+
+                        const excluir = document.createElement("button");
+                        excluir.innerText = "Excluir";
+                        excluir.classList.add("buttonBonito");
+
+                        excluir.addEventListener('click', async () => {
+                            try {
+                                const resposta = await fetch(`../php/excluirEstabelecimentoSalvo.php?id=${e.id_estabelecimento_salvo}`);
+                                const dados = await resposta.text();
+
+                                if (dados.toLowerCase().includes('erro')) {
+                                    Swal.fire({
+                                        title: 'Erro',
+                                        text: dados,
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Sucesso',
+                                        text: dados,
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    }).then(() => location.reload());
+                                }
+                            } catch (erro) {
+                                Swal.fire({
+                                    title: 'Erro',
+                                    text: 'Não foi possível conectar ao servidor!',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                                console.error('Erro ao excluir estabelecimento:', erro);
+                            }
+                        });
+
+                        const caixa = document.createElement("div");
+                        caixa.classList.add("caixaInformacoes");
+                        caixa.style.textAlign = "center";
+
+                        caixaGeral.appendChild(fotoExtra);
+                        caixa.appendChild(nome);
+                        caixa.appendChild(nota);
+                        caixa.appendChild(excluir);
+                        caixaGeral.appendChild(caixa);
+
+                        estabelecimentos.appendChild(caixaGeral);
+                    });
+                }
+            } catch (erro) {
+                Swal.fire({
+                    title: 'Erro',
+                    text: 'Não foi possível carregar os estabelecimentos!',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                console.error('Erro ao carregar estabelecimentos:', erro);
             }
         });
     </script>
+
     <script src="../script.js"></script>
 </body>
-
 </html>
