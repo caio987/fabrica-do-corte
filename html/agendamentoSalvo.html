@@ -87,6 +87,10 @@
                 width: 100px;
                 height: 100px;
             }
+
+            .nomeCliente {
+                color: white;
+            }
         }
     </style>
 </head>
@@ -123,142 +127,219 @@
             <a href="infoContaCliente.html" class="link ativo">Informações da conta</a>
             <a href="#" class="link">Agendamento</a>
         `;
-
+        
         document.addEventListener('DOMContentLoaded', async () => {
+            
             // ==================== AGENDAMENTOS ====================
-            try {
-                const respostaAgendamento = await fetch('../php/agendamentoSalvo.php');
-                const dadosAgendamento = await respostaAgendamento.json();
+            const resposta = await fetch('../php/informacoes.php');
+            const dados = await resposta.json();
+            
+            if (dados.tipo == 'Proprietário') {
+                link.innerHTML = `
+                <a href="infoContaCliente.html" class="link ativo">Informações da conta</a>
+            <a href="#" class="link">Agendamento</a>
+                    <a href="gerenciaEstabelecimento.html" class="link">Estabelecimento</a>
+                `;
+                
+                try {
+                    const respostaAgendamento = await fetch('../php/agendamentoSalvo.php');
+                    const dadosAgendamento = await respostaAgendamento.json();
 
-                dadosAgendamento.forEach(e => {
-                    let total = 0;
+                    dadosAgendamento.forEach(e => {
+                        let total = 0;
 
-                    const caixaGeral = document.createElement("div");
-                    caixaGeral.classList.add("caixaGeral");
+                        const caixaGeral = document.createElement("div");
+                        caixaGeral.classList.add("caixaGeral");
 
-                    const foto = document.createElement('img');
-                    foto.src = e.foto;
-                    foto.classList.add("fotoBarbearia");
+                        const nome = document.createElement('h2');
+                        nome.classList.add("nomeCliente");
+                        nome.innerHTML = `<span style="color:#C4974F;">Nome do Cliente:</span> <span style="color:#C4974F;"> ${e.cliente}`;
 
-                    const nome = document.createElement('h2');
-                    nome.classList.add("nomeEstabelecimento");
-                    nome.innerHTML = e.estabelecimento;
+                        const horario = document.createElement('p');
+                        horario.innerHTML = `<span style="color:#C4974F;">Horário:</span> <span style="color:#ffffff;">${e.horario || "Não informada"}</span>`;
 
-                    const local = document.createElement('p');
-                    local.innerHTML = `<span style="color:#C4974F;">Localização:</span> <span style="color:#ffffff;">${e.localizacao || "Não informada"}</span>`;
+                        const dia = document.createElement('p');
+                        dia.innerHTML = `<span style="color:#C4974F;">Dia: </span> <span style="color:#ffffff;">${e.dia || "Não informada"}</span>`;
 
-                    const horario = document.createElement('p');
-                    horario.innerHTML = `<span style="color:#C4974F;">Horário:</span> <span style="color:#ffffff;">${e.horario || "Não informada"}</span>`;
+                        const barbeiro = document.createElement('p');
+                        barbeiro.innerHTML = `<span style="color:#C4974F;">Barbeiro escolhido: </span> <span style="color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
 
-                    const dia = document.createElement('p');
-                    dia.innerHTML = `<span style="color:#C4974F;">Dia: </span> <span style="color:#ffffff;">${e.dia || "Não informada"}</span>`;
+                        const fotoBarbeiro = document.createElement('img');
+                        fotoBarbeiro.classList.add("fotoBarbeiro");
+                        fotoBarbeiro.src = e.foto_barbeiro;
 
-                    const barbeiro = document.createElement('p');
-                    barbeiro.innerHTML = `<span style="color:#C4974F;">Barbeiro escolhido: </span> <span style="color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
+                        const totalPagar = document.createElement('p');
 
-                    const fotoBarbeiro = document.createElement('img');
-                    fotoBarbeiro.classList.add("fotoBarbeiro");
-                    fotoBarbeiro.src = e.foto_barbeiro;
+                        const cancelar = document.createElement("button");
+                        cancelar.innerText = "Cancelar agendamento";
+                        cancelar.classList.add("buttonBonito");
 
-                    const totalPagar = document.createElement('p');
+                        cancelar.onclick = () => cancelarA(e.id_agendamento);
 
-                    const cancelar = document.createElement("button");
-                    cancelar.innerText = "Cancelar agendamento";
-                    cancelar.classList.add("buttonBonito");
+                        const caixaBarbearia = document.createElement("div");
+                        caixaBarbearia.classList.add("caixaBarbearia");
 
-                    cancelar.onclick = async () => {
-                        try {
-                            const resposta = await fetch(`../php/cancelarAgendamento.php?id=${e.id_agendamento}`);
-                            const dados = await resposta.text();
+                        const caixaInformacoes = document.createElement("div");
+                        caixaInformacoes.classList.add("caixaInformacoes");
 
-                            if (dados.toLowerCase().includes('erro')) {
-                                Swal.fire({
-                                    title: 'Erro',
-                                    text: dados,
-                                    icon: 'error',
-                                    confirmButtonText: 'OK'
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Sucesso',
-                                    text: dados,
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                                }).then(() => location.reload());
-                            }
-                        } catch (erro) {
-                            Swal.fire({
-                                title: 'Erro',
-                                text: 'Não foi possível conectar ao servidor!',
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
-                            console.error('Erro ao cancelar agendamento:', erro);
-                        }
-                    };
+                        const caixaInvisivel = document.createElement("div");
+                        caixaInvisivel.classList.add("caixaInvisivel");
 
-                    const caixaBarbearia = document.createElement("div");
-                    caixaBarbearia.classList.add("caixaBarbearia");
+                        const div = document.createElement("div");
 
-                    const caixaInformacoes = document.createElement("div");
-                    caixaInformacoes.classList.add("caixaInformacoes");
+                        const seta = document.createElement("img");
+                        seta.src = "../img/icons/seta.png";
+                        seta.classList.add("seta");
 
-                    const caixaInvisivel = document.createElement("div");
-                    caixaInvisivel.classList.add("caixaInvisivel");
+                        seta.onclick = () => {
+                            caixaGeral.classList.toggle("active");
+                            caixaInvisivel.classList.toggle("active");
+                        };
 
-                    const div = document.createElement("div");
+                        const algo = document.createElement('p');
+                        algo.innerHTML = "Corte(s) selecionado(s)";
+                        div.appendChild(algo);
 
-                    const seta = document.createElement("img");
-                    seta.src = "../img/icons/seta.png";
-                    seta.classList.add("seta");
+                        e.servicos.forEach(s => {
+                            total += parseFloat(s.preco);
+                            const servico = document.createElement('p');
+                            servico.innerText = s.nome_servico;
+                            div.appendChild(servico);
+                        });
 
-                    seta.onclick = () => {
-                        caixaGeral.classList.toggle("active");
-                        caixaInvisivel.classList.toggle("active");
-                    };
+                        totalPagar.innerText = "Total a pagar: R$ " + total.toFixed(2);
 
-                    const algo = document.createElement('p');
-                    algo.innerHTML = "Corte(s) selecionado(s)";
-                    div.appendChild(algo);
+                        caixaInformacoes.appendChild(nome);
+                        caixaInformacoes.appendChild(dia);
+                        caixaInformacoes.appendChild(horario);
+                        caixaInformacoes.appendChild(barbeiro);
 
-                    e.servicos.forEach(s => {
-                        total += parseFloat(s.preco);
-                        const servico = document.createElement('p');
-                        servico.style.color = "white"
-                        servico.innerText = s.nome_servico;
-                        div.appendChild(servico);
+                        caixaBarbearia.appendChild(caixaInformacoes);
+                        caixaBarbearia.appendChild(seta);
+
+                        div.appendChild(totalPagar);
+                        div.appendChild(cancelar);
+
+                        caixaInvisivel.appendChild(fotoBarbeiro);
+                        caixaInvisivel.appendChild(div);
+
+                        caixaGeral.appendChild(caixaBarbearia);
+                        caixaGeral.appendChild(caixaInvisivel);
+                        agendamento.appendChild(caixaGeral);
                     });
 
-                    totalPagar.innerHTML = `<span style="color:#C4974F;">Total a pagar R$: </span><span style="color:#ffffff;">${total.toFixed(2)}</span>`;
+                } catch (erro) {
+                    Swal.fire({
+                        title: 'Erro',
+                        text: 'Não foi possível carregar os agendamentos!',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    console.error('Erro ao carregar agendamentos:', erro);
+                }
 
-                    caixaInformacoes.appendChild(nome);
-                    caixaInformacoes.appendChild(dia);
-                    caixaInformacoes.appendChild(horario);
-                    caixaInformacoes.appendChild(local);
-                    caixaInformacoes.appendChild(barbeiro);
+            } else {
 
-                    caixaBarbearia.appendChild(foto);
-                    caixaBarbearia.appendChild(caixaInformacoes);
-                    caixaBarbearia.appendChild(seta);
+                const respostaAgendamento = await fetch('../php/agendamentoSalvo.php');
+                const dadosAgendamento = await respostaAgendamento.json();
+                let total = 0;
 
-                    div.appendChild(totalPagar);
-                    div.appendChild(cancelar);
+                dadosAgendamento.forEach(e => {
 
-                    caixaInvisivel.appendChild(fotoBarbeiro);
-                    caixaInvisivel.appendChild(div);
+                    if (e.tipo === 'Cliente') {
 
-                    caixaGeral.appendChild(caixaBarbearia);
-                    caixaGeral.appendChild(caixaInvisivel);
-                    agendamento.appendChild(caixaGeral);
-                });
-            } catch (erro) {
-                Swal.fire({
-                    title: 'Erro',
-                    text: 'Não foi possível carregar os agendamentos!',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-                console.error('Erro ao carregar agendamentos:', erro);
+                        const caixaGeral = document.createElement("div");
+                        caixaGeral.classList.add("caixaGeral");
+
+                        const foto = document.createElement('img');
+                        foto.src = e.foto;
+                        foto.classList.add("fotoBarbearia")
+
+                        const nome = document.createElement('h2');
+                        nome.classList.add("nomeEstabelecimento")
+                        nome.innerHTML = e.estabelecimento;
+
+                        const local = document.createElement('p');
+                        local.innerHTML = `<span style="color:#C4974F;">localização:</span> <span style="color:#ffffff;">${e.localizacao || "Não informada"}</span>`;
+
+                        const horario = document.createElement('p');
+                        horario.innerHTML = `<span style="color:#C4974F;">Horário:</span> <span style="color:#ffffff;">${e.horario || "Não informada"}</span>`;
+
+                        const dia = document.createElement('p');
+                        dia.innerHTML = `<span style="color:#C4974F;">Dia: </span> <span style="color:#ffffff;">${e.dia || "Não informada"}</span>`;
+
+                        const barbeiro = document.createElement('p');
+                        barbeiro.innerHTML = `<span style="color:#C4974F;">Barbeiro escolhido: </span> <span style="color:#ffffff;">${e.funcionario || "Não informada"}</span>`;
+
+                        const fotoBarbeiro = document.createElement('img');
+                        fotoBarbeiro.classList.add("fotoBarbeiro")
+                        fotoBarbeiro.src = e.foto_barbeiro;
+
+                        const totalPagar = document.createElement('p');
+
+                        const cancelar = document.createElement("button");
+                        cancelar.innerText = "Cancelar agendamento";
+                        cancelar.classList.add("buttonBonito");
+
+                        cancelar.onclick = () => cancelarA(e.id_agendamento);
+
+                        const caixaBarbearia = document.createElement("div");
+                        caixaBarbearia.classList.add("caixaBarbearia")
+
+                        const caixaInformacoes = document.createElement("div");
+                        caixaInformacoes.classList.add("caixaInformacoes")
+
+                        const caixaInvisivel = document.createElement("div");
+                        caixaInvisivel.classList.add("caixaInvisivel")
+
+                        const div = document.createElement("div");
+
+                        const seta = document.createElement("img");
+                        seta.src = "../img/icons/seta.png";
+                        seta.classList.add("seta");
+
+                        seta.onclick = () => {
+                            caixaGeral.classList.toggle("active");
+                            caixaInvisivel.classList.toggle("active");
+                        };
+
+                        algo = document.createElement('p')
+                        algo.innerHTML = "Corte(s) selecionado(s)"
+
+                        div.appendChild(algo)
+
+                        e.servicos.forEach(s => {
+                            total += parseFloat(s.preco);
+                            const servico = document.createElement('p');
+                            servico.innerText = s.nome_servico;
+
+                            div.appendChild(servico);
+                        });
+
+                        totalPagar.innerText = "Total a pagar: R$ " + total.toFixed(2);
+
+                        caixaInformacoes.appendChild(nome);
+                        caixaInformacoes.appendChild(dia);
+                        caixaInformacoes.appendChild(horario);
+                        caixaInformacoes.appendChild(local);
+                        caixaInformacoes.appendChild(barbeiro);
+
+                        caixaBarbearia.appendChild(foto);
+                        caixaBarbearia.appendChild(caixaInformacoes)
+                        caixaBarbearia.appendChild(seta);
+
+                        div.appendChild(totalPagar);
+                        div.appendChild(cancelar)
+
+                        caixaInvisivel.appendChild(fotoBarbeiro)
+                        caixaInvisivel.appendChild(div)
+
+                        caixaGeral.appendChild(caixaBarbearia);
+                        caixaGeral.appendChild(caixaInvisivel);
+                        agendamento.appendChild(caixaGeral)
+
+                    }
+                })
             }
 
             // ==================== ESTABELECIMENTOS SALVOS ====================
@@ -349,7 +430,42 @@
                 });
                 console.error('Erro ao carregar estabelecimentos:', erro);
             }
+
         });
+
+        // ====================== FUNÇÃO CORRIGIDA ======================
+        async function cancelarA(id) {
+            try {
+                const resposta = await fetch(`../php/cancelarAgendamento.php?id=${id}`);
+                const dados = await resposta.text();
+                console.log(dados);
+
+                if (dados.toLowerCase().includes('erro')) {
+                    Swal.fire({
+                        title: 'Erro',
+                        text: dados,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Sucesso',
+                        text: dados,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => location.reload());
+                }
+
+            } catch (erro) {
+                Swal.fire({
+                    title: 'Erro',
+                    text: 'Não foi possível conectar ao servidor!',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                console.error('Erro ao cancelar agendamento:', erro);
+            }
+        }
     </script>
 
     <script src="../script.js"></script>

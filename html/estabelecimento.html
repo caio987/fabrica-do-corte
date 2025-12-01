@@ -62,7 +62,6 @@
       font-size: 1em;
     }
 
-
     main .horario:hover {
       background-color: #f5a523d2;
     }
@@ -171,9 +170,7 @@
 <body>
   <header>
     <nav>
-      <ul>
-        <!-- <li><a href="#" class="links">Conta</a></li> -->
-      </ul>
+      <ul></ul>
     </nav>
   </header>
 
@@ -203,12 +200,15 @@
   </footer>
 
   <script src="../script.js"></script>
+
   <script>
     let sucesso = '';
     let idServico = [];
     let idDisponibilidade = '';
     let idFuncionario = '';
+
     document.addEventListener("DOMContentLoaded", async () => {
+
       const nome_estabelecimento = document.getElementById('nome_estabelecimento');
       const apresentacao = document.getElementById('apresentacao');
       const localizacao = document.getElementById("localizacao");
@@ -224,24 +224,25 @@
       let diaSelecionado = null;
       let horarioSelecionado = null;
 
-      // Busca dados do estabelecimento
+      // Dados do estabelecimento
       const respostaEstabelecimento = await fetch("../php/estabelecimento.php", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ id })
       });
       const dadosEtabelecimento = await respostaEstabelecimento.json();
+
       nome_estabelecimento.textContent = dadosEtabelecimento.nome_estabelecimento;
       apresentacao.innerHTML = `<span style="color:#C4974F;">Sobre nós: </span> <span style="color:#ffffff;">${dadosEtabelecimento.apresentacao}</span>`;
       localizacao.innerHTML = `<span style="color:#C4974F;">Localização: </span> <span style="color:#ffffff;">${dadosEtabelecimento.localizacao}</span>`;
       contato.innerHTML = `<span style="color:#C4974F;">Contato: </span> <span style="color:#ffffff;">${dadosEtabelecimento.telefone_estabelecimento}</span>`;
 
-      // Busca dias disponíveis
+      // Dias disponíveis
       const respostaDisponibilidade = await fetch("../php/exibirDia.php");
       const dadosDisponibilidade = await respostaDisponibilidade.json();
       const diasCadastrados = dadosDisponibilidade.map(e => e.dia);
 
-      // Inicializa calendário
+      // Calendário
       const calendarEl = document.getElementById("dias");
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "dayGridMonth",
@@ -254,6 +255,7 @@
         },
         dateClick: function (info) {
           const dataStr = info.dateStr;
+
           if (!diasCadastrados.includes(dataStr)) {
             Swal.fire({
               title: "Algo deu errado",
@@ -263,6 +265,7 @@
             });
             return;
           }
+
           diaSelecionado = diaSelecionado === dataStr ? null : dataStr;
           mostarHorario();
           atualizarEventos();
@@ -273,30 +276,39 @@
 
       function atualizarEventos() {
         calendar.getEvents().forEach(e => e.remove());
-        diasCadastrados.forEach(d => calendar.addEvent({ start: d, display: "background", backgroundColor: "#d38400" }));
+        diasCadastrados.forEach(d => {
+          calendar.addEvent({ start: d, display: "background", backgroundColor: "#d38400" })
+        });
+
         if (diaSelecionado) {
-          calendar.addEvent({ start: diaSelecionado, title: 'Selecionado', textColor: '#ffff', display: "block", backgroundColor: "#000" });
+          calendar.addEvent({ start: diaSelecionado, title: 'Selecionado', textColor: '#ffff', display: "block", backgroundColor: "#000" })
         }
       }
 
+      // Horários
       async function mostarHorario() {
         horarios.innerHTML = "";
         if (!diaSelecionado) return;
+
         const respostaHorario = await fetch('../php/exibirHorario.php', {
           headers: { "Content-Type": "application/json" },
           method: 'POST',
           body: JSON.stringify({ dia: diaSelecionado })
         });
+
         const dadosHorario = await respostaHorario.json();
+
         dadosHorario.forEach(e => {
           let horario = document.createElement("button");
           horario.innerText = e.horario;
           horario.classList = 'horario';
+
           horario.addEventListener('click', () => {
             document.querySelectorAll('.horario').forEach(btn => btn.classList.remove('selecionado'));
             horario.classList.add('selecionado');
             horarioSelecionado = e.horario;
-          })
+          });
+
           horarios.appendChild(horario);
         });
       }
@@ -305,13 +317,11 @@
       const respostaServico = await fetch("../php/exibirServico.php");
       const dadosServico = await respostaServico.json();
 
-
       let precoTotal = 0;
 
-      // Criação dos elementos principais do "carrinho"
       const carrinho = document.createElement('div');
       const preco = document.createElement('p');
-      const listaServicos = document.createElement('div'); // ← agora é uma lista, não só texto
+      const listaServicos = document.createElement('div');
       const concluir = document.createElement('button');
 
       carrinho.appendChild(preco);
@@ -320,6 +330,7 @@
 
       preco.innerText = "Preço total a pagar: R$ 0,00";
       preco.style.color = "white"
+
       concluir.innerText = "Concluir";
       concluir.classList.add("buttonBonito")
       resultado.appendChild(carrinho);
@@ -334,7 +345,6 @@
         adicionar.classList = 'adicionar';
         adicionar.innerText = "Adicionar";
 
-        // Quando clicar em adicionar
         adicionar.addEventListener('click', () => {
           if (idServico.includes(e.id_servico)) {
             Swal.fire({
@@ -346,14 +356,12 @@
             return;
           }
 
-          // Adiciona o serviço
           idServico.push(e.id_servico);
           precoTotal += parseFloat(e.preco);
           preco.innerText = `Preço total a pagar: R$ ${precoTotal.toFixed(2)}`;
 
-          // Cria item visível no carrinho
           const item = document.createElement('div');
-          item.classList.add("caixaServico")
+          item.classList.add("caixaServico");
 
           const nome = document.createElement('span');
           nome.innerText = e.nome_servico;
@@ -367,16 +375,10 @@
           remover.style.borderRadius = "5px";
           remover.style.cursor = "pointer";
 
-          // Quando clicar em remover
           remover.addEventListener('click', () => {
-            // Remove o ID do array
             idServico = idServico.filter(id => id !== e.id_servico);
-
-            // Atualiza o total
             precoTotal -= parseFloat(e.preco);
             preco.innerText = `Preço total a pagar: R$ ${precoTotal.toFixed(2)}`;
-
-            // Remove o elemento visualmente
             listaServicos.removeChild(item);
           });
 
@@ -390,9 +392,9 @@
         servicos.appendChild(caixaServico);
       });
 
-
-      // Concluir e exibir funcionários
+      // Concluir serviços → buscar funcionários
       concluir.addEventListener('click', async () => {
+
         if (idServico.length === 0) {
           Swal.fire({
             title: "Algo deu errado",
@@ -402,30 +404,34 @@
           });
           return;
         }
-        Swal.fire({
-          title: "Tudo certo",
-          text: "Serviços concluídos!",
-          icon: "sucess",
-          confirmButtonText: "OK"
-        });
+
         if (!diaSelecionado) {
           Swal.fire({
             title: "Algo deu errado",
             text: "Selecione um dia!",
             icon: "error",
             confirmButtonText: "OK"
-          }); return;
+          });
+          return;
         }
+
         if (!horarioSelecionado) {
           Swal.fire({
             title: "Algo deu errado",
             text: "Selecione um horário!",
             icon: "error",
             confirmButtonText: "OK"
-          }); return;
+          });
+          return;
         }
 
-        // Envia dados para PHP
+        Swal.fire({
+          title: "Tudo certo",
+          text: "Serviços concluídos!",
+          icon: "success",
+          confirmButtonText: "OK"
+        });
+
         const dadosParaPHP = {
           id_servico: idServico,
           dia: diaSelecionado,
@@ -443,33 +449,40 @@
           funcionarios.innerHTML = "";
 
           if (resultadoPHP.status === 'success') {
-            sucesso = 'sucesso'
+            sucesso = 'sucesso';
+
             resultadoPHP.data.forEach(f => {
               const div = document.createElement('div');
-              div.classList.add("caixaFuncionario")
+              div.classList.add("caixaFuncionario");
 
               const nome = document.createElement('p');
               const foto = document.createElement('img');
               const botao = document.createElement('button');
+
               nome.innerText = f.nome;
               foto.src = f.foto;
               botao.innerText = 'Selecionar barbeiro';
+
               botao.addEventListener('click', () => {
                 idFuncionario = f.id_funcionario;
+
                 div.classList = 'funcionarioSelecionado';
+
                 Swal.fire({
                   title: "Tudo certo",
                   text: `Funcionário ${f.nome} selecionado`,
-                  icon: "sucess",
+                  icon: "success",
                   confirmButtonText: "OK"
                 });
-              })
-              div.innerHTML = ''
+              });
+
+              div.innerHTML = '';
               div.appendChild(nome);
               div.appendChild(foto);
               div.appendChild(botao);
               funcionarios.appendChild(div);
             });
+
           } else {
             funcionarios.innerHTML = `<p>${resultadoPHP.message}</p>`;
           }
@@ -482,13 +495,15 @@
 
     });
 
+    // Botão agendar → popup
     function agendar() {
+
       if (idFuncionario > 0) {
+
         let confirmacao = document.getElementById('confirmacao');
         confirmacao.style.display = 'block';
         confirmacao.innerHTML = '';
 
-        // Cria os elementos
         const caixa = document.createElement('div');
         const texto = document.createElement('p');
         const alerta = document.createElement('h3');
@@ -499,54 +514,53 @@
         concluir.style.margin = "30px 20px 10px"
         fechar.id = "buttonBonito2"
 
-        // Define textos
         alerta.innerText = 'Tem certeza que deseja realizar o agendamento?';
         texto.innerText = 'Clique em "Agendar" se tem certeza. Caso não queira, clique em "Cancelar".';
         concluir.innerText = 'Agendar';
-        //concluir.classList.add("buttonBonito")
         fechar.innerText = 'Cancelar';
 
-        // Adiciona classes (opcional, para estilizar)
         caixa.classList.add('caixa-confirmacao');
         concluir.classList.add('btn-concluir');
 
         const caixaBlur = document.createElement("div")
         caixaBlur.id = "caixaBlur"
 
-        // Adiciona elementos dentro da caixa
         caixa.appendChild(alerta);
         caixa.appendChild(texto);
         caixa.appendChild(concluir);
         caixa.appendChild(fechar);
         caixaBlur.appendChild(caixa);
 
-        // Adiciona a caixa dentro da div de confirmação
         confirmacao.appendChild(caixaBlur);
 
-        // Eventos
         concluir.addEventListener('click', () => {
-          concluirAgendamento(); // sua função
+          concluirAgendamento();
           confirmacao.style.display = 'none';
         });
 
         fechar.addEventListener('click', () => {
           confirmacao.style.display = 'none';
         });
+
       } else {
+
         Swal.fire({
           title: "Algo deu errado",
           text: "Preencha os outros campos antes de agendar",
           icon: "error",
           confirmButtonText: "OK"
         });
+
       }
     }
 
+    // Finalizar agendamento
     async function concluirAgendamento() {
+
       if (sucesso == 'sucesso') {
-        //Agendamento        
+
         const idsAgendamento = {
-          id_servico: idServico,         // array de serviços
+          id_servico: idServico,
           id_funcionario: idFuncionario,
           id_disponibilidade: idDisponibilidade
         };
@@ -556,30 +570,48 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(idsAgendamento)
         });
+
         const dadosAgendamento = await respostaAgendamento.text();
-        console.log(dadosAgendamento)
-        // Swal.fire({
-        //     title: tipo === "sucesso" ? "Tudo certo!" : "Ops...",
-        //     text: dadosAgendamento,
-        //     icon: tipo === "sucesso" ? "success" : "error",
-        //     confirmButtonText: "OK"
-        // });
-        alert(dadosAgendamento)
-        if (dadosAgendamento == 'Agendamento realizado com sucesso') {
-          window.location.href = "agendamentoSalvo.html"
+        console.log(dadosAgendamento);
+
+        if (dadosAgendamento === 'Agendamento realizado com sucesso') {
+
+          Swal.fire({
+            title: "Tudo certo!",
+            text: dadosAgendamento,
+            icon: "success",
+            confirmButtonText: "OK"
+          }).then(() => {
+            window.location.href = "agendamentoSalvo.html";
+          });
+
         } else {
-          location.reload();
+
+          Swal.fire({
+            title: "Ops...",
+            text: dadosAgendamento,
+            icon: "error",
+            confirmButtonText: "OK"
+          }).then(() => {
+            location.reload();
+          });
+
         }
+
       } else {
+
         Swal.fire({
           title: "Algo deu errado",
           text: "Você pulou alguma etapa do agendamento!",
           icon: "error",
           confirmButtonText: "OK"
         });
+
       }
+
     }
   </script>
+
 </body>
 
 </html>
