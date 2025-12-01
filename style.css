@@ -226,8 +226,7 @@ main .seta:hover {
     scale: 1.1 !important;
 }
 
-main .alinhamento,
-main #cardsQuemSomos {
+main .alinhamento {
     width: 70%;
     margin: 60px auto;
     display: flex;
@@ -333,54 +332,6 @@ main .funcionarioSelecionado button {
 main .caixaGeral button:hover {
     width: 70%;
     padding: 10px;
-}
-
-main #cardsQuemSomos {
-    position: relative;
-    height: 450px;
-    width: 600px;
-    /* border: solid #C4974F; */
-}
-
-main .cards {
-    position: absolute;
-    width: 200px;
-    top: 40px;
-    border: solid #C4974F;
-}
-
-main #cardDaEsquerda2 {
-    z-index: 1;
-    top: 80px;
-    left: -20px;
-    transform: rotate(157deg);
-}
-
-main #cardDaEsquerda1 {
-    z-index: 2;
-    top: 30px;
-    left: 40px;
-    transform: rotate(167deg);
-}
-
-main #cardDoMeio {
-    z-index: 3;
-    top: -10px;
-    left: 200px;
-}
-
-main #cardDaDireita1 {
-    z-index: 2;
-    top: 20px;
-    left: 350px;
-    transform: rotate(8deg);
-}
-
-main #cardDaDireita2 {
-    z-index: 1;
-    top: 80px;
-    left: 410px;
-    transform: rotate(23.6deg);
 }
 
 main #quemSomos p {
