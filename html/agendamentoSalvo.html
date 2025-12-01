@@ -87,6 +87,9 @@
                 width: 100px;
                 height: 100px;
             }
+            .nomeCliente{
+                color: white;
+            }
         }
     </style>
 </head>
@@ -122,6 +125,7 @@
         link.innerHTML = `
             <a href="infoContaCliente.html" class="link ativo">Informações da conta</a>
             <a href="#" class="link">Agendamento</a>
+            <a href="gerenciaEstabelecimento.html" class="link">Estabelecimento</a>
         `;
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -141,8 +145,8 @@
                     foto.classList.add("fotoBarbearia");
 
                     const nome = document.createElement('h2');
-                    nome.classList.add("nomeEstabelecimento");
-                    nome.innerHTML = e.estabelecimento;
+                    nome.classList.add("nomeCliente");
+                    nome.innerHTML = `<span style="color:#C4974F;">Nome do Cliente:</span> <span style="color:#C4974F;"> ${e.cliente}`;
 
                     const local = document.createElement('p');
                     local.innerHTML = `<span style="color:#C4974F;">Localização:</span> <span style="color:#ffffff;">${e.localizacao || "Não informada"}</span>`;
@@ -233,10 +237,10 @@
                     caixaInformacoes.appendChild(nome);
                     caixaInformacoes.appendChild(dia);
                     caixaInformacoes.appendChild(horario);
-                    caixaInformacoes.appendChild(local);
+             
                     caixaInformacoes.appendChild(barbeiro);
 
-                    caixaBarbearia.appendChild(foto);
+                
                     caixaBarbearia.appendChild(caixaInformacoes);
                     caixaBarbearia.appendChild(seta);
 
