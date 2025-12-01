@@ -224,11 +224,12 @@
                     e.servicos.forEach(s => {
                         total += parseFloat(s.preco);
                         const servico = document.createElement('p');
+                        servico.style.color = "white"
                         servico.innerText = s.nome_servico;
                         div.appendChild(servico);
                     });
 
-                    totalPagar.innerText = "Total a pagar: R$ " + total.toFixed(2);
+                    totalPagar.innerHTML = `<span style="color:#C4974F;">Total a pagar R$: </span><span style="color:#ffffff;">${total.toFixed(2)}</span>`;
 
                     caixaInformacoes.appendChild(nome);
                     caixaInformacoes.appendChild(dia);
@@ -353,4 +354,5 @@
 
     <script src="../script.js"></script>
 </body>
+
 </html>

@@ -232,9 +232,9 @@
       });
       const dadosEtabelecimento = await respostaEstabelecimento.json();
       nome_estabelecimento.textContent = dadosEtabelecimento.nome_estabelecimento;
-      apresentacao.textContent = dadosEtabelecimento.apresentacao;
-      localizacao.textContent = "Localização: " + dadosEtabelecimento.localizacao;
-      contato.textContent = "Contato: " + dadosEtabelecimento.telefone_estabelecimento;
+      apresentacao.innerHTML = `<span style="color:#C4974F;">Sobre nós: </span> <span style="color:#ffffff;">${dadosEtabelecimento.apresentacao}</span>`;
+      localizacao.innerHTML = `<span style="color:#C4974F;">Localização: </span> <span style="color:#ffffff;">${dadosEtabelecimento.localizacao}</span>`;
+      contato.innerHTML = `<span style="color:#C4974F;">Contato: </span> <span style="color:#ffffff;">${dadosEtabelecimento.telefone_estabelecimento}</span>`;
 
       // Busca dias disponíveis
       const respostaDisponibilidade = await fetch("../php/exibirDia.php");

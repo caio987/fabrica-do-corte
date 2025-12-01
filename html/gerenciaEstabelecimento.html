@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
   <link rel="stylesheet" href="../style.css">
- <!-- CSS do SweetAlert2 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <!-- CSS do SweetAlert2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-<!-- JS do SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- JS do SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <title>Agendamento com Botões de Horário</title>
   <style>
@@ -27,9 +27,11 @@
       text-align: center;
     }
 
-    main #corte, main #preco{
+    main #corte,
+    main #preco {
       max-width: 437px;
-    }    
+    }
+
     #algo {
       width: 80%;
     }
@@ -60,6 +62,8 @@
   </header>
 
   <main>
+    <!-- <div style="margin-top: 15px; display: flex; justify-content: space-evenly; flex-wrap: wrap;" id="link"></div> -->
+
     <h2 style="margin: 10px;">Escolha a data e o horário que serão inseridos no calendário</h2>
     <p>Lembre de apertar o botão de enviar Datas e Horários para concluir as alterações</p>
 
@@ -122,6 +126,15 @@
 
   <script src="../gerenciamento.js"></script>
   <script src="../script.js"></script>
+  <script>
+    // const link = document.getElementById('link');
+
+    // link.innerHTML = `
+    //         <a href="infoContaCliente.html" class="link ativo">Informações da conta</a>
+    //         <a href="#" class="link">Agendamento</a>
+    //         <a href="#" class="link">Estabelecimento</a>
+    //     `;
+  </script>
 </body>
 
 </html>
